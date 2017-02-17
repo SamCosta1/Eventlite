@@ -1,5 +1,7 @@
 package uk.ac.man.cs.eventlite.config.data;
 
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import uk.ac.man.cs.eventlite.dao.EventService;
 import uk.ac.man.cs.eventlite.dao.VenueService;
+import uk.ac.man.cs.eventlite.entities.Event;
 
 @Component
 @Profile({ "default", "test" })
@@ -31,7 +34,13 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 			return;
 		}
 
-		// Build and save initial models here.
+		// Initial models.
+		eventService.save(new Event("Java Lecture", 15, new Date()));
+		eventService.save(new Event("Concert", 18, new Date()));
+		eventService.save(new Event("Pokemon", 11, new Date()));
+		eventService.save(new Event("Go", 169, new Date()));
+		eventService.save(new Event("Alvaro Lecture", 7, new Date()));
+		
 
 	}
 }
