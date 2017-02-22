@@ -33,11 +33,9 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		}
 		
 		Venue newVenue = new Venue();
-		newVenue.setId(1);
 		newVenue.setName("name1");
 		newVenue.setCapacity(100);
 		venueService.save(newVenue);
-		// Build and save initial models here.
 
 	}
 }
