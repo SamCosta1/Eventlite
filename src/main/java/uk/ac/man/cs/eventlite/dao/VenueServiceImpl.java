@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +21,13 @@ public class VenueServiceImpl implements VenueService {
 
 	private final static String DATA = "data/venues.json";
 
+	@Autowired
+	private VenueRepository venueRepository;
+	
 	@Override
 	public Iterable<Venue> findAll() {
-		Iterable<Venue> venues;
+		return venueRepository.findAll();
+		/*Iterable<Venue> venues;
 
 		try {
 			ObjectMapper mapper = new ObjectMapper();
@@ -35,7 +40,13 @@ public class VenueServiceImpl implements VenueService {
 			venues = Collections.emptyList();
 		}
 
-		return venues;
+		return venues;*/
+	}
+	
+	@Override
+	public void save(Venue venue)
+	{
+		venueRepository.save(venue);
 	}
 
-}
+} 
