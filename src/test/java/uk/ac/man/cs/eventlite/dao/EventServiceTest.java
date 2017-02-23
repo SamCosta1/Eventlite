@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import uk.ac.man.cs.eventlite.TestParent;
 import uk.ac.man.cs.eventlite.entities.Event;
+import uk.ac.man.cs.eventlite.entities.Venue;
 
 public class EventServiceTest extends TestParent {
 
@@ -28,7 +29,7 @@ public class EventServiceTest extends TestParent {
 	
 	@Test
 	public void count() {
-		Event event = new Event("Test Event", 10, new Date());
+		Event event = new Event("Test Event", new Venue(), new Date());
 		
 		long initialCount = eventService.count();
 		eventService.save(event);
@@ -39,7 +40,7 @@ public class EventServiceTest extends TestParent {
 	
 	@Test
 	public void save() {
-		Event event = new Event("Test Event2", 10, new Date());
+		Event event = new Event("Test Event2", new Venue(), new Date());
 		eventService.save(event);
 		
 		List<Event> events = (List<Event>) eventService.findAll();

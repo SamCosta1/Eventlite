@@ -5,12 +5,12 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "events")
@@ -20,15 +20,15 @@ public class Event {
 	@GeneratedValue
 	private long id;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	@JsonFormat(shape = JsonFormat.Shape.STRING)
+	@Temporal(TemporalType.TIMESTAMP)	
 	private Date date;
 
 	private String name;
 
-	private long venue;
+	@ManyToOne
+	private Venue venue;
 
-	public Event(String name, long venue, Date date) {
+	public Event(String name, Venue venue, Date date) {
 		this.name = name;
 		this.venue = venue;
 		this.date = date;
@@ -62,11 +62,11 @@ public class Event {
 		this.name = name;
 	}
 
-	public long getVenue() {
+	public Venue getVenue() {
 		return venue;
 	}
 
-	public void setVenue(long venue) {
+	public void setVenue(Venue venue) {
 		this.venue = venue;
 	}
 }

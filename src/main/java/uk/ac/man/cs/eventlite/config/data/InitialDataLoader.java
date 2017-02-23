@@ -41,12 +41,11 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		newVenue.setCapacity(100);
 		venueService.save(newVenue);
 		
-		eventService.save(new Event("Java Lecture", 15, new Date()));
-		eventService.save(new Event("Concert", 18, new Date()));
-		eventService.save(new Event("Pokemon", 11, new Date()));
-		eventService.save(new Event("Go", 169, new Date()));
-		eventService.save(new Event("Alvaro Lecture", 7, new Date()));
-		
+		eventService.save(new Event("Java Lecture", newVenue, new Date()));
+		eventService.save(new Event("Concert", newVenue, new Date()));
+		eventService.save(new Event("Pokemon", newVenue, new Date()));
+		eventService.save(new Event("Go", newVenue, new Date()));
+		eventService.save(new Event("Alvaro Lecture", newVenue, new Date()));		
 
 	}
 }
