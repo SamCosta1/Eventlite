@@ -69,4 +69,8 @@ public class Event {
 	public void setVenue(Venue venue) {
 		this.venue = venue;
 	}
+	
+	public String toString() {
+		return "ID: " + id + " Name: " + name + " Date: " + date + " Venue: " + venue.toString();
+	}
 }
