@@ -12,7 +12,7 @@ import uk.ac.man.cs.eventlite.entities.Venue;
 import uk.ac.man.cs.eventlite.TestParent;
 
 
-public class VenueTest extends TestParent{
+public class VenueServiceTest extends TestParent{
 
 	@Autowired
 	private VenueService venueService;
