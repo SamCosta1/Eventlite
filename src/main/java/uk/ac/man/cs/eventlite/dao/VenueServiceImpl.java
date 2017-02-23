@@ -17,14 +17,12 @@ public class VenueServiceImpl implements VenueService {
 	}
 	
 	@Override
-	public void save(Venue venue)
-	{
+	public void save(Venue venue) {
 		venueRepository.save(venue);
 	}
 	
 	@Override
-	public long count()
-	{
+	public long count()	{
 		return venueRepository.count();
 	}
 
