@@ -43,6 +43,10 @@ public class Venue {
 		this.capacity = capacity;
 	}
 	
+	public boolean equals(Venue other) {
+		return this.id == other.getId();
+	}
+	
 	public String toString() {
 		return "ID: " + id + " Name: " + name + " Capacity: " + capacity;
 	}
