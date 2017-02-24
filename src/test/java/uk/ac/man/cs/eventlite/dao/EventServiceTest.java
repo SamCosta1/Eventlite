@@ -34,8 +34,7 @@ public class EventServiceTest extends TestParent {
 		List<Event> events = (List<Event>) eventService.findAll();
 		boolean correctOrder = false;
 		int count = 0;
-		for (Event event : events)
-		{
+		for (Event event : events) {
 			String current = event.getName();
 			if (current == "Concert" && count == 0)
 				correctOrder = true;
