@@ -1,6 +1,5 @@
 package uk.ac.man.cs.eventlite.dao;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +19,12 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public Iterable<Event> findAll() {	
-		return eventRepository.findAll();
+		return eventRepository.findAllByOrderByDateAsc();
 	}
 
 	@Override
 	public void save(Event event) {
 		eventRepository.save(event);		
 	}
+	
 }
