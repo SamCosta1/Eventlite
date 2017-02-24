@@ -45,8 +45,8 @@ public class EventServiceTest extends TestParent {
 	
 	@Test
 	public void testAscendingByDate() {
-		eventService.save(new Event("Java Lecture", 15, new Date(321)));
-		eventService.save(new Event("Concert", 18, new Date(123)));
+		eventService.save(new Event("Java Lecture", testVenue, new Date(321)));
+		eventService.save(new Event("Concert", testVenue, new Date(123)));
 		
 		List<Event> events = (List<Event>) eventService.findAll();
 		boolean correctOrder = false;
