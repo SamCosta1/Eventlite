@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import uk.ac.man.cs.eventlite.dao.EventService;
 import uk.ac.man.cs.eventlite.dao.VenueService;
+import uk.ac.man.cs.eventlite.entities.Event;
 
 @Controller
 @RequestMapping("/events")
@@ -24,8 +25,6 @@ public class EventsControllerWeb {
 	public String getAllEvents(Model model) {
 
 		model.addAttribute("events", eventService.findAll());
-		model.addAttribute("venues", venueService.findAll());
-
 		return "events/index";
 	}
 

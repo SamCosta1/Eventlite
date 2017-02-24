@@ -11,7 +11,6 @@ public class Venue {
 	@Id
 	@GeneratedValue
 	private long id;
-
 	
 	private String name;
 
@@ -42,5 +41,13 @@ public class Venue {
 
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
+	}
+	
+	public boolean equals(Venue other) {
+		return this.id == other.getId();
+	}
+	
+	public String toString() {
+		return "ID: " + id + " Name: " + name + " Capacity: " + capacity;
 	}
 }

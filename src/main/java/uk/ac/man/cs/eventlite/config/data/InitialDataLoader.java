@@ -36,17 +36,21 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		}
 		
 		// Initial models.
-		Venue newVenue = new Venue();
-		newVenue.setName("name1");
-		newVenue.setCapacity(100);
-		venueService.save(newVenue);
+		Venue newVenue1 = new Venue();
+		newVenue1.setName("Kilburn 1.1");
+		newVenue1.setCapacity(100);
+		venueService.save(newVenue1);
 		
-		eventService.save(new Event("Java Lecture", 15, new Date()));
-		eventService.save(new Event("Concert", 18, new Date()));
-		eventService.save(new Event("Pokemon", 11, new Date()));
-		eventService.save(new Event("Go", 169, new Date()));
-		eventService.save(new Event("Alvaro Lecture", 7, new Date()));
+		Venue newVenue2 = new Venue();
+		newVenue2.setName("Stopford 6");
+		newVenue2.setCapacity(100);
+		venueService.save(newVenue2);
 		
+		eventService.save(new Event("Java Lecture", newVenue1, new Date()));
+		eventService.save(new Event("Concert", newVenue1, new Date()));
+		eventService.save(new Event("Pokemon", newVenue2, new Date()));
+		eventService.save(new Event("Go", newVenue2, new Date()));
+		eventService.save(new Event("Alvaro Lecture1", newVenue1, new Date()));		
 
 	}
 }
