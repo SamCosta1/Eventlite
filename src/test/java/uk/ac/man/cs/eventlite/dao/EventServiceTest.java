@@ -44,6 +44,28 @@ public class EventServiceTest extends TestParent {
 	}
 	
 	@Test
+	public void testSearchByName() {
+		eventService.save(new Event("Test Event 1", testVenue, new Date()));	
+		eventService.save(new Event("test event 2", testVenue, new Date()));
+		eventService.save(new Event("test Event", testVenue, new Date()));	
+		eventService.save(new Event("Another random string", testVenue, new Date()));	
+		
+		String searchTerm = "test Event";
+		
+		List<Event> events = (List<Event>) eventService.searchByName(searchTerm);
+		
+		// Check each correct		
+		for (Event e : events) {
+			assertTrue("Names contain substring 'test event' - case insensitive"
+						, e.getName().toLowerCase().contains(searchTerm.toLowerCase()));
+		}
+		
+		// Check all matching ones returned 
+		assertThat("Two items returned: ", 3, equalTo(events.size()));
+		
+	}
+	
+	@Test
 	public void count() {
 		Event event = new Event("Test Event", testVenue, new Date());
 		
