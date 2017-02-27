@@ -11,7 +11,7 @@ public class EventServiceImpl implements EventService {
 	
 	@Autowired
 	private EventRepository eventRepository;
-
+	
 	@Override
 	public long count() {		
 		return eventRepository.count();
@@ -25,6 +25,11 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public void save(Event event) {
 		eventRepository.save(event);		
+	}
+
+	@Override
+	public Event findById(long id) {
+		return eventRepository.findById(id);
 	}
 	
 }
