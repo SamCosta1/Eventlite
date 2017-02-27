@@ -1,0 +1,14 @@
+{{#partial "content"}}
+  <h1>Event view</h1>
+
+    {{#event}}
+    <p>Name: {{name}}</p>
+    <p>Venue: {{venue.name}}</p>
+    <p>Date: {{date}}</p>
+    <p>Description: {{description}}</p>
+    {{/event}}
+
+  <a class="btn btn-primary" role="button" href="/events">Back</a>
+{{/partial}}
+
+{{> layouts/base title="EventLite event view"}}

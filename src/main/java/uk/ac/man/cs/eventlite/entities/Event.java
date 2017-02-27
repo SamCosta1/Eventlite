@@ -23,6 +23,8 @@ public class Event {
 	private Date date;
 
 	private String name;
+	
+	private String description;
 
 	@ManyToOne
 	private Venue venue;
@@ -61,6 +63,14 @@ public class Event {
 		this.name = name;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 	public Venue getVenue() {
 		return venue;
 	}
