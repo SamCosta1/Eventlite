@@ -23,4 +23,10 @@ public class EventsControllerWebTest extends TestParent {
 		mvc.perform(get("/events").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
 				.andExpect(view().name("events/index"));
 	}
+	
+	@Test
+	public void testGetFirstEvent() throws Exception {
+		mvc.perform(get("/events/1").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
+				.andExpect(view().name("events/show"));
+	}
 }
