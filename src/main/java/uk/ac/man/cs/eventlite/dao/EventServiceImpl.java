@@ -27,4 +27,8 @@ public class EventServiceImpl implements EventService {
 		eventRepository.save(event);		
 	}
 	
+	@Override
+	public void delete(Event event) {
+		eventRepository.delete(event);
+	}
 }

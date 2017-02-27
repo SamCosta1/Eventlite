@@ -6,6 +6,7 @@ public interface EventService {
 
 	public long count();
 	public void save(Event e);
+	public void delete(Event e);
 
 	public Iterable<Event> findAll();
 }
