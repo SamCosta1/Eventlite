@@ -7,6 +7,7 @@
       <th><i class="fa fa-bolt"></i> Event</th>
       <th><i class="fa fa-map-marker"></i> Venue</th>
       <th><i class="fa fa-calendar"></i> Date</th>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -15,6 +16,11 @@
         <td>{{name}}</td>
         <td>{{venue.name}}</td>
         <td>{{date}}</td>
+        <td>
+        	<form action="/events/{{id}}/delete" method="post">  
+	  			<button class="btn btn-primary" type="submit">Delete</button>
+	  		</form>
+	  	<td>
       </tr>
     {{/events}}
   </tbody>
