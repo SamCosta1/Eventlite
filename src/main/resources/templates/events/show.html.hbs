@@ -1,14 +1,33 @@
 {{#partial "content"}}
-  <h1>Event view</h1>
-
-    {{#event}}
-    <p>Name: {{name}}</p>
-    <p>Venue: {{venue.name}}</p>
-    <p>Date: {{date}}</p>
-    <p>Description: {{description}}</p>
-    {{/event}}
-
-  <a class="btn btn-primary" role="button" href="/events">Back</a>
+  {{#event}}
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <h1>{{name}}</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <h4>Info</h4>
+            <p>Venue: {{venue.name}}</p>
+            <p>Date: {{date}}</p>
+            <a class="btn btn-primary" role="button" href="/events">Back</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-8">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <h4>Description</h4>
+            <p>{{description}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/event}}
 {{/partial}}
 
 {{> layouts/base title="EventLite event view"}}
