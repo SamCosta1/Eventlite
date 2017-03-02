@@ -1,0 +1,11 @@
+.filters-container {
+	background-color: #cecece;
+	padding-bottom: 20px;
+	padding-top: 1px;
+	border-radius: 10px;
+}
+
+/* Overriding Bootstrap */
+.container {
+	margin-left: 10px;
+} 
