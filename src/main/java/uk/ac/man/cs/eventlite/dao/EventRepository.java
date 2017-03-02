@@ -9,4 +9,5 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 	Iterable<Event> findAllByOrderByDateAsc();
 
 	Event findById(long id);
+
 }

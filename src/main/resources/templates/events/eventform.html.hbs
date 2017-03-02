@@ -6,10 +6,23 @@
 </head>
 <body>
 	<h1>Update form</h1>
-    <form action="#" th:action="@{/events}" th:object="${event}" method="post">
-    	<p>Name: <input type="text" th:field="*{name}" /></p>
-       
-        <p>Date: <input type="datetime-local" th:field="*{date}" /></p>
+    <form action="/events" method="post">
+    	{{#eventForm}}
+    	<input type="hidden" name="event" id="event" class="form-control" value="{{id}}" />
+    	
+    	<p>Name: <input type="text" name="name" id="name" class="form-control" value="{{name}}" /></p>
+    	
+       	<p>Venue:
+       		<select type="venue" name="venue" id="venue" class="form-control" />
+       				<option selected>{{venue.name}}</option>
+       			{{#venues}}
+       				<option value={{id}}>{{name}}</option>
+       			{{/venues}}
+       		</select>
+       	</p>
+       	
+        <p>Date: <input type="datetime-local" name="date" id="date" value="{{date}}" /></p>
+        {{/eventForm}}
         <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
     </form>
 </body>
