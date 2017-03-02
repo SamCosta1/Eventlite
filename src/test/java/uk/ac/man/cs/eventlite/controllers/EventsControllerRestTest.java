@@ -21,4 +21,8 @@ public class EventsControllerRestTest extends TestParent {
 	public void testGetAllEvents() throws Exception {
 		mvc.perform(get("/events").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 	}
+	@Test
+	public void testGetFirstEvent() throws Exception {
+		mvc.perform(get("/events/1").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+	}
 }

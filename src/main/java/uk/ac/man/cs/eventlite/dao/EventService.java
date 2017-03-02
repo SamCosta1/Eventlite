@@ -8,4 +8,5 @@ public interface EventService {
 	public void save(Event e);
 
 	public Iterable<Event> findAll();
+	public Event findOne(long id);
 }

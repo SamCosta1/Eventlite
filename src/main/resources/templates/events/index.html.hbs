@@ -11,7 +11,7 @@
   </thead>
   <tbody>
     {{#events}}
-      <tr>
+      <tr onclick="window.document.location='/events/{{id}}';">
         <td>{{name}}</td>
         <td>{{venue.name}}</td>
         <td>{{date}}</td>

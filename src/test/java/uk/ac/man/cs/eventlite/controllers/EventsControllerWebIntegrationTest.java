@@ -43,6 +43,11 @@ public class EventsControllerWebIntegrationTest extends TestParent {
 	public void testGetAllEvents() {
 		get("/events");
 	}
+	
+	@Test
+	public void testGetFirstEvent() {
+		get("/events/1");
+	}
 
 	private void get(String url) {
 		ResponseEntity<String> response = template.exchange(url, HttpMethod.GET, httpEntity, String.class);
