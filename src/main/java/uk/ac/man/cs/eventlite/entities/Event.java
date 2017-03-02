@@ -33,10 +33,11 @@ public class Event {
 	@ManyToOne
 	private Venue venue;
 
-	public Event(String name, Venue venue, Date date) {
+	public Event(String name, Venue venue, Date date, String description) {
 		this.name = name;
 		this.venue = venue;
 		this.date = date;
+		this.description = description;
 	}
 	
 	public Event() {
