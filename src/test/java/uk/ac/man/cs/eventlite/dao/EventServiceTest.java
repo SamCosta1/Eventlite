@@ -63,10 +63,10 @@ public class EventServiceTest extends TestParent {
 	
 	@Test
 	public void testSearchByName() {
-		eventService.save(new Event("Test Event 1", testVenue, new Date()));	
-		eventService.save(new Event("test event 2", testVenue, new Date()));
-		eventService.save(new Event("test Event", testVenue, new Date()));	
-		eventService.save(new Event("Another random string", testVenue, new Date()));	
+		eventService.save(new Event("Test Event 1", testVenue, new Date(), null));	
+		eventService.save(new Event("test event 2", testVenue, new Date(), null));
+		eventService.save(new Event("test Event", testVenue, new Date(), null));	
+		eventService.save(new Event("Another random string", testVenue, new Date(), null));	
 		
 		String searchTerm = "test Event";
 		
@@ -85,7 +85,7 @@ public class EventServiceTest extends TestParent {
 	
 	@Test
 	public void testDeleteEvent(){
-		Event event = new Event("Test Event", testVenue, new Date());
+		Event event = new Event("Test Event", testVenue, new Date(), null);
 		eventService.save(event);
 		
 		long initialCount = eventService.count();
