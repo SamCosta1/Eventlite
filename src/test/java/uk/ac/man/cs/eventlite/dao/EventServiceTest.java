@@ -84,6 +84,27 @@ public class EventServiceTest extends TestParent {
 	}
 	
 	@Test
+	public void testDeleteEvent(){
+		Event event = new Event("Test Event", testVenue, new Date());
+		eventService.save(event);
+		
+		long initialCount = eventService.count();
+		
+		eventService.delete(event);
+
+		List<Event> events = (List<Event>) eventService.findAll();
+		
+		boolean isDeleted = true;
+		for (Event e : events)
+			if (e.equals(event) && e.getVenue().equals(testVenue))
+				isDeleted = false;			
+		
+		assertTrue("Deleted event was deleted", isDeleted);
+		assertThat("Count should decrease by one on delete", initialCount - 1, equalTo(eventService.count()));
+		
+	}
+	
+	@Test
 	public void count() {
 		Event event = new Event("Test Event", testVenue, new Date(),"");
 		

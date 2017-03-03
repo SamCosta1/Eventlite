@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -26,6 +27,13 @@ public class EventsControllerWeb {
 		model.addAttribute("events", eventService.findAll());
 		return "events/index";
 	}
+	
+	@RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
+ 	public String deleteEvent(@ModelAttribute Event event) {
+		
+ 		eventService.delete(event);
+ 		return "redirect:/events";
+ 	}
 	
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = { MediaType.TEXT_HTML_VALUE })
 	public String filter(@ModelAttribute("search") Search searchCriterion, BindingResult result, Model model) {
