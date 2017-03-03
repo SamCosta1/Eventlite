@@ -8,4 +8,35 @@
 /* Overriding Bootstrap */
 .container {
 	margin-left: 10px;
-} 
+}
+
+#panelLooks
+{
+	margin-left: 100px;
+	width: 500px;
+	float: left;
+	max-height: 5;
+	overflow-y: scroll;
+}
+
+#image_preview
+{
+	font-size: 70px;
+}
+
+#event_preview
+{
+	vertical-align: middle;
+}
+
+#dropdown_sortby
+{
+	display: inline-block;
+	position: relative;
+	left: 300px;
+}
+
+#filterLooks
+{
+	float: left;
+}
