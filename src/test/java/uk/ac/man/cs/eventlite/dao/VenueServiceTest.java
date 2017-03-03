@@ -3,13 +3,11 @@ package uk.ac.man.cs.eventlite.dao;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.*;
 
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import uk.ac.man.cs.eventlite.entities.Event;
 import uk.ac.man.cs.eventlite.entities.Venue;
 import uk.ac.man.cs.eventlite.TestParent;
 

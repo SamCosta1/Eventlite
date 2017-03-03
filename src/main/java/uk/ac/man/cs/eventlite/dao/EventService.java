@@ -8,5 +8,6 @@ public interface EventService {
 	public void save(Event e);
 
 	public Iterable<Event> findAll();
+	Iterable<Event> searchByName(String name);
 	public Event findOne(long id);
 }
