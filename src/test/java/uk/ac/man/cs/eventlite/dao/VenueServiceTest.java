@@ -3,13 +3,11 @@ package uk.ac.man.cs.eventlite.dao;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.*;
 
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import uk.ac.man.cs.eventlite.entities.Event;
 import uk.ac.man.cs.eventlite.entities.Venue;
 import uk.ac.man.cs.eventlite.TestParent;
 
@@ -26,6 +24,21 @@ public class VenueServiceTest extends TestParent{
 		long count = venueService.count();
 
 		assertThat("findAll should get all venues.", count, equalTo((long) venues.size()));
+	}
+	
+	@Test
+	public void findAllExceptOne() {
+		Venue ignoredEvent = new Venue();
+		venueService.save(ignoredEvent);
+		boolean found = false;
+		
+		Iterable<Venue> venues = venueService.findAllExceptOne(ignoredEvent);
+		for (Venue v : venues) {
+			if (v.equals(ignoredEvent))
+				found = true;
+		}
+		
+		assertFalse(found);
 	}
 	
 	@Test

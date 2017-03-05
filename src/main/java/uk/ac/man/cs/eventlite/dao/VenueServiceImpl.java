@@ -34,7 +34,7 @@ public class VenueServiceImpl implements VenueService {
 	}
 
 	@Override
-	public Iterable<Venue> findAllIgnoreCase(Venue venue) {
+	public Iterable<Venue> findAllExceptOne(Venue venue) {
 		Iterable<Venue> venues = venueRepository.findAll();
 		Iterator<Venue> i = venues.iterator();
 		while (i.hasNext()) {

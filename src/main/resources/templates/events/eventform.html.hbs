@@ -14,7 +14,7 @@
     	
        	<p>Venue:
        		<select type="venue" name="venue" id="venue" class="form-control" />
-       				<option selected>{{venue.name}}</option>
+       				<option selected value={{venue.id}}>{{venue.name}}</option>
        			{{#venues}}
        				<option value={{id}}>{{name}}</option>
        			{{/venues}}

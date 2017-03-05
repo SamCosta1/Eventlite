@@ -31,5 +31,13 @@ public class EventServiceImpl implements EventService {
 	public Event findById(long id) {
 		return eventRepository.findById(id);
 	}
+
+	@Override
+	public void update(Event current, Event changes) {
+		current.setName(changes.getName());
+		current.setVenue(changes.getVenue());
+		current.setDate(changes.getDate());
+		save(current);
+	}
 	
 }

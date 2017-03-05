@@ -40,12 +40,7 @@ public class EventsControllerWeb {
 	public String updateEvent(@RequestBody @Valid @ModelAttribute("eventForm") Event event, 
 								@RequestParam(value="event") long eventID, Model model) {
 		
-		Event currentEvent = eventService.findById(eventID);
-		currentEvent.setName(event.getName());
-		currentEvent.setDate(event.getDate());
-		currentEvent.setVenue(event.getVenue());
-		
-		eventService.save(currentEvent);
+		eventService.update(eventService.findById(eventID), event);
 		
 		return "redirect:/events";
 	}
@@ -55,7 +50,7 @@ public class EventsControllerWeb {
 
 		Event event = eventService.findById(id);
 		model.addAttribute("eventForm", event);
-		model.addAttribute("venues", venueService.findAllIgnoreCase(event.getVenue()));
+		model.addAttribute("venues", venueService.findAllExceptOne(event.getVenue()));
 
 		return "events/eventform";
 

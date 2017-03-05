@@ -10,5 +10,5 @@ public interface VenueService {
 	public long count();
 
 	public Venue findById(long id);
-	public Iterable<Venue> findAllIgnoreCase(Venue venue);
+	public Iterable<Venue> findAllExceptOne(Venue venue);
 }
