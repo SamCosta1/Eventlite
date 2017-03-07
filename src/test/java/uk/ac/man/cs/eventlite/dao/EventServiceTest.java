@@ -140,12 +140,12 @@ public class EventServiceTest extends TestParent {
 	
 	@Test
 	public void update() {
-		Event currentEvent = new Event("Test Event3", testVenue, new Date());
+		Event currentEvent = new Event("Test Event3", testVenue, new Date(), "");
 		eventService.save(currentEvent);
 		
 		String newName = "Updated Event3";
 		Date newDate = new Date(123);
-		Event changedEvent = new Event(newName, testVenue2, newDate);
+		Event changedEvent = new Event(newName, testVenue2, newDate, "");
 		
 		eventService.update(currentEvent, changedEvent);
 		
