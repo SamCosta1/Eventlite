@@ -1,8 +1,8 @@
 package uk.ac.man.cs.eventlite.controllers;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import static org.hamcrest.core.StringContains.containsString;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,6 +27,15 @@ public class EventsControllerRestTest extends TestParent {
 	public void deleteEvent() throws Exception{
 		mvc.perform(MockMvcRequestBuilders.delete("/events/1")).andExpect(status().isNoContent());
 	}
+	
+	@Test
+	public void filterEvents() throws Exception{
+		mvc.perform(MockMvcRequestBuilders.post("/events/filter").contentType(MediaType.APPLICATION_JSON)
+				.content("{\"name\": \"\"}").accept(MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk())
+		.andExpect(content().string(containsString("")));		
+	}
+
 	
 	@Test
 	public void testGetFirstEvent() throws Exception {

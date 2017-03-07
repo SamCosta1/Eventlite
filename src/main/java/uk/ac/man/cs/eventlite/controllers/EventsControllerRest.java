@@ -6,12 +6,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import uk.ac.man.cs.eventlite.dao.EventService;
+import uk.ac.man.cs.eventlite.dao.Search;
 import uk.ac.man.cs.eventlite.entities.Event;
 
 @RestController
@@ -25,6 +27,11 @@ public class EventsControllerRest {
 	public HttpEntity<Iterable<Event>> getAllEvents() {
 
 		return new ResponseEntity<Iterable<Event>>(eventService.findAll(), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/filter", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = { MediaType.APPLICATION_JSON_VALUE })
+	public HttpEntity<Iterable<Event>> filterEvents(@RequestBody Search searchCriterion) {
+		return new ResponseEntity<Iterable<Event>>(searchCriterion.search(eventService), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
