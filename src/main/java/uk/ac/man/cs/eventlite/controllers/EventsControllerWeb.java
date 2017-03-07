@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import uk.ac.man.cs.eventlite.dao.EventService;
 import uk.ac.man.cs.eventlite.dao.Search;
+import uk.ac.man.cs.eventlite.dao.VenueService;
 import uk.ac.man.cs.eventlite.entities.Event;
 
 @Controller
@@ -42,11 +43,13 @@ public class EventsControllerWeb {
  		return "redirect:/events";
  	}
 	
-	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = { MediaType.TEXT_HTML_VALUE })
+	@RequestMapping(value="/filter", method = RequestMethod.POST,
+					consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, 
+					produces = { MediaType.TEXT_HTML_VALUE })
 	public String filter(@ModelAttribute("search") Search searchCriterion, BindingResult result, Model model) {
 	
 		model.addAttribute("events", searchCriterion.search(eventService));
-		return "events/index";
+		return "redirect:/events";
 	}
 	
 	

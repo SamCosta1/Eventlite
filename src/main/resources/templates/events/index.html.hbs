@@ -9,7 +9,7 @@
 
 	<div class="col-md-3 filters-container">	
 		<h2>Filters</h2>
-		<form action="/events/" method="post">
+		<form action="/events/filter/" method="post">
 		   <div class="form-group">    
 			 <label for="name">Event Name:</label><input class="form-control" type="text" name="name" id="name" placeholder="Search.." autofocus />    
 		   </div>
@@ -32,8 +32,8 @@
 		  </thead>
 		  <tbody>
 		    {{#events}}
-		       <tr onclick="window.document.location='/events/{{id}}';">
-		        <td>{{name}}</td>
+		       <tr>
+		        <td onclick="window.document.location='/events/{{id}}';">{{name}}</td>
 		        <td>{{venue.name}}</td>
 		        <td>{{date}}</td>
 		        <td><button class="btn btn-primary" onclick="location.href='/events/{{id}}/update'">Update</button></td>
