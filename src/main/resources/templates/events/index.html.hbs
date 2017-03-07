@@ -3,6 +3,7 @@
 {{/partial}}
 
 {{#partial "content"}}
+
 <h1>All events</h1>
 <div class="row">
 
@@ -35,6 +36,7 @@
 		        <td>{{name}}</td>
 		        <td>{{venue.name}}</td>
 		        <td>{{date}}</td>
+		        <td><button class="btn btn-primary" onclick="location.href='/events/{{id}}/update'">Update</button></td>
 		        <td>
         	        <form action="/events/{{id}}/delete" method="post">  
 	  			        <button class="btn btn-primary" type="submit">Delete</button>
@@ -46,6 +48,7 @@
 		</table>
 	</div>
 </div>
+        	
 
 {{/partial}}
 
