@@ -11,4 +11,7 @@ public interface EventService {
 	public Iterable<Event> findAll();
 	Iterable<Event> searchByName(String name);
 	public Event findOne(long id);
+	public Event findById(long id);
+	public void update(Event current, Event changes);
+	
 }

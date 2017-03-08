@@ -8,4 +8,7 @@ public interface VenueService {
 	
 	public void save(Venue venue);
 	public long count();
+
+	public Venue findById(long id);
+	public Iterable<Venue> findAllExceptOne(Venue venue);
 }

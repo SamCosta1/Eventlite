@@ -1,0 +1,38 @@
+@mixin active {
+	color: #555;
+    background-color: #e7e7e7;
+}
+
+
+.header {
+	
+	min-width: 170px;  // HACK: stop divs wrapping when window shrunk
+	.glyphicon {
+		margin-right: 3px;
+	}
+
+	&.home {
+		.home-button {
+			@include active;
+		}		
+	}
+
+	&.events {
+		.events-button {
+			@include active;
+		}		
+	}
+
+	&.register {
+		.register-button {
+			@include active;
+		}		
+	}
+
+	&.login {
+		.login-button {
+			@include active;
+		}		
+	}
+	
+}

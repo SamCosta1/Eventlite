@@ -3,21 +3,29 @@
 	padding-bottom: 20px;
 	padding-top: 1px;
 	border-radius: 10px;
+	
+	margin-bottom: 5px;
 }
 
 /* Overriding Bootstrap */
-.container {
-	margin-left: 10px;
+.main-container {
+	margin: 25px;
+	
+	.filler {
+		width: 2px; // HACK: Overriding bootstrap to give 'margin' between columns
+	}
 }
 
-#panelLooks
-{
-	margin-left: 100px;
-	width: 500px;
-	float: left;
-	max-height: 5;
-	overflow-y: scroll;
+.panel-heading{
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    
+    .dropdown-menu {
+    	min-width: 100px;
+    }
 }
+
 
 #image_preview
 {
@@ -29,14 +37,9 @@
 	vertical-align: middle;
 }
 
-#dropdown_sortby
-{
-	display: inline-block;
-	position: relative;
-	left: 300px;
-}
-
-#filterLooks
-{
-	float: left;
+.panel {
+    padding: 0px;
+	table {
+		overflow-y: scroll;
+	}
 }

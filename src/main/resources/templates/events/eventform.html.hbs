@@ -1,0 +1,31 @@
+{{#partial "content"}}
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Handling Form Submission</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<h1>Update form</h1>
+    <form action="/events" method="post">
+    	{{#eventForm}}
+    	<input type="hidden" name="event" id="event" class="form-control" value="{{id}}" />
+    	
+    	<p>Name: <input type="text" name="name" id="name" class="form-control" value="{{name}}" /></p>
+    	
+       	<p>Venue:
+       		<select type="venue" name="venue" id="venue" class="form-control" />
+       				<option selected value={{venue.id}}>{{venue.name}}</option>
+       			{{#venues}}
+       				<option value={{id}}>{{name}}</option>
+       			{{/venues}}
+       		</select>
+       	</p>
+       	
+        <p>Date: <input type="datetime-local" name="date" id="date" value="{{date}}" /></p>
+        {{/eventForm}}
+        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+    </form>
+</body>
+</html>
+{{/partial}}
+{{> layouts/base title="EventLite events"}}

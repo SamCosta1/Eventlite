@@ -27,6 +27,21 @@ public class VenueServiceTest extends TestParent{
 	}
 	
 	@Test
+	public void findAllExceptOne() {
+		Venue ignoredEvent = new Venue();
+		venueService.save(ignoredEvent);
+		boolean found = false;
+		
+		Iterable<Venue> venues = venueService.findAllExceptOne(ignoredEvent);
+		for (Venue v : venues) {
+			if (v.equals(ignoredEvent))
+				found = true;
+		}
+		
+		assertFalse(found);
+	}
+	
+	@Test
 	public void count() {
 		Venue newVenue = new Venue();
 		newVenue.setName("name1");

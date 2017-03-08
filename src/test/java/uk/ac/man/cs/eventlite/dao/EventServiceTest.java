@@ -23,7 +23,7 @@ public class EventServiceTest extends TestParent {
 	@Autowired
 	private VenueService venueService;
 	
-	public Venue testVenue;
+	public Venue testVenue, testVenue2;
 	
 	@Before
 	public void setup() {
@@ -31,8 +31,13 @@ public class EventServiceTest extends TestParent {
 		testVenue.setName("Test Event Name");
 		testVenue.setCapacity(10);
 		
+		testVenue2 = new Venue();
+		testVenue2.setName("Test Event Name 2");
+		testVenue2.setCapacity(20);
+		
 		// Need to save the venue to ensure tests don't error
 		venueService.save(testVenue);
+		venueService.save(testVenue2);
 	}
 
 	@Test
@@ -131,5 +136,33 @@ public class EventServiceTest extends TestParent {
 		
 		assertTrue("Saved event was saved", found);
 		
+	}
+	
+	@Test
+	public void update() {
+		Event currentEvent = new Event("Test Event3", testVenue, new Date(), "");
+		eventService.save(currentEvent);
+		
+		String newName = "Updated Event3";
+		Date newDate = new Date(123);
+		Event changedEvent = new Event(newName, testVenue2, newDate, "");
+		
+		eventService.update(currentEvent, changedEvent);
+		
+		boolean checkName, checkVenue, checkDate;
+		checkName = checkVenue = checkDate = false;
+		
+		if (currentEvent.getName().equals(newName))
+			checkName = true;
+
+		if (currentEvent.getVenue().equals(testVenue2))
+			checkVenue = true;
+		
+		if (currentEvent.getDate().equals(newDate))
+			checkDate = true;
+		
+		assertTrue(checkName);
+		assertTrue(checkVenue);
+		assertTrue(checkDate);
 	}
 }
