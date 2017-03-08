@@ -43,17 +43,18 @@ public class EventsControllerWeb {
  		return "redirect:/events";
  	}
 	
-	@RequestMapping(value="/filter", method = RequestMethod.POST,
+	@RequestMapping(method = RequestMethod.POST,
 					consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, 
 					produces = { MediaType.TEXT_HTML_VALUE })
 	public String filter(@ModelAttribute("search") Search searchCriterion, BindingResult result, Model model) {
 	
 		model.addAttribute("events", searchCriterion.search(eventService));
-		return "redirect:/events";
+		return "events/index";
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.POST, 
+	@RequestMapping(value="/update",
+				    method = RequestMethod.POST, 
 					consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 					produces = { MediaType.TEXT_HTML_VALUE })
 	public String updateEvent(@RequestBody @Valid @ModelAttribute("eventForm") Event event, 

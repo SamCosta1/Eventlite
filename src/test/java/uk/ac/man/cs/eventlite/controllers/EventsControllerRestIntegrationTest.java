@@ -52,13 +52,13 @@ public class EventsControllerRestIntegrationTest extends TestParent {
 	}
 	
 	@Test
-	public void filterEvents() {
+	public void testFilterEvents() {
 		HttpHeaders postHeaders = new HttpHeaders();
 		postHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		postHeaders.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> postEntity = new HttpEntity<String>("{ \"name\": \"\" }", postHeaders);
 
-		ResponseEntity<String> response = template.exchange("/events/filter", HttpMethod.POST, postEntity, String.class);
+		ResponseEntity<String> response = template.exchange("/events/", HttpMethod.POST, postEntity, String.class);
 		assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
 		assertThat(response.getBody(), is(not(equalTo(null))));
 	}

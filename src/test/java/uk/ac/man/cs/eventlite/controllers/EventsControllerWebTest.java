@@ -39,10 +39,10 @@ public class EventsControllerWebTest extends TestParent {
 	
 	@Test
 	public void testFilterEvents() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.post("/events/filter")
+		mvc.perform(MockMvcRequestBuilders.post("/events/")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED).accept(MediaType.TEXT_HTML))
-				.andExpect(status().isFound())
-				.andExpect(view().name("redirect:/events"));
+				.andExpect(status().isOk())
+				.andExpect(view().name("events/index"));
 	}
 	
 	@Test

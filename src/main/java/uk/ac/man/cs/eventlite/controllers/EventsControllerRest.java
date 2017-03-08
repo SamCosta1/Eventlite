@@ -29,7 +29,7 @@ public class EventsControllerRest {
 		return new ResponseEntity<Iterable<Event>>(eventService.findAll(), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/filter", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public HttpEntity<Iterable<Event>> filterEvents(@RequestBody Search searchCriterion) {
 		return new ResponseEntity<Iterable<Event>>(searchCriterion.search(eventService), HttpStatus.OK);
 	}

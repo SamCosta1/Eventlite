@@ -30,7 +30,7 @@ public class EventsControllerRestTest extends TestParent {
 	
 	@Test
 	public void filterEvents() throws Exception{
-		mvc.perform(MockMvcRequestBuilders.post("/events/filter").contentType(MediaType.APPLICATION_JSON)
+		mvc.perform(MockMvcRequestBuilders.post("/events/").contentType(MediaType.APPLICATION_JSON)
 				.content("{\"name\": \"\"}").accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
 		.andExpect(content().string(containsString("")));		
