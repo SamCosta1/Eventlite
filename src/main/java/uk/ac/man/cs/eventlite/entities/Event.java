@@ -32,7 +32,7 @@ public class Event {
 	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private Date date;
 
-	private String name;	
+	private String name;
 	
 	@Lob
 	@Column( length = 100000 )
@@ -109,6 +109,6 @@ public class Event {
 	
 	@PostLoad
 	private void onLoad() {
-	    this.pastEvent = date.before(new Date());
+		this.pastEvent = date.before(new Date());
 	}
 }
