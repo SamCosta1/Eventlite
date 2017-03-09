@@ -9,7 +9,11 @@
 
 /* Overriding Bootstrap */
 .container {
-    margin-left: 10px;
+    @media (min-width: 1200px) {
+        margin-left: 2%;
+        margin-right: 2%;
+        width: 96%;
+    }
 } 
 
 .table-striped > tbody >tr:nth-of-type(odd) {

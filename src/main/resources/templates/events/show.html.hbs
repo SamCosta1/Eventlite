@@ -1,28 +1,53 @@
+{{#partial "head"}}
+<link rel="stylesheet" href="../css/main.css">
+<link rel="stylesheet" href="../css/show.css">
+{{/partial}}
+
+{{#partial "navbar"}}
+{{/partial}}
+
 {{#partial "content"}}
   {{#event}}
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12">
-        <h1>{{name}}</h1>
-      </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>{{name}}</h1>
     </div>
-    <div class="row">
-      <div class="col-sm-4">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <h4>Info</h4>
-            <p>Venue: {{venue.name}}</p>
-            <p>Date: {{date}}</p>
-            <a class="btn btn-primary" role="button" href="/events">Back</a>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-default" id ="info-panel">
+            <div class="panel-body">
+              <h4>Info</h4>
+              <div id = "info-content">
+                <div>
+                  <p>Venue: {{venue.name}}</p>
+                  <p>Date: {{date}}</p>
+                </div>
+                <a class="btn btn-primary" id="back-button" role="button" href="/events">Back</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="panel panel-default" id ="map-panel">
+            <div class="panel-body">
+              <h4>Map</h4>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-sm-8">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <h4>Description</h4>
+    </div>
+    <div class="col-sm-8">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h4>Description</h4>
+          {{#if description}}
             <p>{{description}}</p>
-          </div>
+          {{else}}
+            <p id = "no-description">No description</p>
+          {{/if}}
         </div>
       </div>
     </div>
