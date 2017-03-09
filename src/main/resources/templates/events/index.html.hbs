@@ -13,7 +13,7 @@ home
 
 	<div class="col-md-3 filters-container">	
 		<h2>Filters</h2>
-		<form action="/events/" method="post">
+		<form action="/events/filter/" method="post">
 		   <div class="form-group">    
 			 <label for="name">Event Name:</label><input class="form-control" type="text" name="name" id="name" placeholder="Search.." autofocus />    
 		   </div>
@@ -32,15 +32,14 @@ home
 		      <th><i class="fa fa-map-marker"></i> Venue</th>
 		      <th><i class="fa fa-calendar"></i> Date</th>
 		      <th>Actions</th>
-		      <th></th>
 		    </tr>
 		  </thead>
 		  <tbody>
 		    {{#events}}
-		       <tr>
+		       <tr class="{{#if pastEvent}}past-events{{/if}}" >
 		        <td onclick="window.document.location='/events/{{id}}';">{{name}}</td>
 		        <td>{{venue.name}}</td>
-		        <td>{{date}}</td>
+		        <td>{{date}} {{#if pastEvent}}<span class="missed-notif"><i class="glyphicon glyphicon-exclamation-sign"></i> Missed it</span>{{/if}}</td>
 		        <td><button class="btn btn-primary" onclick="location.href='/events/{{id}}/update'">Update</button></td>
 		        <td>
         	        <form action="/events/{{id}}/delete" method="post">  

@@ -8,10 +8,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -30,7 +32,7 @@ public class Event {
 	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private Date date;
 
-	private String name;
+	private String name;	
 	
 	@Lob
 	@Column( length = 100000 )
@@ -38,6 +40,9 @@ public class Event {
 
 	@ManyToOne
 	private Venue venue;
+	
+	@Transient
+	private boolean pastEvent;
 
 	public Event(String name, Venue venue, Date date, String description) {
 		this.name = name;
@@ -96,5 +101,14 @@ public class Event {
 	
 	public String toString() {
 		return "ID: " + id + " Name: " + name + " Date: " + date + " Venue: " + venue.toString();
+	}
+	
+	public boolean isPastEvent() {
+		return this.pastEvent;
+	}
+	
+	@PostLoad
+	private void onLoad() {
+	    this.pastEvent = date.before(new Date());
 	}
 }
