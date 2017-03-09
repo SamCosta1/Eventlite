@@ -1,11 +1,21 @@
+@import "colour-maps.scss";
+
 .filters-container {
-	background-color: #cecece;
-	padding-bottom: 20px;
-	padding-top: 1px;
-	border-radius: 10px;
+    background-color: $theme-colour;
+    padding-bottom: 20px;
+    padding-top: 1px;
+    border-radius: 10px;
 }
 
 /* Overriding Bootstrap */
 .container {
-	margin-left: 10px;
+    margin-left: 10px;
 } 
+
+.table-striped > tbody >tr:nth-of-type(odd) {
+    background-color: $default-background-col;
+}
+
+.table-striped > tbody >tr:nth-of-type(even) {
+    background-color: $lighten-2;
+}
