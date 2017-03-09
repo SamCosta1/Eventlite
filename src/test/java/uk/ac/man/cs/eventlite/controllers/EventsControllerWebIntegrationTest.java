@@ -48,10 +48,20 @@ public class EventsControllerWebIntegrationTest extends TestParent {
 	public void testGetFirstEvent() {
 		get("/events/1");
 	}
+	
+	@Test
+	public void testFilterEvents() {
+		post("/events/");
+	}
 
 	private void get(String url) {
 		ResponseEntity<String> response = template.exchange(url, HttpMethod.GET, httpEntity, String.class);
 		assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
 		assertThat(response.getHeaders().getContentType().toString(), containsString(MediaType.TEXT_HTML_VALUE));
+	}
+	
+	private void post(String url) {
+		ResponseEntity<String> response = template.exchange(url, HttpMethod.POST, httpEntity, String.class);
+		assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
 	}
 }
