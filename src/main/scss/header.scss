@@ -1,10 +1,19 @@
+@import "colour-maps.scss";
+
 @mixin active {
-	color: #555;
-    background-color: #e7e7e7;
+	color: $darken-2;
+    background-color: $lighten-2;
 }
 
 
 .header {
+
+	.navbar {
+		background-color: $default-background-col;
+		a:hover {
+			color: $darken-5 !important; // Important used to overidde bootstrap
+		}
+	}
 	
 	min-width: 170px;  // HACK: stop divs wrapping when window shrunk
 	.glyphicon {
