@@ -1,6 +1,8 @@
 package uk.ac.man.cs.eventlite.controllers;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
 
@@ -47,6 +49,18 @@ public class EventsControllerRestIntegrationTest extends TestParent {
 	@Test
 	public void testGetFirstEvent() {
 		get("/events/1");
+	}
+	
+	@Test
+	public void testFilterEvents() {
+		HttpHeaders postHeaders = new HttpHeaders();
+		postHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		postHeaders.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> postEntity = new HttpEntity<String>("{ \"name\": \"\" }", postHeaders);
+
+		ResponseEntity<String> response = template.exchange("/events/", HttpMethod.POST, postEntity, String.class);
+		assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+		assertThat(response.getBody(), is(not(equalTo(null))));
 	}
 
 	private void get(String url) {

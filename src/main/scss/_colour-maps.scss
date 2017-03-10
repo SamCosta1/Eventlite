@@ -1,0 +1,22 @@
+// The main theme colour off which everything else is based
+$theme-colour: #808080;
+
+// The difference between each shade below
+$shift-amount: 15%;
+
+// Some variants for general use
+$lighten-1: lighten($theme-colour, $shift-amount * 1);
+$lighten-2: lighten($theme-colour, $shift-amount * 2);
+$lighten-3: lighten($theme-colour, $shift-amount * 3);
+$lighten-4: lighten($theme-colour, $shift-amount * 4);
+$lighten-5: lighten($theme-colour, $shift-amount * 5);
+
+$darken-1: darken($theme-colour, $shift-amount * 1);
+$darken-2: darken($theme-colour, $shift-amount * 2);
+$darken-3: darken($theme-colour, $shift-amount * 3);
+$darken-4: darken($theme-colour, $shift-amount * 4);
+$darken-5: darken($theme-colour, $shift-amount * 5);
+
+
+$default-background-col: $lighten-3;
+$default-border-col: $darken-2;

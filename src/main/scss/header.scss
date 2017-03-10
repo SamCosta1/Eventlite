@@ -1,38 +1,47 @@
+@import "colour-maps.scss";
+
 @mixin active {
-	color: #555;
-    background-color: #e7e7e7;
+    color: $darken-2;
+    background-color: $lighten-2;
 }
 
 
 .header {
-	
-	min-width: 170px;  // HACK: stop divs wrapping when window shrunk
-	.glyphicon {
-		margin-right: 3px;
-	}
 
-	&.home {
-		.home-button {
-			@include active;
-		}		
-	}
+    .navbar {
+        background-color: $default-background-col;
+        a:hover {
+            color: $darken-5 !important; // Important used to overidde bootstrap
+        }
+    }
+    
+    min-width: 170px;  // HACK: stop divs wrapping when window shrunk
+    .glyphicon {
+        margin-right: 3px;
+    }
 
-	&.events {
-		.events-button {
-			@include active;
-		}		
-	}
+    &.home {
+        .home-button {
+            @include active;
+        }        
+    }
 
-	&.register {
-		.register-button {
-			@include active;
-		}		
-	}
+    &.events {
+        .events-button {
+            @include active;
+        }        
+    }
 
-	&.login {
-		.login-button {
-			@include active;
-		}		
-	}
-	
+    &.register {
+        .register-button {
+            @include active;
+        }        
+    }
+
+    &.login {
+        .login-button {
+            @include active;
+        }        
+    }
+    
 }

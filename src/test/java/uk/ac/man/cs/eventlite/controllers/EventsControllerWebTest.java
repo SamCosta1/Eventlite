@@ -29,13 +29,20 @@ public class EventsControllerWebTest extends TestParent {
 	public void testShowUpdateForm() throws Exception {
 		mvc.perform(get("/events/3/update").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
 				.andExpect(view().name("events/eventform"));
-	}
-	
+	}	
 	
 	@Test
 	public void testGetFirstEvent() throws Exception {
 		mvc.perform(get("/events/1").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
 				.andExpect(view().name("events/show"));
+	}
+	
+	@Test
+	public void testFilterEvents() throws Exception {
+		mvc.perform(MockMvcRequestBuilders.post("/events/")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED).accept(MediaType.TEXT_HTML))
+				.andExpect(status().isOk())
+				.andExpect(view().name("events/index"));
 	}
 	
 	@Test
