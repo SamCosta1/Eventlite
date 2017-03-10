@@ -12,6 +12,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 @Entity
 @Table(name = "events")
@@ -21,7 +25,9 @@ public class Event {
 	@GeneratedValue
 	private long id;
 	
-	@Temporal(TemporalType.TIMESTAMP)	
+	@JsonFormat(shape = JsonFormat.Shape.STRING)
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private Date date;
 
 	private String name;
