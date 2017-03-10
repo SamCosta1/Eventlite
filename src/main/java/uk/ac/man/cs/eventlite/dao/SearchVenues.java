@@ -1,15 +1,16 @@
 package uk.ac.man.cs.eventlite.dao;
 
 import uk.ac.man.cs.eventlite.entities.Event;
+import uk.ac.man.cs.eventlite.entities.Venue;
 
-public class SearchEvents{
+public class SearchVenues{
 	
 	private String name = null;	
 	
-	public SearchEvents() {		
+	public SearchVenues() {		
 	}
 	
-	public SearchEvents(String name) {
+	public SearchVenues(String name) {
 		this.name = name;
 	}
 
@@ -25,11 +26,11 @@ public class SearchEvents{
 		return "Search term (name): " + name;		
 	}
 	
-	public Iterable<Event> search(EventService eventService) {
+	public Iterable<Venue> search(VenueService venueService) {
 		if (name != null)
-			return eventService.searchByName(name);
+			return venueService.searchByName(name);
 		
-		return eventService.findAll();
+		return venueService.findAll();
 	}
 	
 }
