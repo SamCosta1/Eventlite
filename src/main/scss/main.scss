@@ -31,11 +31,11 @@
 
 .table-striped > tbody > tr:hover.past-events {
  	background-color:rgba(250, 223, 165, 1);
-}
-
-.table-striped > tbody > tr:hover.past-events .missed-notif{
- 	animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
- 	display: inline-block;
+ 	
+ 	.missed-notif{
+	 	animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+	 	display: inline-block;
+	}
 }
 
 @keyframes shake {
