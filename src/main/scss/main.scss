@@ -9,7 +9,13 @@
 	margin-bottom: 5px;
 }
 
-/* Overriding Bootstrap */
+.container { 
+    @media (min-width: 1200px) { 
+        margin-left: 2%; 
+        margin-right: 2%; 
+        width: 96%; 
+}
+
 .main-container {
 	margin: 25px;
 	
@@ -29,13 +35,11 @@
 }
 
 
-#image_preview
-{
+#image_preview {
 	font-size: 70px;
 }
 
-#event_preview
-{
+#event_preview {
 	vertical-align: middle;
 }
 

@@ -8,49 +8,51 @@
 
 {{#partial "content"}}
   {{#event}}
+  <div class="container">
   <div class="row">
     <div class="col-sm-12">
       <h1>{{name}}</h1>
     </div>
   </div>
-  <div class="row">
-    <div class="col-sm-4">
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="panel panel-default" id ="info-panel">
-            <div class="panel-body">
-              <h4>Info</h4>
-              <div id = "info-content">
-                <div>
-                  <p>Venue: {{venue.name}}</p>
-                  <p>Date: {{date}}</p>
-                </div>
-                <a class="btn btn-primary" id="back-button" role="button" href="/events">Back</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-12">
-          <div class="panel panel-default" id ="map-panel">
-            <div class="panel-body">
-              <h4>Map</h4>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-8">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <h4>Description</h4>
-          {{#if description}}
-            <p>{{description}}</p>
-          {{else}}
-            <p id = "no-description">No description</p>
-          {{/if}}
-        </div>
-      </div>
-    </div>
+	  <div class="row">
+	    <div class="col-sm-4">
+	      <div class="row">
+	        <div class="col-sm-12">
+	          <div class="panel panel-default" id ="info-panel">
+	            <div class="panel-body">
+	              <h4>Info</h4>
+	              <div id = "info-content">
+	                <div>
+	                  <p>Venue: {{venue.name}}</p>
+	                  <p>Date: {{date}}</p>
+	                </div>
+	                <a class="btn btn-primary" id="back-button" role="button" href="/events">Back</a>
+	              </div>
+	            </div>
+	          </div>
+	        </div>
+	        <div class="col-sm-12">
+	          <div class="panel panel-default" id ="map-panel">
+	            <div class="panel-body">
+	              <h4>Map</h4>
+	            </div>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+	    <div class="col-sm-8">
+	      <div class="panel panel-default">
+	        <div class="panel-body">
+	          <h4>Description</h4>
+	          {{#if description}}
+	            <p>{{description}}</p>
+	          {{else}}
+	            <p id = "no-description">No description</p>
+	          {{/if}}
+	        </div>
+	      </div>
+	    </div>
+	  </div>
   </div>
   {{/event}}
 {{/partial}}
