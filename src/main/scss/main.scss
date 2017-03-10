@@ -1,25 +1,47 @@
 @import "colour-maps.scss";
 
 .filters-container {
-    background-color: $theme-colour;
-    padding-bottom: 20px;
-    padding-top: 1px;
-    border-radius: 10px;
+	background-color: #cecece;
+	padding-bottom: 20px;
+	padding-top: 1px;
+	border-radius: 10px;
+	
+	margin-bottom: 5px;
 }
 
 /* Overriding Bootstrap */
-.container {
-    @media (min-width: 1200px) {
-        margin-left: 2%;
-        margin-right: 2%;
-        width: 96%;
-    }
-} 
-
-.table-striped > tbody >tr:nth-of-type(odd) {
-    background-color: $default-background-col;
+.main-container {
+	margin: 25px;
+	
+	.filler {
+		width: 2px; // HACK: Overriding bootstrap to give 'margin' between columns
+	}
 }
 
-.table-striped > tbody >tr:nth-of-type(even) {
-    background-color: $lighten-2;
+.panel-heading{
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    
+    .dropdown-menu {
+    	min-width: 100px;
+    }
+}
+
+
+#image_preview
+{
+	font-size: 70px;
+}
+
+#event_preview
+{
+	vertical-align: middle;
+}
+
+.panel {
+    padding: 0px;
+	table {
+		overflow-y: scroll;
+	}
 }
