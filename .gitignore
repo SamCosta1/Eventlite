@@ -2,3 +2,4 @@
 .settings/
 /db/
 src/main/resources/static/css/*
+.nfs*
