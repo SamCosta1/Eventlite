@@ -1,0 +1,38 @@
+{{#partial "head"}}
+<link rel="stylesheet" href="../css/main.css">
+{{/partial}}
+
+{{#partial "content"}}
+<h1>Add a new event</h1>
+<div class="row">
+  <div class = "col-md-3">
+    <form method="post" action="/events/new">
+      <div class="form-group {{#if errors.template}}has-error{{/if}}">
+        <label for="name">Name</label>
+        <input class="form-control" type="text" name="name" id="name" placeholder="Name" autofocus />
+        
+        <label for="date">Date</label>
+        <input class="form-control" type="text" name="date" id="date" placeholder="yyyy-MM-dd'T'HH:mm" />
+        
+        <label for="venue">Venue</label>
+        <select type="venue" name="venue" id="venue" class="form-control" />
+          {{#venues}}
+            <option value={{id}}>{{name}}</option>
+          {{/venues}}
+        </select>
+        
+        <label for="description">Description</label>
+        <input class="form-control" type="text" name="description" id="description" placeholder="Description" />
+        {{#if errors.template}}
+          <p class="text-danger">{{errors.template}}</p>
+        {{/if}}
+      </div>
+  
+      <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
+  </div>
+</div>
+
+{{/partial}}
+
+{{> layouts/base title="EventLite New Event"}}

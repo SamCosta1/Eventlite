@@ -51,4 +51,17 @@ public class EventsControllerWebTest extends TestParent {
 		.contentType(MediaType.APPLICATION_FORM_URLENCODED).accept(MediaType.TEXT_HTML)).andExpect(status().isFound())
 		.andExpect(view().name("redirect:/events"));
 	}
+	
+	@Test
+	public void getNewEventHtml() throws Exception {
+		mvc.perform(MockMvcRequestBuilders.get("/events/new").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
+		.andExpect(view().name("events/new"));
+	}
+	
+	
+	@Test
+	public void postEventHtml() throws Exception {
+		mvc.perform(MockMvcRequestBuilders.post("/events/new").contentType(MediaType.APPLICATION_FORM_URLENCODED))
+		.andExpect(view().name("redirect:/events"));
+	}
 }
