@@ -55,5 +55,10 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		eventService.save(new Event("Go", newVenue2, new Date(),""));
 		eventService.save(new Event("Alvaro Lecture1", newVenue1, new Date(),""));		
 
+		// Three events with exactly the same date and time
+		long aDate = new Date().getTime();
+		eventService.save(new Event("Event C", newVenue1, new Date(aDate),""));
+		eventService.save(new Event("Event B", newVenue1, new Date(aDate),""));
+		eventService.save(new Event("Event A", newVenue1, new Date(aDate),""));
 	}
 }

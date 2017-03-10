@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import uk.ac.man.cs.eventlite.dao.EventService;
-import uk.ac.man.cs.eventlite.dao.Search;
+import uk.ac.man.cs.eventlite.dao.SearchEvents;
 import uk.ac.man.cs.eventlite.entities.Event;
 
 @RestController
@@ -30,7 +30,7 @@ public class EventsControllerRest {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = { MediaType.APPLICATION_JSON_VALUE })
-	public HttpEntity<Iterable<Event>> filterEvents(@RequestBody Search searchCriterion) {
+	public HttpEntity<Iterable<Event>> filterEvents(@RequestBody SearchEvents searchCriterion) {
 		return new ResponseEntity<Iterable<Event>>(searchCriterion.search(eventService), HttpStatus.OK);
 	}
 	
