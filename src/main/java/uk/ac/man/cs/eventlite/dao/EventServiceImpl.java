@@ -19,7 +19,7 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public Iterable<Event> findAll() {	
-		return eventRepository.findAllByOrderByDateAsc();
+		return eventRepository.findAllByOrderByDateAscTimeAsc();
 	}
 	
 	@Override
@@ -42,6 +42,7 @@ public class EventServiceImpl implements EventService {
 		current.setName(changes.getName());
 		current.setVenue(changes.getVenue());
 		current.setDate(changes.getDate());
+		current.setTime(changes.getTime());
 		save(current);
 	}
 	

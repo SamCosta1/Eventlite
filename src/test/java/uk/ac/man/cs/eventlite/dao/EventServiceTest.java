@@ -50,8 +50,8 @@ public class EventServiceTest extends TestParent {
 	
 	@Test
 	public void testAscendingByDate() {
-		eventService.save(new Event("Java Lecture", testVenue, new Date(321),""));
-		eventService.save(new Event("Concert", testVenue, new Date(123),""));
+		eventService.save(new Event("Java Lecture", testVenue, new Date(321), new Date(321), ""));
+		eventService.save(new Event("Concert", testVenue, new Date(123), new Date(123), ""));
 		
 		List<Event> events = (List<Event>) eventService.findAll();
 		boolean correctOrder = false;
@@ -68,10 +68,10 @@ public class EventServiceTest extends TestParent {
 	
 	@Test
 	public void testSearchByName() {
-		eventService.save(new Event("Test Event 1", testVenue, new Date(), null));	
-		eventService.save(new Event("test event 2", testVenue, new Date(), null));
-		eventService.save(new Event("test Event", testVenue, new Date(), null));	
-		eventService.save(new Event("Another random string", testVenue, new Date(), null));	
+		eventService.save(new Event("Test Event 1", testVenue, new Date(), new Date(), null));	
+		eventService.save(new Event("test event 2", testVenue, new Date(), new Date(), null));
+		eventService.save(new Event("test Event", testVenue, new Date(), new Date(), null));	
+		eventService.save(new Event("Another random string", testVenue, new Date(), new Date(), null));	
 		
 		String searchTerm = "test Event";
 		
@@ -90,7 +90,7 @@ public class EventServiceTest extends TestParent {
 	
 	@Test
 	public void testDeleteEvent(){
-		Event event = new Event("Test Event", testVenue, new Date(), null);
+		Event event = new Event("Test Event", testVenue, new Date(), new Date(), null);
 		eventService.save(event);
 		
 		long initialCount = eventService.count();
@@ -111,7 +111,7 @@ public class EventServiceTest extends TestParent {
 	
 	@Test
 	public void count() {
-		Event event = new Event("Test Event", testVenue, new Date(),"");
+		Event event = new Event("Test Event", testVenue, new Date(), new Date(), "");
 		
 		long initialCount = eventService.count();
 		eventService.save(event);
@@ -122,7 +122,7 @@ public class EventServiceTest extends TestParent {
 	
 	@Test
 	public void save() {
-		Event event = new Event("Test Event2", testVenue, new Date(),"");
+		Event event = new Event("Test Event2", testVenue, new Date(), new Date(), "");
 		eventService.save(event);
 		
 		List<Event> events = (List<Event>) eventService.findAll();
@@ -140,17 +140,17 @@ public class EventServiceTest extends TestParent {
 	
 	@Test
 	public void update() {
-		Event currentEvent = new Event("Test Event3", testVenue, new Date(), "");
+		Event currentEvent = new Event("Test Event3", testVenue, new Date(), new Date(), "");
 		eventService.save(currentEvent);
 		
 		String newName = "Updated Event3";
 		Date newDate = new Date(123);
-		Event changedEvent = new Event(newName, testVenue2, newDate, "");
+		Event changedEvent = new Event(newName, testVenue2, newDate, newDate, "");
 		
 		eventService.update(currentEvent, changedEvent);
 		
-		boolean checkName, checkVenue, checkDate;
-		checkName = checkVenue = checkDate = false;
+		boolean checkName, checkVenue, checkDate, checkTime;
+		checkName = checkVenue = checkDate = checkTime = false;
 		
 		if (currentEvent.getName().equals(newName))
 			checkName = true;
@@ -161,8 +161,12 @@ public class EventServiceTest extends TestParent {
 		if (currentEvent.getDate().equals(newDate))
 			checkDate = true;
 		
+		if (currentEvent.getTime().equals(newDate))
+			checkTime = true;
+		
 		assertTrue(checkName);
 		assertTrue(checkVenue);
 		assertTrue(checkDate);
+		assertTrue(checkTime);
 	}
 }

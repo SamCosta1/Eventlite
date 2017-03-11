@@ -1,31 +1,44 @@
 {{#partial "content"}}
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Getting Started: Handling Form Submission</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</head>
 <body>
 	<h1>Update form</h1>
-    <form action="/events/update" method="post">
+	
+	{{#if errors}}
+		<p class="h2 text-danger"> There were errors in your updated event information!</p>
+	{{/if}}
+	
+    <form action="/events/{{id}}/update" method="post">
+		<div class="form-group {{#if errors.template}}has-error{{/if}}">
     	{{#eventForm}}
     	<input type="hidden" name="event" id="event" class="form-control" value="{{id}}" />
     	
     	<p>Name: <input type="text" name="name" id="name" class="form-control" value="{{name}}" /></p>
     	
        	<p>Venue:
+       		
        		<select type="venue" name="venue" id="venue" class="form-control" />
+ 
        				<option selected value={{venue.id}}>{{venue.name}}</option>
-       			{{#venues}}
+
+       				{{#venues}}
        				<option value={{id}}>{{name}}</option>
-       			{{/venues}}
+       				{{/venues}}
        		</select>
+       		
        	</p>
        	
-        <p>Date: <input type="datetime-local" name="date" id="date" value="{{date}}" /></p>
+        <p>Date: <input type="date" name="date" id="date" value="{{date}}" /></p>
+        <p>Time: <input type="time" name="time" id="time" value="{{time}}" /></p>
         {{/eventForm}}
-        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+		{{#if errors.template}}
+      	<p class="text-danger">{{errors.template}}</p>
+      	{{/if}}
+        </div>
+        	<input class="btn btn-primary" type="submit" value="Submit">
+           	<input class="btn btn-warning" type="reset" value="Reset">
+           	<a class="btn btn-danger" href="/events" role="button">Cancel</a>
+        </p>
     </form>
 </body>
 </html>
 {{/partial}}
-{{> layouts/base title="EventLite events"}}
+{{> layouts/base title="EventLite - Update an event"}}

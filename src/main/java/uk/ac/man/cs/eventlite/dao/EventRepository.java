@@ -6,7 +6,7 @@ import uk.ac.man.cs.eventlite.entities.Event;
 
 public interface EventRepository extends CrudRepository<Event, Long> {
 	
-	Iterable<Event> findAllByOrderByDateAsc();
+	Iterable<Event> findAllByOrderByDateAscTimeAsc();
 	Event findById(long id);
 	public Iterable<Event> findByNameContainingIgnoreCase(String name);
 }
