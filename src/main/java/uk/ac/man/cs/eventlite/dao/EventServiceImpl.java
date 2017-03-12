@@ -40,6 +40,7 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public void update(Event current, Event changes) {
 		current.setName(changes.getName());
+		current.setDescription(changes.getDescription());
 		current.setVenue(changes.getVenue());
 		current.setDate(changes.getDate());
 		current.setTime(changes.getTime());
