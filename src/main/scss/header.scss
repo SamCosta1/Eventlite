@@ -44,4 +44,10 @@
         }        
     }
     
+    &.venues {
+        .venues-button {
+            @include active;
+        }        
+    }
+    
 }
