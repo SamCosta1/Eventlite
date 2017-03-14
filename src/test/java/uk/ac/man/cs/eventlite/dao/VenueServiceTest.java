@@ -62,8 +62,7 @@ public class VenueServiceTest extends TestParent{
 		String searchTerm = "test Venue";
 		
 		List<Venue> venues = (List<Venue>) venueService.searchByName(searchTerm);
-		
-		// Check each correct and in order	
+				
 		boolean inOrder = true;
 		String previous = null;
 		for (Venue v : venues) {
@@ -77,7 +76,6 @@ public class VenueServiceTest extends TestParent{
 		}
 		
 		assertTrue("Venues in alphabetical order by name", inOrder);
-		// Check all matching ones returned 
 		assertThat("Three items returned: ", 3, equalTo(venues.size()));
 		
 	}
