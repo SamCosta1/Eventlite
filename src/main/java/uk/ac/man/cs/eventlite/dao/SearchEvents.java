@@ -2,14 +2,14 @@ package uk.ac.man.cs.eventlite.dao;
 
 import uk.ac.man.cs.eventlite.entities.Event;
 
-public class Search{
+public class SearchEvents{
 	
 	private String name = null;	
 	
-	public Search() {		
+	public SearchEvents() {		
 	}
 	
-	public Search(String name) {
+	public SearchEvents(String name) {
 		this.name = name;
 	}
 

@@ -27,11 +27,11 @@ public class EventServiceTest extends TestParent {
 	
 	@Before
 	public void setup() {
-		testVenue = new Venue();
+		testVenue = new Venue(null, 0);
 		testVenue.setName("Test Event Name");
 		testVenue.setCapacity(10);
 		
-		testVenue2 = new Venue();
+		testVenue2 = new Venue(null, 0);
 		testVenue2.setName("Test Event Name 2");
 		testVenue2.setCapacity(20);
 		
@@ -68,23 +68,30 @@ public class EventServiceTest extends TestParent {
 	
 	@Test
 	public void testSearchByName() {
-		eventService.save(new Event("Test Event 1", testVenue, new Date(), null));	
-		eventService.save(new Event("test event 2", testVenue, new Date(), null));
-		eventService.save(new Event("test Event", testVenue, new Date(), null));	
-		eventService.save(new Event("Another random string", testVenue, new Date(), null));	
+		Date date = new Date();
+		eventService.save(new Event("a Test Event 1", testVenue, date, null));	
+		eventService.save(new Event("f test event 2", testVenue, date, null));
+		eventService.save(new Event("b test Event", testVenue, date, null));	
+		eventService.save(new Event("Another random string", testVenue, date, null));	
 		
 		String searchTerm = "test Event";
 		
 		List<Event> events = (List<Event>) eventService.searchByName(searchTerm);
-		
-		// Check each correct		
+				
+		boolean inOrder = true;
+		String previous = null;
 		for (Event e : events) {
 			assertTrue("Names contain substring 'test event' - case insensitive"
 						, e.getName().toLowerCase().contains(searchTerm.toLowerCase()));
+			
+			// All dates are the same so they should be ordered alphabetically
+			if (previous != null)
+				inOrder = e.getName().compareTo(previous) < 0 ? false : inOrder; 
+			previous = e.getName();
 		}
 		
-		// Check all matching ones returned 
-		assertThat("Two items returned: ", 3, equalTo(events.size()));
+		assertTrue("Events in alphabetical order by name", inOrder);
+		assertThat("Three items returned: ", 3, equalTo(events.size()));
 		
 	}
 	

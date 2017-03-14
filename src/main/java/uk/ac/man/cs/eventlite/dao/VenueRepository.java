@@ -8,4 +8,6 @@ public interface VenueRepository extends CrudRepository<Venue, Long> {
 
 	Venue findById(long id);
 
+	Iterable<Venue> findByNameContainingIgnoreCaseOrderByNameAsc(String name);
+
 }

@@ -11,4 +11,6 @@ public interface VenueService {
 
 	public Venue findById(long id);
 	public Iterable<Venue> findAllExceptOne(Venue venue);
+
+	public Iterable<Venue> searchByName(String name);
 }

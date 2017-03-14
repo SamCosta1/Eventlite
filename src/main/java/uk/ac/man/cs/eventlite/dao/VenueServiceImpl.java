@@ -24,6 +24,11 @@ public class VenueServiceImpl implements VenueService {
 	}
 	
 	@Override
+	public Iterable<Venue> searchByName(String name) {	
+		return venueRepository.findByNameContainingIgnoreCaseOrderByNameAsc(name);
+	}
+	
+	@Override
 	public long count()	{
 		return venueRepository.count();
 	}
