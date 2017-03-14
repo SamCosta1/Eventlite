@@ -1,4 +1,4 @@
-package uk.ac.man.cs.eventlite.controllers;
+package uk.ac.man.cs.eventlite.controllers.events;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.core.StringContains.containsString;

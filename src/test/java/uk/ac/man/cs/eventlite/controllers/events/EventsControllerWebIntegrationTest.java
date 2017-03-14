@@ -1,4 +1,4 @@
-package uk.ac.man.cs.eventlite.controllers;
+package uk.ac.man.cs.eventlite.controllers.events;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.StringContains.containsString;

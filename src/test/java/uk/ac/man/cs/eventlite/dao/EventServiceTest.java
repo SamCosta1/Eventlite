@@ -27,11 +27,11 @@ public class EventServiceTest extends TestParent {
 	
 	@Before
 	public void setup() {
-		testVenue = new Venue();
+		testVenue = new Venue(null, 0);
 		testVenue.setName("Test Event Name");
 		testVenue.setCapacity(10);
 		
-		testVenue2 = new Venue();
+		testVenue2 = new Venue(null, 0);
 		testVenue2.setName("Test Event Name 2");
 		testVenue2.setCapacity(20);
 		
@@ -84,7 +84,7 @@ public class EventServiceTest extends TestParent {
 		}
 		
 		// Check all matching ones returned 
-		assertThat("Two items returned: ", 3, equalTo(events.size()));
+		assertThat("Three items returned: ", 3, equalTo(events.size()));
 		
 	}
 	
