@@ -1,5 +1,7 @@
 package uk.ac.man.cs.eventlite.config.data;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -46,7 +48,7 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		newVenue2.setCapacity(100);
 		venueService.save(newVenue2);
 		
-		Event newEvent = new Event("Java Lecture", newVenue1, new Date(),"");
+		Event newEvent = new Event("Java Lecture", newVenue1, java.sql.Date.valueOf(LocalDate.of( 2020 , Month.FEBRUARY , 11 )),"");
 		newEvent.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eget est gravida, aliquet arcu ac, laoreet nisl. Maecenas feugiat tempus hendrerit. Proin in finibus leo. Ut mattis, lacus id volutpat mollis, magna tortor facilisis elit, vitae vestibulum erat neque vitae ipsum. Morbi quis gravida tellus. Morbi tincidunt turpis vitae augue pharetra elementum. Donec tincidunt, eros nec consequat tempor, nulla nibh volutpat augue, eget porttitor nisl erat nec urna.");
 		
 		eventService.save(newEvent);

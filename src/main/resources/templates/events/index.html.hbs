@@ -43,7 +43,7 @@ home
 			<table class="table table-striped table-hover">
 			  <tbody>
 			    {{#events}}
-				      <tr>
+				      <tr class="{{#if pastEvent}}past-events{{/if}}">
 				      	<td><div>
 				      		<span class="glyphicon glyphicon-picture" aria-hidden="true" id="image_preview"></span>
 				      		</div>
@@ -55,6 +55,7 @@ home
 				        		</span><br />
 				            <i class="fa fa-map-marker"></i> Venue: {{venue.name}}<br />
 				            <i class="fa fa-calendar"></i> Date: {{date}}
+				            {{#if pastEvent}}<span class="missed-notif"><i class="glyphicon glyphicon-exclamation-sign"></i> Missed it</span>{{/if}}
 				        </td>
 						<td id="event_preview"><button class="btn btn-primary" onclick="location.href='/events/{{id}}/update'">Update</button></td>
 						<td id="event_preview">
