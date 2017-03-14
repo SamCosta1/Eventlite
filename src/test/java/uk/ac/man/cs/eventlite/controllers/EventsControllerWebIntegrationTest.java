@@ -51,12 +51,17 @@ public class EventsControllerWebIntegrationTest extends TestParent {
 	
 	@Test
 	public void testFilterEvents() {
-		post("/events/");
+		post("/events/", HttpStatus.OK);
 	}
 	
 	@Test
 	public void testAddNewEvent() {
 		get("/events/new");
+	}
+	
+	@Test
+	public void testPost() {
+		post("/events/new", HttpStatus.FOUND);
 	}
 
 	
@@ -66,8 +71,8 @@ public class EventsControllerWebIntegrationTest extends TestParent {
 		assertThat(response.getHeaders().getContentType().toString(), containsString(MediaType.TEXT_HTML_VALUE));
 	}
 	
-	private void post(String url) {
+	private void post(String url, HttpStatus status) {
 		ResponseEntity<String> response = template.exchange(url, HttpMethod.POST, httpEntity, String.class);
-		assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+		assertThat(response.getStatusCode(), equalTo(status));
 	}
 }

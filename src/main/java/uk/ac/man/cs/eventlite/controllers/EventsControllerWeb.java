@@ -90,7 +90,7 @@ public class EventsControllerWeb {
 	public String showNew(Model model)
 	{
 		model.addAttribute("venues", venueService.findAll());
-	  return "events/new";
+	    return "events/new";
 	}
 	
 
@@ -99,6 +99,7 @@ public class EventsControllerWeb {
 			                          Model model)
 	{ 
 	  eventService.save(event);
+	  model.addAttribute("venues", venueService.findAll());
 	  return "redirect:/events";
 	}
 	
