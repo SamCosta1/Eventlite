@@ -60,7 +60,7 @@ public class EventsControllerWebTest extends TestParent {
 	
 	
 	@Test
-	public void postEventHtml() throws Exception {
+	public void postNewEventHtml() throws Exception {
 		mvc.perform(MockMvcRequestBuilders.post("/events/new").contentType(MediaType.APPLICATION_FORM_URLENCODED))
 		.andExpect(view().name("redirect:/events"));
 	}

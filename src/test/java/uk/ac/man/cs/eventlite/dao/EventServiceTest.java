@@ -165,4 +165,23 @@ public class EventServiceTest extends TestParent {
 		assertTrue(checkVenue);
 		assertTrue(checkDate);
 	}
+	
+	@Test
+	public void testAddEvent() {
+		long initialCount = eventService.count();
+		
+		Event event = new Event("Test Event Add", testVenue, new Date(), "");
+		eventService.save(event);
+		
+        List<Event> events = (List<Event>) eventService.findAll();
+		
+		boolean isAdded = false;
+		for (Event e : events)
+			if (e.equals(event) && e.getVenue().equals(testVenue))
+				isAdded = true;			
+		
+		assertTrue("The event was added", isAdded);
+		
+		assertThat("Count should increase by one on add", initialCount + 1, equalTo(eventService.count()));
+	}
 }

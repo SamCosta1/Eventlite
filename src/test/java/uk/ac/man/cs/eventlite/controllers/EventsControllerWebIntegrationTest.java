@@ -53,7 +53,13 @@ public class EventsControllerWebIntegrationTest extends TestParent {
 	public void testFilterEvents() {
 		post("/events/");
 	}
+	
+	@Test
+	public void testAddNewEvent() {
+		get("/events/new");
+	}
 
+	
 	private void get(String url) {
 		ResponseEntity<String> response = template.exchange(url, HttpMethod.GET, httpEntity, String.class);
 		assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
