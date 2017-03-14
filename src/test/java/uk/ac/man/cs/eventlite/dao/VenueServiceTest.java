@@ -28,7 +28,7 @@ public class VenueServiceTest extends TestParent{
 	
 	@Test
 	public void findAllExceptOne() {
-		Venue ignoredEvent = new Venue();
+		Venue ignoredEvent = new Venue("name1", 100);
 		venueService.save(ignoredEvent);
 		boolean found = false;
 		
@@ -43,9 +43,7 @@ public class VenueServiceTest extends TestParent{
 	
 	@Test
 	public void count() {
-		Venue newVenue = new Venue();
-		newVenue.setName("name1");
-		newVenue.setCapacity(100);
+		Venue newVenue = new Venue("name1", 100);
 		
 		long initialCount = venueService.count();
 		venueService.save(newVenue);
@@ -55,13 +53,41 @@ public class VenueServiceTest extends TestParent{
 	}
 	
 	@Test
+	public void testSearchByName() {
+		venueService.save(new Venue("d Test Venue 1", 10));	
+		venueService.save(new Venue("b test venue 2", 10));
+		venueService.save(new Venue("a test Venue", 10));	
+		venueService.save(new Venue("f Another random string", 10));	
+		
+		String searchTerm = "test Venue";
+		
+		List<Venue> venues = (List<Venue>) venueService.searchByName(searchTerm);
+		
+		// Check each correct and in order	
+		boolean inOrder = true;
+		String previous = null;
+		for (Venue v : venues) {
+			
+			assertTrue("Names contain substring 'test venue' - case insensitive"
+						, v.getName().toLowerCase().contains(searchTerm.toLowerCase()));
+			
+			if (previous != null)
+				inOrder = v.getName().compareTo(previous) < 0 ? false : inOrder; 
+			previous = v.getName();
+		}
+		
+		assertTrue("Venues in alphabetical order by name", inOrder);
+		// Check all matching ones returned 
+		assertThat("Three items returned: ", 3, equalTo(venues.size()));
+		
+	}
+	
+	@Test
 	public void saveTest() {
 
 		long previousCount = venueService.count();
 		
-		Venue newVenue = new Venue();
-		newVenue.setName("name1");
-		newVenue.setCapacity(100);
+		Venue newVenue = new Venue("name1", 100);
 		venueService.save(newVenue);
 		
 		long newCount = venueService.count();

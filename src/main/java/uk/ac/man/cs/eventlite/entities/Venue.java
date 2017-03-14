@@ -16,8 +16,12 @@ public class Venue {
 
 	private int capacity;
 
-	public Venue() {
+	public Venue(String name, int capacity) {
+		this.name = name;
+		this.capacity = capacity;
 	}
+	
+	public Venue() {}
 
 	public long getId() {
 		return id;
