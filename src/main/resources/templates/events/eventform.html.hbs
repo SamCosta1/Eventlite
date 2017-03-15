@@ -1,34 +1,27 @@
 {{#partial "head"}}
-<link rel="stylesheet" href="../css/update.css">
-{{/partial}}
-
-{{#partial "navbar"}}
-home
+<link rel="stylesheet" href="../../css/updateform.css">
 {{/partial}}
 
 {{#partial "content"}}
-<body>
-	<h1>Update form</h1>
+{{#eventForm}}
+	<h1>Updating {{name}}</h1>
 	
 	{{#if errors}}
 		<p class="h2 text-danger"> There were errors in your updated event information!</p>
 	{{/if}}
-	
     <form action="/events/{{id}}/update" method="post">
 		<div class="form-group {{#if errors.template}}has-error{{/if}}">
-    	{{#eventForm}}
-    	<input type="hidden" name="event" id="event" class="form-control" value="{{id}}" />
     	
-    	<p>Name: <input type="text" name="name" id="name" class="form-control" value="{{name}}" /></p>
+    	<input type="hidden" name="event" id="event" value="{{id}}" />
     	
-    	<p>Description: <textarea name="description" id="description" class="form-control" >{{description}}</textarea></p>
+    	<p>Name <input type="text" name="name" id="name" value="{{name}}" /></p>
     	
-       	<p>Venue:
+    	<p>Description <textarea name="description" id="description">{{description}}</textarea></p>
+    	
+       	<p>Venue
        		
-       		<select type="venue" name="venue" id="venue" class="form-control" />
- 
+       		<select type="venue" name="venue" id="venue" />
        				<option selected value={{venue.id}}>{{venue.name}}</option>
-
        				{{#venues}}
        				<option value={{id}}>{{name}}</option>
        				{{/venues}}
@@ -36,20 +29,19 @@ home
        		
        	</p>
        	
-        <p>Date: <input type="date" name="date" id="date" value="{{date}}" /></p>
-        
-        <p>Time: <input type="time" name="time" id="time" value="{{time}}" /></p>
+        <p>Date Time</p>
+        <p><input type="date" name="date" id="date" value="{{date}}" />
+        <input type="time" name="time" id="time" value="{{time}}" /> </p>
         {{/eventForm}}
 		{{#if errors.template}}
       	<p class="text-danger">{{errors.template}}</p>
       	{{/if}}
         </div>
-        	<input class="btn btn-primary" type="submit" value="Submit">
-           	<input class="btn btn-warning" type="reset" value="Reset">
-           	<a class="btn btn-danger" href="/events" role="button">Cancel</a>
+        	<button type="submit">Submit</button>
+           	<button type="reset">Reset</button>
+           	<a href="/events" role="button">Cancel</a>
         </p>
     </form>
-</body>
-</html>
+
 {{/partial}}
 {{> layouts/base title="EventLite - Update an event"}}
