@@ -4,7 +4,11 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertThat;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Before;
@@ -23,8 +27,8 @@ public class EventServiceTest extends TestParent {
 	@Autowired
 	private VenueService venueService;
 	
-	public Venue testVenue, testVenue2;
-	
+	public Venue testVenue, testVenue2;	
+
 	@Before
 	public void setup() {
 		testVenue = new Venue(null, 0);
@@ -41,31 +45,24 @@ public class EventServiceTest extends TestParent {
 	}
 
 	@Test
-	public void findAll() {
+	public void testFindAll() {
+		Date date = new Date();
+		eventService.save(new Event("a Test Event 1", testVenue, date, null));	
+		eventService.save(new Event("f test event 2", testVenue, date, null));
+		eventService.save(new Event("b test Event", testVenue, date, null));
+		eventService.save(new Event("Java Lecture", testVenue, new Date(321),""));
+		eventService.save(new Event("Concert", testVenue, new Date(123),""));
+		eventService.save(new Event("Concert", testVenue, new Date(1),""));
+		eventService.save(new Event("Concert", testVenue, new Date(500),""));
+		
 		List<Event> events = (List<Event>) eventService.findAll();
+
 		long count = eventService.count();
 
 		assertThat("findAll should get all events.", count, equalTo((long) events.size()));
+		testListInOrder(events);
 	}
-	
-	@Test
-	public void testAscendingByDate() {
-		eventService.save(new Event("Java Lecture", testVenue, new Date(321),""));
-		eventService.save(new Event("Concert", testVenue, new Date(123),""));
-		
-		List<Event> events = (List<Event>) eventService.findAll();
-		boolean correctOrder = false;
-		int count = 0;
-		for (Event event : events) {
-			String current = event.getName();
-			if (current == "Concert" && count == 0)
-				correctOrder = true;
-			count++;
-		}
-		
-		assertTrue("Concert should be first in the list", correctOrder);
-	}
-	
+
 	@Test
 	public void testSearchByName() {
 		Date date = new Date();
@@ -78,20 +75,12 @@ public class EventServiceTest extends TestParent {
 		
 		List<Event> events = (List<Event>) eventService.searchByName(searchTerm);
 				
-		boolean inOrder = true;
-		String previous = null;
-		for (Event e : events) {
+		for (Event e : events) 
 			assertTrue("Names contain substring 'test event' - case insensitive"
-						, e.getName().toLowerCase().contains(searchTerm.toLowerCase()));
-			
-			// All dates are the same so they should be ordered alphabetically
-			if (previous != null)
-				inOrder = e.getName().compareTo(previous) < 0 ? false : inOrder; 
-			previous = e.getName();
-		}
-		
-		assertTrue("Events in alphabetical order by name", inOrder);
+						, e.getName().toLowerCase().contains(searchTerm.toLowerCase()));			
+				
 		assertThat("Three items returned: ", 3, equalTo(events.size()));
+		testListInOrder(events);
 		
 	}
 	
@@ -117,7 +106,7 @@ public class EventServiceTest extends TestParent {
 	}
 	
 	@Test
-	public void count() {
+	public void testCount() {
 		Event event = new Event("Test Event", testVenue, new Date(),"");
 		
 		long initialCount = eventService.count();
@@ -128,7 +117,7 @@ public class EventServiceTest extends TestParent {
 	}
 	
 	@Test
-	public void save() {
+	public void testSave() {
 		Event event = new Event("Test Event2", testVenue, new Date(),"");
 		eventService.save(event);
 		
@@ -146,7 +135,7 @@ public class EventServiceTest extends TestParent {
 	}
 	
 	@Test
-	public void update() {
+	public void testUpdate() {
 		Event currentEvent = new Event("Test Event3", testVenue, new Date(), "");
 		eventService.save(currentEvent);
 		
@@ -172,4 +161,27 @@ public class EventServiceTest extends TestParent {
 		assertTrue(checkVenue);
 		assertTrue(checkDate);
 	}
+	
+	// Helper method for checking a result set is in correct order
+	// Works by sorting the elements into the correct order
+	// then check both lists are the same, i.e. the original list was
+	// Correct in the first place
+	private void testListInOrder(List<Event> events) {
+		List<Event> listInOrder = new ArrayList<Event>(events);
+		Collections.sort(listInOrder, new Comparator<Event>() {
+
+			@Override
+			public int compare(Event e1, Event e2) {
+				if (e1.getDate().equals(e2.getDate()))
+					return e1.getName().compareTo(e2.getName());
+		
+				return e1.getDate().compareTo(e2.getDate());
+			}			
+		});
+		
+		Iterator<Event> iterator = events.iterator();
+		for (Event e: listInOrder)
+			assertTrue(e.equals(iterator.next()));
+	}
+	
 }
