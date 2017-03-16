@@ -87,7 +87,7 @@ public class Event {
 		this.description = description;
 	}
 	
-	public Venue getVenue() {
+	public Venue getVenue() { 
 		return venue;
 	}
 

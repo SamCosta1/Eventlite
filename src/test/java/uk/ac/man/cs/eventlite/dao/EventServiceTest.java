@@ -175,7 +175,7 @@ public class EventServiceTest extends TestParent {
 				if (e1.getDate().equals(e2.getDate()))
 					return e1.getName().compareTo(e2.getName());
 		
-				return e1.getDate().compareTo(e2.getDate());
+				return e2.getDate().compareTo(e1.getDate());
 			}			
 		});
 		

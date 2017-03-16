@@ -16,10 +16,9 @@ public class EventServiceImpl implements EventService {
 	public long count() {		
 		return eventRepository.count();
 	}
-
 	@Override
 	public Iterable<Event> findAll() {	
-		return eventRepository.findAllByOrderByDateAscNameAsc();
+		return eventRepository.findAllByOrderByDateDescNameAsc();
 	}
 	
 	@Override

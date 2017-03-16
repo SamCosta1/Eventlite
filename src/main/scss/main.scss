@@ -68,6 +68,14 @@
  	background-attachment:fixed;
 }
 
+.table-striped > tbody > tr.past-events {
+	border-top-style: solid;
+	
+	~ tr.past-events {
+		border-top-style: none;
+	}
+}
+
 .table-striped > tbody > tr:hover.past-events {
  	background-color:rgba(250, 223, 165, 1);
  	
