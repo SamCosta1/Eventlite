@@ -1,5 +1,7 @@
 package uk.ac.man.cs.eventlite.controllers;
 
+import static uk.ac.man.cs.eventlite.helpers.ErrorHelpers.*;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,12 +55,21 @@ public class EventsControllerWeb {
 	}
 	
 	
-	@RequestMapping(value="/update",
+	@RequestMapping(value="/{id}/update",
 				    method = RequestMethod.POST, 
 					consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 					produces = { MediaType.TEXT_HTML_VALUE })
-	public String updateEvent(@RequestBody @Valid @ModelAttribute("eventForm") Event event, 
+	public String updateEvent(@RequestBody @Valid @ModelAttribute("eventForm") Event event, BindingResult errors,
 								@RequestParam(value="event") long eventID, Model model) {
+		
+		if (errors.hasErrors()) {
+			model.addAttribute("errors", formErrorHelper(errors));
+			model.addAttribute("id", eventID);
+			model.addAttribute("eventForm", eventService.findById(eventID));
+			model.addAttribute("venues", venueService.findAllExceptOne(event.getVenue()));
+			
+			return "events/eventform";
+		}
 		
 		eventService.update(eventService.findById(eventID), event);
 		
@@ -67,7 +78,7 @@ public class EventsControllerWeb {
 	
 	@RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
 	public String showUpdateEventForm(@PathVariable("id") long id, Model model) {
-	    
+		
 	   	Event event = eventService.findById(id);
 		model.addAttribute("eventForm", event);
 		model.addAttribute("venues", venueService.findAllExceptOne(event.getVenue()));

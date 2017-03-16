@@ -1,7 +1,8 @@
 package uk.ac.man.cs.eventlite.config.data;
 
-import java.time.LocalDate;
-import java.time.Month;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -48,19 +49,31 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		newVenue2.setCapacity(100);
 		venueService.save(newVenue2);
 		
-		Event newEvent = new Event("Java Lecture", newVenue1, java.sql.Date.valueOf(LocalDate.of( 2020 , Month.FEBRUARY , 11 )),"");
-		newEvent.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eget est gravida, aliquet arcu ac, laoreet nisl. Maecenas feugiat tempus hendrerit. Proin in finibus leo. Ut mattis, lacus id volutpat mollis, magna tortor facilisis elit, vitae vestibulum erat neque vitae ipsum. Morbi quis gravida tellus. Morbi tincidunt turpis vitae augue pharetra elementum. Donec tincidunt, eros nec consequat tempor, nulla nibh volutpat augue, eget porttitor nisl erat nec urna.");
+		DateFormat f = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		
-		eventService.save(newEvent);
-		eventService.save(new Event("Concert", newVenue1, new Date(),""));
-		eventService.save(new Event("Pokemon", newVenue2, new Date(),""));
-		eventService.save(new Event("Go", newVenue2, new Date(),""));
-		eventService.save(new Event("Alvaro Lecture1", newVenue1, new Date(),""));		
+		Date d1, d2, d3, d4, d5;
 
-		// Three events with exactly the same date and time
-		long aDate = new Date().getTime();
-		eventService.save(new Event("Event C", newVenue1, new Date(aDate),""));
-		eventService.save(new Event("Event B", newVenue1, new Date(aDate),""));
-		eventService.save(new Event("Event A", newVenue1, new Date(aDate),""));
+		
+		try {
+			d1 = f.parse("25/3/2017 12:00");
+			d2 = f.parse("12/4/2017 15:00");
+			d3 = f.parse("10/5/2017 17:00");
+			d4 = f.parse("02/5/2017 20:00");
+			d5 = f.parse("1/2/2018 00:00");
+			
+			Event newEvent = new Event("Java Lecture", newVenue1, d1, d1, "");
+			newEvent.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eget est gravida, aliquet arcu ac, laoreet nisl. Maecenas feugiat tempus hendrerit. Proin in finibus leo. Ut mattis, lacus id volutpat mollis, magna tortor facilisis elit, vitae vestibulum erat neque vitae ipsum. Morbi quis gravida tellus. Morbi tincidunt turpis vitae augue pharetra elementum. Donec tincidunt, eros nec consequat tempor, nulla nibh volutpat augue, eget porttitor nisl erat nec urna.");
+			
+			eventService.save(newEvent);
+			eventService.save(new Event("Concert", newVenue1, d2, d2, ""));
+			eventService.save(new Event("Pokemon", newVenue2, d3, d3, ""));
+			eventService.save(new Event("Go", newVenue2, d4, d4, ""));
+			eventService.save(new Event("Alvaro Lecture1", newVenue1, d5, d5, ""));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+				
+
 	}
 }

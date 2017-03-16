@@ -12,8 +12,11 @@ import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.Transient;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -27,27 +30,37 @@ public class Event {
 	@GeneratedValue
 	private long id;
 	
+	@Future
+	@NotNull
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date date;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING)
+	@Temporal(TemporalType.TIME)
+	@DateTimeFormat(pattern = "HH:mm")
+	private Date time;
 
+	@NotBlank
 	private String name;
 	
 	@Lob
 	@Column( length = 100000 )
 	private String description;
 
+	@NotNull
 	@ManyToOne
 	private Venue venue;
 	
 	@Transient
 	private boolean pastEvent;
 
-	public Event(String name, Venue venue, Date date, String description) {
+	public Event(String name, Venue venue, Date date, Date time, String description) {
 		this.name = name;
 		this.venue = venue;
 		this.date = date;
+		this.time = time;
 		this.description = description;
 	}
 	
@@ -69,6 +82,14 @@ public class Event {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+	
+	public Date getTime() {
+		return time;
+	}
+	
+	public void setTime(Date time) {
+		this.time = time;
 	}
 
 	public String getName() {

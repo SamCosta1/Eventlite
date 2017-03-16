@@ -4,6 +4,9 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertThat;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,8 +30,11 @@ public class EventServiceTest extends TestParent {
 	@Autowired
 	private VenueService venueService;
 	
-	public Venue testVenue, testVenue2;	
-
+	public Venue testVenue, testVenue2;
+	
+	private Date d1, d2, d3, d4, d5;
+	
+	
 	@Before
 	public void setup() {
 		testVenue = new Venue(null, 0);
@@ -42,6 +48,18 @@ public class EventServiceTest extends TestParent {
 		// Need to save the venue to ensure tests don't error
 		venueService.save(testVenue);
 		venueService.save(testVenue2);
+		
+		DateFormat f = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		try {
+			d1 = f.parse("25/3/2018 12:00");
+			d2 = f.parse("12/4/2018 00:00");
+			d3 = f.parse("10/5/2018 17:00");
+			d4 = f.parse("02/5/2018 20:00");
+			d5 = f.parse("01/2/2018 01:00");
+		
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Test
@@ -64,12 +82,30 @@ public class EventServiceTest extends TestParent {
 	}
 
 	@Test
+	public void testAscendingByDateAndTime() {
+	
+		eventService.save(new Event("Concert", testVenue, d5, d5, ""));
+		eventService.save(new Event("Java Lecture", testVenue, d2, d2, ""));
+		
+		List<Event> events = (List<Event>) eventService.findAll();
+		boolean correctOrder = false;
+		int count = 0;
+		for (Event event : events) {
+			String current = event.getName();
+			if (current == "Java Lecture" && count == 0)
+				correctOrder = true;
+			count++;
+		}
+		
+		assertTrue("Java Lecture should be first in the list", correctOrder);
+	}
+	
+	@Test
 	public void testSearchByName() {
-		Date date = new Date();
-		eventService.save(new Event("a Test Event 1", testVenue, date, null));	
-		eventService.save(new Event("f test event 2", testVenue, date, null));
-		eventService.save(new Event("b test Event", testVenue, date, null));	
-		eventService.save(new Event("Another random string", testVenue, date, null));	
+		eventService.save(new Event("Test Event 1", testVenue, d5, d5, null));	
+		eventService.save(new Event("test event 2", testVenue, d1, d1, null));
+		eventService.save(new Event("test Event", testVenue, d2, d2, null));	
+		eventService.save(new Event("Another random string", testVenue, d3, d3, null));	
 		
 		String searchTerm = "test Event";
 		
@@ -86,7 +122,7 @@ public class EventServiceTest extends TestParent {
 	
 	@Test
 	public void testDeleteEvent(){
-		Event event = new Event("Test Event", testVenue, new Date(), null);
+		Event event = new Event("Test Event", testVenue, d3, d3, null);
 		eventService.save(event);
 		
 		long initialCount = eventService.count();
@@ -106,8 +142,8 @@ public class EventServiceTest extends TestParent {
 	}
 	
 	@Test
-	public void testCount() {
-		Event event = new Event("Test Event", testVenue, new Date(),"");
+	public void count() {
+		Event event = new Event("Test Event", testVenue, d3, d3, "");
 		
 		long initialCount = eventService.count();
 		eventService.save(event);
@@ -117,8 +153,8 @@ public class EventServiceTest extends TestParent {
 	}
 	
 	@Test
-	public void testSave() {
-		Event event = new Event("Test Event2", testVenue, new Date(),"");
+	public void save() {
+		Event event = new Event("Test Event2", testVenue, d3, d3, "");
 		eventService.save(event);
 		
 		List<Event> events = (List<Event>) eventService.findAll();
@@ -135,18 +171,18 @@ public class EventServiceTest extends TestParent {
 	}
 	
 	@Test
-	public void testUpdate() {
-		Event currentEvent = new Event("Test Event3", testVenue, new Date(), "");
+	public void update() {
+		Event currentEvent = new Event("Test Event3", testVenue, d3, d3, "");
 		eventService.save(currentEvent);
 		
 		String newName = "Updated Event3";
-		Date newDate = new Date(123);
-		Event changedEvent = new Event(newName, testVenue2, newDate, "");
+
+		Event changedEvent = new Event(newName, testVenue2, d4, d4, "test");
 		
 		eventService.update(currentEvent, changedEvent);
 		
-		boolean checkName, checkVenue, checkDate;
-		checkName = checkVenue = checkDate = false;
+		boolean checkName, checkVenue, checkDate, checkTime, checkDescription;
+		checkName = checkVenue = checkDate = checkTime = checkDescription = false;
 		
 		if (currentEvent.getName().equals(newName))
 			checkName = true;
@@ -154,12 +190,20 @@ public class EventServiceTest extends TestParent {
 		if (currentEvent.getVenue().equals(testVenue2))
 			checkVenue = true;
 		
-		if (currentEvent.getDate().equals(newDate))
+		if (currentEvent.getDate().equals(d4))
 			checkDate = true;
+		
+		if (currentEvent.getTime().equals(d4))
+			checkTime = true;
+		
+		if (currentEvent.getDescription().equals("test"))
+			checkDescription = true;
 		
 		assertTrue(checkName);
 		assertTrue(checkVenue);
 		assertTrue(checkDate);
+		assertTrue(checkTime);
+		assertTrue(checkDescription);
 	}
 	
 	// Helper method for checking a result set is in correct order
