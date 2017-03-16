@@ -64,15 +64,9 @@ public class EventServiceTest extends TestParent {
 
 	@Test
 	public void testFindAll() {
-		Date date = new Date();
-		eventService.save(new Event("a Test Event 1", testVenue, date, null));	
-		eventService.save(new Event("f test event 2", testVenue, date, null));
-		eventService.save(new Event("b test Event", testVenue, date, null));
-		eventService.save(new Event("Java Lecture", testVenue, new Date(321),""));
-		eventService.save(new Event("Concert", testVenue, new Date(123),""));
-		eventService.save(new Event("Concert", testVenue, new Date(1),""));
-		eventService.save(new Event("Concert", testVenue, new Date(500),""));
-		
+		eventService.save(new Event("a Test Event 1", testVenue, d1, d1, null));	
+		eventService.save(new Event("f test event 2", testVenue, d2, d2, null));
+
 		List<Event> events = (List<Event>) eventService.findAll();
 
 		long count = eventService.count();

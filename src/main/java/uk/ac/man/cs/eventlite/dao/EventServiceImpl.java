@@ -19,7 +19,7 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public Iterable<Event> findAll() {	
-		return eventRepository.findAllByOrderByDateAscTimeAsc();
+		return eventRepository.findAllByOrderByDateAscTimeAscNameAsc();
 	}
 	
 	@Override
