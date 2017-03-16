@@ -3,6 +3,10 @@ package uk.ac.man.cs.eventlite.dao;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
@@ -19,11 +23,16 @@ public class VenueServiceTest extends TestParent{
 
 	@Test
 	public void findAllTest() {
+		venueService.save(new Venue("z", 10));	
+		venueService.save(new Venue("x", 10));
+		venueService.save(new Venue("a", 10));	
+		venueService.save(new Venue("b", 10));	
 		
 		List<Venue> venues = (List<Venue>) venueService.findAll();
 		long count = venueService.count();
 
 		assertThat("findAll should get all venues.", count, equalTo((long) venues.size()));
+		testListInOrder(venues);
 	}
 	
 	@Test
@@ -42,7 +51,7 @@ public class VenueServiceTest extends TestParent{
 	}
 	
 	@Test
-	public void count() {
+	public void testCount() {
 		Venue newVenue = new Venue("name1", 100);
 		
 		long initialCount = venueService.count();
@@ -59,29 +68,20 @@ public class VenueServiceTest extends TestParent{
 		venueService.save(new Venue("a test Venue", 10));	
 		venueService.save(new Venue("f Another random string", 10));	
 		
-		String searchTerm = "test Venue";
+		String searchTerm = "test Venue";		
+		List<Venue> venues = (List<Venue>) venueService.searchByName(searchTerm);	
 		
-		List<Venue> venues = (List<Venue>) venueService.searchByName(searchTerm);
-				
-		boolean inOrder = true;
-		String previous = null;
-		for (Venue v : venues) {
-			
+		for (Venue v : venues) 			
 			assertTrue("Names contain substring 'test venue' - case insensitive"
-						, v.getName().toLowerCase().contains(searchTerm.toLowerCase()));
-			
-			if (previous != null)
-				inOrder = v.getName().compareTo(previous) < 0 ? false : inOrder; 
-			previous = v.getName();
-		}
-		
-		assertTrue("Venues in alphabetical order by name", inOrder);
+						, v.getName().toLowerCase().contains(searchTerm.toLowerCase()));			
+	
 		assertThat("Three items returned: ", 3, equalTo(venues.size()));
+		testListInOrder(venues);
 		
 	}
 	
 	@Test
-	public void saveTest() {
+	public void testSave() {
 
 		long previousCount = venueService.count();
 		
@@ -100,6 +100,25 @@ public class VenueServiceTest extends TestParent{
 		
 		assertTrue(found);
 		assertThat("Count should have risen after save.", newCount, equalTo(previousCount+1));
+	}
+	
+	// Helper method for checking a result set is in correct order
+	// Works by sorting the elements into the correct order
+	// then check both lists are the same, i.e. the original list was
+	// Correct in the first place
+	private void testListInOrder(List<Venue> venues) {
+		List<Venue> listInOrder = new ArrayList<Venue>(venues);
+		
+		Collections.sort(listInOrder, new Comparator<Venue>() {
+			@Override
+			public int compare(Venue v1, Venue v2) {					
+				return v1.getName().compareTo(v2.getName());
+			}			
+		});
+		
+		Iterator<Venue> iterator = venues.iterator();
+		for (Venue v: listInOrder)
+			assertTrue(v.equals(iterator.next()));
 	}
 
 }
