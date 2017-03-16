@@ -4,7 +4,7 @@
 
 {{#partial "content"}}
 {{#eventForm}}
-	<h1>Updating {{name}}</h1>
+	<h1>Updating <b>{{name}}</b></h1>
 	
 	{{#if errors}}
 		<p class="h2 text-danger"> There were errors in your updated event information!</p>
@@ -14,24 +14,25 @@
     	
     	<input type="hidden" name="event" id="event" value="{{id}}" />
     	
-    	<p>Name <input type="text" name="name" id="name" value="{{name}}" /></p>
+    	<p class="title">Name</p><p class="value"> <input type="text" name="name" id="name" value="{{name}}" />
     	
-    	<p>Description <textarea name="description" id="description">{{description}}</textarea></p>
+    	<p class="title">Description</p><p class="value"> <textarea name="description" id="description">{{description}}</textarea></p>
     	
-       	<p>Venue
+       	<p class="title">Venue</p>
        		
-       		<select type="venue" name="venue" id="venue" />
+       	<p>	<select type="venue" name="venue" id="venue" />
        				<option selected value={{venue.id}}>{{venue.name}}</option>
        				{{#venues}}
        				<option value={{id}}>{{name}}</option>
        				{{/venues}}
-       		</select>
+       		</select> </p>
        		
-       	</p>
        	
-        <p>Date Time</p>
-        <p><input type="date" name="date" id="date" value="{{date}}" />
-        <input type="time" name="time" id="time" value="{{time}}" /> </p>
+       	
+        <p class="title">Date</p>
+        <p class="value"><input type="date" name="date" id="date" value="{{date}}" />
+        <p class="title">Time</p>
+        <p class="value"><input type="time" name="time" id="time" value="{{time}}" /> </p>
         {{/eventForm}}
 		{{#if errors.template}}
       	<p class="text-danger">{{errors.template}}</p>
@@ -39,7 +40,7 @@
         </div>
         	<button type="submit">Submit</button>
            	<button type="reset">Reset</button>
-           	<a href="/events" role="button">Cancel</a>
+           	<a href="/events" role="button"><button>Cancel</button></a>
         </p>
     </form>
 
