@@ -43,6 +43,11 @@ public class VenuesControllerWebIntegrationTest extends TestParent {
 	public void testFilterEvents() {
 		post("/venues/");
 	}
+	
+	@Test
+	public void testGetFirstVenue() {
+		get("/venues/1");
+	}
 
 	private void get(String url) {
 		ResponseEntity<String> response = template.exchange(url, HttpMethod.GET, httpEntity, String.class);
