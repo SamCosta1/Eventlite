@@ -17,15 +17,14 @@ public class EventServiceImpl implements EventService {
 	public long count() {		
 		return eventRepository.count();
 	}
-
 	@Override
-	public Iterable<Event> findAll() {	
-		return eventRepository.findAllByOrderByDateAscTimeAscNameAsc();
+	public Iterable<Event> findAll() {
+		return eventRepository.findAllByOrderByDateDescTimeDescNameAsc();
 	}
 	
 	@Override
 	public Iterable<Event> searchByName(String name) {	
-		return eventRepository.findByNameContainingIgnoreCaseOrderByDateAscNameAsc(name);
+		return eventRepository.findByNameContainingIgnoreCaseOrderByDateDescTimeDescNameAsc(name);
 	}
 
 	@Override

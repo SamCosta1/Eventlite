@@ -210,11 +210,14 @@ public class EventServiceTest extends TestParent {
 
 			@Override
 			public int compare(Event e1, Event e2) {
-				if (e1.getDate().equals(e2.getDate()))
+				if (e1.getDate().equals(e2.getDate()) && e1.getTime().equals(e2.getTime()))
 					return e1.getName().compareTo(e2.getName());
 		
-				return e1.getDate().compareTo(e2.getDate());
-			}			
+				if (e1.getDate().equals(e2.getDate()))
+					return e2.getTime().compareTo(e1.getTime());
+				
+				return e2.getDate().compareTo(e1.getDate());
+			}
 		});
 		
 		Iterator<Event> iterator = events.iterator();
