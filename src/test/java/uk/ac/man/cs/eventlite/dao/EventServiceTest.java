@@ -96,10 +96,10 @@ public class EventServiceTest extends TestParent {
 	
 	@Test
 	public void testSearchByName() {
-		eventService.save(new Event("Test Event 1", testVenue, d5, d5, null));	
-		eventService.save(new Event("test event 2", testVenue, d1, d1, null));
-		eventService.save(new Event("test Event", testVenue, d2, d2, null));	
-		eventService.save(new Event("Another random string", testVenue, d3, d3, null));	
+		eventService.save(new Event("a Test Event 1", testVenue, d5, d5, null));	
+		eventService.save(new Event("z test event 2", testVenue, d1, d1, null));
+		eventService.save(new Event("x test Event", testVenue, d2, d2, null));	
+		eventService.save(new Event("t Another random string", testVenue, d3, d3, null));	
 		
 		String searchTerm = "test Event";
 		

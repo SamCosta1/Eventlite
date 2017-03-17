@@ -23,10 +23,10 @@ public class VenueServiceTest extends TestParent{
 
 	@Test
 	public void findAllTest() {
-		venueService.save(new Venue("z", 10));	
-		venueService.save(new Venue("x", 10));
-		venueService.save(new Venue("a", 10));	
-		venueService.save(new Venue("b", 10));	
+		venueService.save(new Venue("z", 10, ""));	
+		venueService.save(new Venue("x", 10, ""));
+		venueService.save(new Venue("a", 10, ""));	
+		venueService.save(new Venue("b", 10, ""));	
 		
 		List<Venue> venues = (List<Venue>) venueService.findAll();
 		long count = venueService.count();

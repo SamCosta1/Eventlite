@@ -75,10 +75,7 @@ public class VenuesControllerWebTest extends TestParent {
 	
 	@Test
 	public void testGetFirstVenue() throws Exception {
-		Venue testVenue = new Venue();
-		testVenue.setName("Kilburn 1.1");
-		testVenue.setCapacity(100);
-		testVenue.setAddress("University");
+		Venue testVenue = new Venue();		
 		when(venueService.findById(1)).thenReturn(testVenue);
 		when(eventService.findById(1)).thenReturn(new Event());
 		mockGet("/venues/1", MediaType.TEXT_HTML, "venues/show", HttpStatus.OK);

@@ -57,8 +57,6 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		newVenue3.setAddress("Kilburn");
 		venueService.save(newVenue3);
 		
-		Event newEvent = new Event("Java Lecture", newVenue1, java.sql.Date.valueOf(LocalDate.of( 2020 , Month.FEBRUARY , 11 )),"");
-		newEvent.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eget est gravida, aliquet arcu ac, laoreet nisl. Maecenas feugiat tempus hendrerit. Proin in finibus leo. Ut mattis, lacus id volutpat mollis, magna tortor facilisis elit, vitae vestibulum erat neque vitae ipsum. Morbi quis gravida tellus. Morbi tincidunt turpis vitae augue pharetra elementum. Donec tincidunt, eros nec consequat tempor, nulla nibh volutpat augue, eget porttitor nisl erat nec urna.");
 		
 		DateFormat f = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		Date d1, d2, d3, d4, d5;

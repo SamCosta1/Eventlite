@@ -104,8 +104,9 @@ public class EventsControllerWeb {
 	}
 	
 
-	@RequestMapping(value = "/new", method = RequestMethod.POST)
-	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Event event,
+	@RequestMapping(value = "/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+			produces = { MediaType.TEXT_HTML_VALUE })
+	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Event event, BindingResult result,
 			                          Model model)	{ 
 	  eventService.save(event);
 	  return "redirect:/events";
