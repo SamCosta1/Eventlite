@@ -27,6 +27,7 @@ public class VenuesControllerWeb {
 
 	@RequestMapping(method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE })
 	public String getAllVenues(Model model) {
+		model.addAttribute("venues", venueService.findAll());
 		return "venues/index";
 	}	
 	

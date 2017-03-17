@@ -1,0 +1,21 @@
+<tr>
+  <td>
+    <div>
+      <span class="glyphicon glyphicon-picture" aria-hidden="true" id="image_preview"></span>
+    </div>
+  </td>
+  <td id="event_preview">
+    <i class="fa fa-map-marker"></i> 
+    <span onclick="window.document.location='/venues/{{id}}';">
+      Venue name: {{name}}
+    </span><br />
+  </td>
+  <td id="event_preview">
+    <button class="btn btn-primary" onclick="location.href='/venue/{{id}}/update'">Update</button>
+  </td>
+  <td id="event_preview">
+    <form action="/venue/{{id}}/delete" method="post">  
+      <button class="btn btn-primary" type="submit">Delete</button>
+    </form>
+  <td>
+</tr>
