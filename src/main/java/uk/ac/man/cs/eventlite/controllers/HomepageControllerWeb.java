@@ -35,7 +35,7 @@ public class HomepageControllerWeb {
 	public String featured(Model model) {
 		
 		model.addAttribute("events_soonest3", (soonest3events(eventService.findAll())));
-		model.addAttribute("venues_top3", (top3venues(venueService.findAll())));
+		model.addAttribute("venues_top3", (top3venues(eventService.findAll())));
 		return "homepage";
 	}
 	
@@ -65,31 +65,31 @@ public class HomepageControllerWeb {
 		return the3Events;
 	}
 	
-	private Venue[] top3venues(Iterable<Venue> iterable)
+	private Venue[] top3venues(Iterable<Event> iterable)
 	{
 		String[] the3Venues = new String[3];
 		for(int i=0; i<3; i++) the3Venues[i]=null;
 		
 		HashMap<String, Integer> countAppearances = new HashMap<String, Integer>();
-		for(Venue x : iterable)
+		for(Event x : iterable)
 		{
-			if(!countAppearances.containsKey(x.getName())) countAppearances.put(x.getName(), 1);
-			else countAppearances.put(x.getName(), countAppearances.get(x.getName())+1);
+			if(!countAppearances.containsKey(x.getVenue().getName())) countAppearances.put(x.getVenue().getName(), 1);
+			else countAppearances.put(x.getVenue().getName(), countAppearances.get(x.getVenue().getName())+1);
 		}
 		for(Map.Entry<String, Integer> entry : countAppearances.entrySet())
 		{
-			if((the3Venues[0]==null) || (entry.getValue().compareTo(countAppearances.get(the3Venues[0]))<=0))
+			if((the3Venues[0]==null) || (entry.getValue().compareTo(countAppearances.get(the3Venues[0]))>=0))
 			{
 				the3Venues[2]=the3Venues[1];
 				the3Venues[1]=the3Venues[0];
 				the3Venues[0]=entry.getKey();	
 			}
-			else if((the3Venues[1]==null) || (entry.getValue().compareTo(countAppearances.get(the3Venues[1]))<=0))
+			else if((the3Venues[1]==null) || (entry.getValue().compareTo(countAppearances.get(the3Venues[1]))>=0))
 			{
 				the3Venues[2]=the3Venues[1];
 				the3Venues[1]=entry.getKey();
 			}
-			else if((the3Venues[2]==null) || (entry.getValue().compareTo(countAppearances.get(the3Venues[2]))<=0))
+			else if((the3Venues[2]==null) || (entry.getValue().compareTo(countAppearances.get(the3Venues[2]))>=0))
 			{
 				the3Venues[2]=entry.getKey();
 			}
