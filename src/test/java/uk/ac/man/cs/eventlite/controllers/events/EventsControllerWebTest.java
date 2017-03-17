@@ -64,8 +64,9 @@ public class EventsControllerWebTest extends TestParent {
 	
 	@Test
 	public void testGetFirstEvent() throws Exception {
-		mvc.perform(get("/events/1").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
-				.andExpect(view().name("events/show"));
+		when(eventService.findById(1)).thenReturn(new Event());
+		mockGet("/events/1", MediaType.TEXT_HTML, "events/show", HttpStatus.OK);
+		verify(eventService, times(1)).findById(1);
 	}
 	
 	@Test
