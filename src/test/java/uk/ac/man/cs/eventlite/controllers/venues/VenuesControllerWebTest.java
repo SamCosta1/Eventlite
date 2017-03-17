@@ -24,7 +24,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import uk.ac.man.cs.eventlite.TestParent;
 import uk.ac.man.cs.eventlite.controllers.VenuesControllerWeb;
+import uk.ac.man.cs.eventlite.dao.EventService;
 import uk.ac.man.cs.eventlite.dao.VenueService;
+import uk.ac.man.cs.eventlite.entities.Event;
 import uk.ac.man.cs.eventlite.entities.Venue;
 
 @AutoConfigureMockMvc
@@ -37,6 +39,9 @@ public class VenuesControllerWebTest extends TestParent {
 	
 	@Mock
 	private VenueService venueService;
+	
+	@Mock
+	private EventService eventService;
 	
 	@Mock
 	private Venue venue;
@@ -66,6 +71,19 @@ public class VenuesControllerWebTest extends TestParent {
 					.accept(MediaType.TEXT_HTML_VALUE))
 					.andExpect(view().name("venues/index"));
 		verify(venueService, times(1)).searchByName("testString");
+	}
+	
+	@Test
+	public void testGetFirstVenue() throws Exception {
+		Venue testVenue = new Venue();
+		testVenue.setName("Kilburn 1.1");
+		testVenue.setCapacity(100);
+		testVenue.setAddress("University");
+		when(venueService.findById(1)).thenReturn(testVenue);
+		when(eventService.findById(1)).thenReturn(new Event());
+		mockGet("/venues/1", MediaType.TEXT_HTML, "venues/show", HttpStatus.OK);
+		verify(venueService, times(1)).findById(1);
+		verify(eventService, times(1)).findAllByVenue(testVenue);
 	}
 		
 	// Helpers ----	

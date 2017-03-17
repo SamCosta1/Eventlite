@@ -37,11 +37,11 @@ public class EventServiceTest extends TestParent {
 	
 	@Before
 	public void setup() {
-		testVenue = new Venue(null, 0);
+		testVenue = new Venue(null, 0, null);
 		testVenue.setName("Test Event Name");
 		testVenue.setCapacity(10);
 		
-		testVenue2 = new Venue(null, 0);
+		testVenue2 = new Venue(null, 0, null);
 		testVenue2.setName("Test Event Name 2");
 		testVenue2.setCapacity(20);
 		
