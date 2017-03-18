@@ -4,6 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name="venues")
@@ -12,10 +17,15 @@ public class Venue {
 	@GeneratedValue
 	private long id;
 	
+	@NotBlank
+	@Size(max = 256, message = "Name must not be greater than 256 characters.")
 	private String name;
 	
+	@NotBlank
 	private String address;
-
+	
+	@NotNull
+	@Min(value = 0, message = "The capacity must be a positive number.")
 	private int capacity;
 
 	public Venue(String name, int capacity, String address) {

@@ -13,4 +13,6 @@ public interface VenueService {
 	public Iterable<Venue> findAllExceptOne(Venue venue);
 
 	public Iterable<Venue> searchByName(String name);
+
+	public void update(Venue current, Venue changes);
 }
