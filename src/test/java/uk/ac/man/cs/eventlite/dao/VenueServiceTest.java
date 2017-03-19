@@ -102,6 +102,17 @@ public class VenueServiceTest extends TestParent{
 		assertThat("Count should have risen after save.", newCount, equalTo(previousCount+1));
 	}
 	
+	@Test
+	public void testFindById() {
+		Venue venue = new Venue("test Venue", 1000, "");
+		venueService.save(venue);
+		
+		Venue foundVenue = venueService.findById(venue.getId());	
+
+		assertTrue("The find by Id method found the correct venue", foundVenue.equals(venue));
+		
+	}
+	
 	// Helper method for checking a result set is in correct order
 	// Works by sorting the elements into the correct order
 	// then check both lists are the same, i.e. the original list was

@@ -8,6 +8,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -136,7 +137,7 @@ public class EventServiceTest extends TestParent {
 	}
 	
 	@Test
-	public void count() {
+	public void testCount() {
 		Event event = new Event("Test Event", testVenue, d3, d3, "");
 		
 		long initialCount = eventService.count();
@@ -147,7 +148,7 @@ public class EventServiceTest extends TestParent {
 	}
 	
 	@Test
-	public void save() {
+	public void testSave() {
 		Event event = new Event("Test Event2", testVenue, d3, d3, "");
 		eventService.save(event);
 		
@@ -165,7 +166,7 @@ public class EventServiceTest extends TestParent {
 	}
 	
 	@Test
-	public void update() {
+	public void testUpdate() {
 		Event currentEvent = new Event("Test Event3", testVenue, d3, d3, "");
 		eventService.save(currentEvent);
 		
@@ -200,6 +201,40 @@ public class EventServiceTest extends TestParent {
 		assertTrue(checkDescription);
 	}
 	
+	@Test
+	public void testFindById() {
+		Event event = new Event("Id Test event", testVenue, d3, d3, "");
+		eventService.save(event);
+		
+		Event foundEvent = eventService.findById(event.getId());	
+
+		assertTrue("The find by Id method found the correct event", foundEvent.equals(event));
+		
+	}
+
+	@Test
+	public void testFindAllByVenue() {
+		
+		testVenue = new Venue(null, 0, null);
+		testVenue.setName("Test Event Name");
+		testVenue.setCapacity(100);
+		
+		venueService.save(testVenue);
+		
+		Event event1 = new Event("Test event1", testVenue, d3, d3, "");
+		Event event2 = new Event("Test event2", testVenue, d3, d3, "");
+		
+		List<Event> givenEvents = Arrays.asList(event1, event2);
+		
+		eventService.save(event1);
+		eventService.save(event2);
+		
+		List<Event> events = (List<Event>)eventService.findAllByVenue(testVenue);	
+
+		assertTrue("The find by venue method found the correct events", givenEvents.equals(events));
+		
+	}
+	
 	// Helper method for checking a result set is in correct order
 	// Works by sorting the elements into the correct order
 	// then check both lists are the same, i.e. the original list was
@@ -224,5 +259,5 @@ public class EventServiceTest extends TestParent {
 		for (Event e: listInOrder)
 			assertTrue(e.equals(iterator.next()));
 	}
-	
+
 }
