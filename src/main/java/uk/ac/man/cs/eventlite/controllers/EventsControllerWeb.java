@@ -99,8 +99,16 @@ public class EventsControllerWeb {
 	
 	@RequestMapping (value = "/new", method = RequestMethod.GET)
 	public String showNew(Model model) 	{
-	  model.addAttribute("venues", venueService.findAll());
-	  return "events/new";
+		model.addAttribute("venues", venueService.findAll());
+		return "events/new";
+	}
+	
+	@RequestMapping (value = "/userevents", method = RequestMethod.GET)
+	public String showUserEvents(Model model) 	{
+		
+	  // TODO: Make this actually return a user's events, for now it's just returning all events for UI sake
+	  model.addAttribute("events", eventService.findAll());
+	  return "events/userevents";
 	}
 	
 

@@ -1,27 +1,21 @@
 {{#partial "head"}}
 <link rel="stylesheet" href="../css/main.css">
+<link rel="stylesheet" href="../css/userevents.css">
 {{/partial}}
 
 {{#partial "navbar"}}
-home
+userevents
 {{/partial}}
 
 {{#partial "content"}}
 
 <div class="main-container">
+	<h1>Your events</h1>
 	<div class="row justify-content-between">
-	<h1>All events</h1>
-		<div class="col-md-3 filters-container" id="filterLooks">	
-			<h2>Filters</h2>
-			<form action="/events/" method="post">
-			   <div class="form-group">    
-				 <label for="name">Event Name:</label><input class="form-control" type="text" name="name" id="name" placeholder="Search.." autofocus />    
-			   </div>
-			   
-			   <!-- Other filters / Search stuff goes here -->
-			
-			   <button class="btn btn-primary" type="submit">Search!</button>
-			</form>
+		<div class="col-md-3">			
+			<div class="input-group date" data-provide="datepicker">
+				<input class="datepicker" data-date-format="mm/dd/yyyy">
+			</div>			
 		</div>
 		<div class="col-md-1 filler"></div>
 		<div class="col-md-8 panel panel-default" id="panelLooks">	
@@ -58,25 +52,30 @@ home
 				            
 				        </td>
 						<td id="event_preview"><button class="btn btn-primary" onclick="location.href='/events/{{id}}/update'">Update</button></td>
-						<td id="event_preview">
-				           <form action="/events/{{id}}/delete" method="post">  
-					  	      <button class="btn btn-primary" type="submit">Delete</button>
-					  	   </form>
-					    <td>
+						
 				      </tr>
 			    {{/events}}
 			  </tbody>
 			</table>
 		</div>
 	</div>
+	
+	<div class="row map-container panel panel-default">
+	MAP
+	</div>
 
-    <div class="row">
-      <div class = "col-md-3 filters-container">
-        <h3>Add a new event</h3>
-        <a class="btn btn-primary" role="button" onclick="location.href='/events/new'">Add event</a>
-      </div>
-    </div>
 </div>
+
+<script>
+$(document).ready(function() {
+	
+	$('.datepicker').datepicker({
+	    format: 'mm/dd/yyyy',
+	    startDate: '-3d'
+	});
+	
+});
+</script>
 
 {{/partial}}
 
