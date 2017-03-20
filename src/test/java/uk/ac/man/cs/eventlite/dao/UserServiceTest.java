@@ -69,7 +69,6 @@ public class UserServiceTest extends TestParent {
 		
 		boolean found = false;
 		for (User user : users)
-			// Should be sufficient to check events equal, checking venues to ensure links correct
 			if (user.getUsername().equals("test4"))
 				found = true;			
 	
