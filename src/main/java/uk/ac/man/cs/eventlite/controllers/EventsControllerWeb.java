@@ -54,6 +54,15 @@ public class EventsControllerWeb {
 		return "events/index";
 	}
 	
+	@RequestMapping(value = "/userevents",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, 
+			produces = { MediaType.TEXT_HTML_VALUE })
+    public String filterUserEvents(@ModelAttribute("search") SearchEvents searchCriterion, BindingResult result, Model model) {    
+		model.addAttribute("events", searchCriterion.search(eventService));
+		return "events/userevents";
+    }
+	
 	
 	@RequestMapping(value="/{id}/update",
 				    method = RequestMethod.POST, 
@@ -104,8 +113,7 @@ public class EventsControllerWeb {
 	}
 	
 	@RequestMapping (value = "/userevents", method = RequestMethod.GET)
-	public String showUserEvents(Model model) 	{
-		
+	public String showUserEvents(Model model) 	{		
 	  // TODO: Make this actually return a user's events, for now it's just returning all events for UI sake
 	  model.addAttribute("events", eventService.findAll());
 	  return "events/userevents";

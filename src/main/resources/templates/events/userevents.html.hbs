@@ -10,15 +10,22 @@ userevents
 {{#partial "content"}}
 
 <div class="main-container">
-	<h1>Your events</h1>
 	<div class="row justify-content-between">
-		<div class="col-md-3">			
-			<div class="input-group date" data-provide="datepicker">
-				<input class="datepicker" data-date-format="mm/dd/yyyy">
-			</div>			
+		<h1>Your events</h1>
+		<div class="col-md-3 filters-container" id="filterLooks">
+			<h2>Filters</h2>
+			<form action="/events/userevents" method="post">
+			   <div class="form-group">
+				 <label for="name">Event Name:</label><input class="form-control" type="text" name="name" id="name" placeholder="Search.." autofocus />
+			   </div>
+
+			   <!-- Other filters / Search stuff goes here -->
+
+			   <button class="btn btn-primary" type="submit">Search!</button>
+			</form>
 		</div>
 		<div class="col-md-1 filler"></div>
-		<div class="col-md-8 panel panel-default" id="panelLooks">	
+		<div class="col-md-8 panel panel-default" id="panelLooks">
 			<div class="panel-heading">
 				<div style="display: inline-block"><h3 class="panel-title">Keywords</h3></div>
 				<div class="dropdown" id="dropdown_sortby">
@@ -52,30 +59,19 @@ userevents
 				            
 				        </td>
 						<td id="event_preview"><button class="btn btn-primary" onclick="location.href='/events/{{id}}/update'">Update</button></td>
-						
+						<td id="event_preview">
+				           <form action="/events/{{id}}/delete" method="post">
+					  	      <button class="btn btn-primary" type="submit">Delete</button>
+					  	   </form>
+					    <td>
 				      </tr>
 			    {{/events}}
 			  </tbody>
 			</table>
 		</div>
 	</div>
-	
-	<div class="row map-container panel panel-default">
-	MAP
-	</div>
-
+	<div class="row map-container panel panel-default">	MAP	</div>
 </div>
-
-<script>
-$(document).ready(function() {
-	
-	$('.datepicker').datepicker({
-	    format: 'mm/dd/yyyy',
-	    startDate: '-3d'
-	});
-	
-});
-</script>
 
 {{/partial}}
 
