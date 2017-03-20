@@ -13,7 +13,7 @@ public class ErrorControllerWeb {
 
 
 	@RequestMapping(method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE })
-	public String getAllEvents(Model model, BindingResult result) {
+	public String getAllEvents(Model model) {
 		return "/error";
 	}
 	
