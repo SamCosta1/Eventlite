@@ -67,16 +67,16 @@ public class HomepageControllerWeb {
 	
 	private Venue[] top3venues(Iterable<Event> iterable)
 	{
-		String[] the3Venues = new String[3];
+		Venue[] the3Venues = new Venue[3];
 		for(int i=0; i<3; i++) the3Venues[i]=null;
 		
-		HashMap<String, Integer> countAppearances = new HashMap<String, Integer>();
+		HashMap<Venue, Integer> countAppearances = new HashMap<Venue, Integer>();
 		for(Event x : iterable)
 		{
-			if(!countAppearances.containsKey(x.getVenue().getName())) countAppearances.put(x.getVenue().getName(), 1);
-			else countAppearances.put(x.getVenue().getName(), countAppearances.get(x.getVenue().getName())+1);
+			if(!countAppearances.containsKey(x.getVenue())) countAppearances.put(x.getVenue(), 1);
+			else countAppearances.put(x.getVenue(), countAppearances.get(x.getVenue())+1);
 		}
-		for(Map.Entry<String, Integer> entry : countAppearances.entrySet())
+		for(Map.Entry<Venue, Integer> entry : countAppearances.entrySet())
 		{
 			if((the3Venues[0]==null) || (entry.getValue().compareTo(countAppearances.get(the3Venues[0]))>=0))
 			{
@@ -94,11 +94,7 @@ public class HomepageControllerWeb {
 				the3Venues[2]=entry.getKey();
 			}
 		}
-		Venue[] u = new Venue[3];
-		u[0]= new Venue(the3Venues[0], 0);
-		u[1]= new Venue(the3Venues[1], 0);
-		u[2]= new Venue(the3Venues[2], 0);
-		return u;
+		return the3Venues;
 	}
 	
 }
