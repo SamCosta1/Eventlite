@@ -26,7 +26,7 @@
                     <p>Capacity: {{capacity}}</p>
                     <p>Address: {{address}}</p>
                   </div>
-                  <a class="btn btn-primary" id="back-button" role="button" href="/events">Back</a>
+                  <a class="btn btn-primary" id="back-button" role="button" onclick="goBack()">Back</a>
                 </div>
               </div>
             </div>
@@ -45,11 +45,13 @@
           <div class="panel-body">
             <h4>Events</h4>
             {{#if events}}
-              {{#events}}
-              <span onclick="window.document.location='/events/{{id}}';">
-                {{name}}
-              </span><br/>
-              {{/events}}
+              <table class="table table-striped table-hover">
+                <tbody>
+                  {{#events}}
+                    {{> events/_detail}}
+                  {{/events}}
+                </tbody>
+              </table>
             {{else}}
               <p id = "no-description">No Events</p>
             {{/if}}
