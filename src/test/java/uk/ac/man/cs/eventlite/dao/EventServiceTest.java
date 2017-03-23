@@ -265,7 +265,7 @@ public class EventServiceTest extends TestParent {
 	public void testAddEvent() {
 		long initialCount = eventService.count();
 		
-		Event event = new Event("Test Event Add", testVenue, new Date(), "");
+		Event event = new Event("Test Event Add", testVenue, d1, d2, "");
 		eventService.save(event);
 		
         List<Event> events = (List<Event>) eventService.findAll();
