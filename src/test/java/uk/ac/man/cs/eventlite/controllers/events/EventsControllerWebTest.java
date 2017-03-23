@@ -11,10 +11,13 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
+
 import org.mockito.MockitoAnnotations;
+import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,7 +28,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import uk.ac.man.cs.eventlite.TestParent;
 import uk.ac.man.cs.eventlite.controllers.EventsControllerWeb;
 import uk.ac.man.cs.eventlite.dao.EventService;
+import uk.ac.man.cs.eventlite.dao.VenueService;
 import uk.ac.man.cs.eventlite.entities.Event;
+import uk.ac.man.cs.eventlite.entities.Venue;
 
 @AutoConfigureMockMvc
 public class EventsControllerWebTest extends TestParent {
@@ -37,6 +42,9 @@ public class EventsControllerWebTest extends TestParent {
 	
 	@Mock
 	private EventService eventService;
+	
+	@Mock
+	private VenueService venueService;
 	
 	@Mock
 	private Event event;
@@ -55,12 +63,25 @@ public class EventsControllerWebTest extends TestParent {
 		verify(eventService, times(1)).findAll();
 	}
 	
-	@Ignore
 	@Test
 	public void testShowUpdateForm() throws Exception {
-		mvc.perform(get("/events/3/update").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
-				.andExpect(view().name("events/eventform"));
-	}	
+		when(venueService.findAllExceptOne(null)).thenReturn(Collections.<Venue> emptyList());
+		when(eventService.findById(1)).thenReturn(new Event());
+		mockGet("/events/1/update", MediaType.TEXT_HTML, "events/eventform", HttpStatus.OK);
+		verify(venueService, times(1)).findAllExceptOne(null);
+		verify(eventService, times(1)).findById(1);
+	}
+	
+	@Test
+	public void testUpdateEvent() throws Exception {
+		when(eventService.findById(1L)).thenReturn(event);
+			mvc.perform(MockMvcRequestBuilders.post("/events/1/update")
+					.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+					.accept(MediaType.TEXT_HTML_VALUE))
+					.andExpect(status().isFound())
+					.andExpect(view().name("redirect:/events"));
+		verify(eventService, times(1)).update(event, event);
+	}
 	
 	@Test
 	public void testGetFirstEvent() throws Exception {
