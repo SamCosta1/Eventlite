@@ -98,9 +98,9 @@ public class EventsControllerWeb {
 	
 	
 	@RequestMapping (value = "/new", method = RequestMethod.GET)
-	public String showNew(Model model) 	{
-	  model.addAttribute("venues", venueService.findAll());
-	  return "events/new";
+	public String showNew(Model model)	{
+		model.addAttribute("venues", venueService.findAll());
+	    return "events/new";
 	}
 	
 
@@ -109,6 +109,7 @@ public class EventsControllerWeb {
 	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Event event, BindingResult result,
 			                          Model model)	{ 
 	  eventService.save(event);
+	  model.addAttribute("venues", venueService.findAll());
 	  return "redirect:/events";
 	}
 	
