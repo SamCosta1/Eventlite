@@ -109,7 +109,6 @@ public class EventsControllerWeb {
 	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Event event, BindingResult result,
 			                          Model model)	{ 
 	  eventService.save(event);
-	  model.addAttribute("venues", venueService.findAll());
 	  return "redirect:/events";
 	}
 	
