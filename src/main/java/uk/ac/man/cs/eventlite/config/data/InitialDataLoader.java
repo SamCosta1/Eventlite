@@ -64,8 +64,8 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		
 		try {
 			d1 = f.parse("25/3/2017 12:00");
-			d2 = f.parse("12/4/2017 15:00");
-			d3 = f.parse("10/5/2017 17:00");
+			d2 = f.parse("12/4/2014 15:00");
+			d3 = f.parse("10/5/2015 17:00");
 			d4 = f.parse("02/5/2017 20:00");
 			d5 = f.parse("1/2/2018 00:00");
 			
