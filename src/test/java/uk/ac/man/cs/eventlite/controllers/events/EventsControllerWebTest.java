@@ -21,11 +21,16 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.ui.ExtendedModelMap;
+import org.springframework.ui.Model;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import uk.ac.man.cs.eventlite.TestParent;
 import uk.ac.man.cs.eventlite.controllers.EventsControllerWeb;
 import uk.ac.man.cs.eventlite.dao.EventService;
 import uk.ac.man.cs.eventlite.entities.Event;
+import uk.ac.man.cs.eventlite.entities.User;
 
 @AutoConfigureMockMvc
 public class EventsControllerWebTest extends TestParent {
@@ -44,8 +49,7 @@ public class EventsControllerWebTest extends TestParent {
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		mvc = MockMvcBuilders.standaloneSetup(eventsController).build();
-		
+		mvc = MockMvcBuilders.standaloneSetup(eventsController).build();		
 	}
 
 	@Test
@@ -79,30 +83,36 @@ public class EventsControllerWebTest extends TestParent {
 					.andExpect(view().name("events/index"));
 		verify(eventService, times(1)).searchByName("testString");
 	}
+		
+	@Test
+	public void testGetEventsByUser() throws Exception {
+		when(eventService.findAllByUser(null)).thenReturn(Collections.<Event> emptyList());
+			mockGet("/events/userevents", MediaType.TEXT_HTML, "events/userevents", HttpStatus.OK);
+		verify(eventService, times(1)).findAllByUser(null);
+	}
 	
 	@Test
 	public void testDeleteEvent() throws Exception {
 		mvc.perform(MockMvcRequestBuilders.post("/events/1/delete")
-		.contentType(MediaType.APPLICATION_FORM_URLENCODED).accept(MediaType.TEXT_HTML)).andExpect(status().isFound())
-		.andExpect(view().name("redirect:/events"));
+			.contentType(MediaType.APPLICATION_FORM_URLENCODED).accept(MediaType.TEXT_HTML)).andExpect(status().isFound())
+			.andExpect(view().name("redirect:/events"));
 	}
 	
 	@Ignore
 	@Test
-	public void getNewEventHtml() throws Exception {
+	public void testGetNewEventHtml() throws Exception {
 		mvc.perform(MockMvcRequestBuilders.get("/events/new").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
 		.andExpect(view().name("events/new"));
 	}
 	
 	@Ignore
 	@Test
-	public void postEventHtml() throws Exception {
+	public void testPostEventHtml() throws Exception {
 		mvc.perform(MockMvcRequestBuilders.post("/events/new").contentType(MediaType.APPLICATION_FORM_URLENCODED).accept(MediaType.TEXT_HTML))
 		.andExpect(view().name("redirect:/events"));
 	}
 	
-	// Helpers ----
-	
+	// Helpers ----	
 	private void mockGet(String url, MediaType mediaType, String viewName, HttpStatus status) throws Exception {
 		mvc.perform(get(url).accept(mediaType)).andExpect(status().is(status.value()))
 			.andExpect(view().name(viewName));

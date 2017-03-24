@@ -12,6 +12,12 @@ public class UserCreateForm {
 
     @NotEmpty
     private String passwordRepeated = "";
+    
+    public UserCreateForm(String username) {
+    	this.username = username;
+    }
+    
+    public UserCreateForm(){}
 
     public String getUsername() {
         return username;

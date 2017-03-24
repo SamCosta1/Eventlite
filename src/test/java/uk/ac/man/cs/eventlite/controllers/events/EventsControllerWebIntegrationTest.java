@@ -50,6 +50,16 @@ public class EventsControllerWebIntegrationTest extends TestParent {
 	}
 	
 	@Test
+	public void testUserEvents() {
+		get("/events/userevents");
+	}
+	
+	@Test
+	public void testFilterUserEvents() {
+		post("/events/userevents");
+	}
+	
+	@Test
 	public void testFilterEvents() {
 		post("/events/");
 	}

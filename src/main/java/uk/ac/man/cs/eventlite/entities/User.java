@@ -23,7 +23,9 @@ public class User {
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
-    public Long getId() {
+    public User(){}
+
+	public Long getId() {
 		return id;
 	}
 
@@ -45,5 +47,9 @@ public class User {
 
 	public void setPasswordHash(String passwordHash) {
 		this.passwordHash = passwordHash;
+	}
+		
+	public Boolean equals(User other){
+		return this.id == other.getId();
 	}
 }
