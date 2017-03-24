@@ -1,0 +1,15 @@
+{{#partial "head"}}
+<link rel="stylesheet" href="../css/main.css">
+{{/partial}}
+
+{{#partial "navbar"}}
+events
+{{/partial}}
+
+{{#partial "content"}}
+{{#user}}
+<h1>Hello {{username}}!</h1>
+{{/user}}
+{{/partial}}
+
+{{> layouts/base title="EventLite events"}}
