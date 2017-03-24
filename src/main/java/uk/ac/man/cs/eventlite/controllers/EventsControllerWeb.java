@@ -20,6 +20,8 @@ import uk.ac.man.cs.eventlite.dao.EventService;
 import uk.ac.man.cs.eventlite.dao.SearchEvents;
 import uk.ac.man.cs.eventlite.dao.VenueService;
 import uk.ac.man.cs.eventlite.entities.Event;
+import uk.ac.man.cs.eventlite.entities.User;
+import uk.ac.man.cs.eventlite.helpers.CurrentUser;
 
 @Controller
 @RequestMapping("/events")
@@ -59,6 +61,7 @@ public class EventsControllerWeb {
 			consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, 
 			produces = { MediaType.TEXT_HTML_VALUE })
     public String filterUserEvents(@ModelAttribute("search") SearchEvents searchCriterion, BindingResult result, Model model) {    
+		searchCriterion.setUser(getCurrentUser(model));
 		model.addAttribute("events", searchCriterion.search(eventService));
 		return "events/userevents";
     }
@@ -113,10 +116,9 @@ public class EventsControllerWeb {
 	}
 	
 	@RequestMapping (value = "/userevents", method = RequestMethod.GET)
-	public String showUserEvents(Model model) 	{		
-	  // TODO: Make this actually return a user's events, for now it's just returning all events for UI sake
-	  model.addAttribute("events", eventService.findAll());
-	  return "events/userevents";
+	public String showUserEvents(Model model) 	{				
+		model.addAttribute("events", eventService.findAllByUser(getCurrentUser(model)));
+		return "events/userevents";
 	}
 	
 
@@ -124,8 +126,15 @@ public class EventsControllerWeb {
 			produces = { MediaType.TEXT_HTML_VALUE })
 	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Event event, BindingResult result,
 			                          Model model)	{ 
+	  event.setUser(getCurrentUser(model));
 	  eventService.save(event);
 	  return "redirect:/events";
+	}
+	
+	// Helper that returns the current user
+	private static User getCurrentUser(Model model) {
+		CurrentUser mapVal = ((CurrentUser)model.asMap().get("currentUser"));
+		return mapVal == null ? null : mapVal.getUser();
 	}
 	
 }

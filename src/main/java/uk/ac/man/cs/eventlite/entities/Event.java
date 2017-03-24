@@ -53,6 +53,9 @@ public class Event {
 	@ManyToOne
 	private Venue venue;
 	
+	@ManyToOne
+	private User user;
+	
 	@Transient
 	private boolean pastEvent;
 
@@ -106,6 +109,14 @@ public class Event {
 	
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public User getUser() {
+		return user;
+	}
+	
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 	public Venue getVenue() {

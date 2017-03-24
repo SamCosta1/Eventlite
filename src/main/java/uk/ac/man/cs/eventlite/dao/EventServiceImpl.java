@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import uk.ac.man.cs.eventlite.entities.Event;
+import uk.ac.man.cs.eventlite.entities.User;
 import uk.ac.man.cs.eventlite.entities.Venue;
 
 @Service
@@ -55,6 +56,16 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public Iterable<Event> findAllByVenue(Venue venue) {	
 		return eventRepository.findAllByVenue(venue);
+	}
+	
+	@Override
+	public Iterable<Event> findAllByUser(User user) {
+		return eventRepository.findAllByUserOrderByDateDescTimeDescNameAsc(user);
+	}
+	
+	@Override
+	public Iterable<Event> searchByNameByUser(String name, User user) {
+		return eventRepository.findAllByUserAndNameContainingIgnoreCaseOrderByDateDescTimeDescNameAsc(user, name);
 	}
 
 }

@@ -51,7 +51,7 @@ public class EventsControllerWebTest extends TestParent {
 	@Test
 	public void testGetAllEvents() throws Exception {
 		when(eventService.findAll()).thenReturn(Collections.<Event> emptyList());
-		mockGet("/events", MediaType.TEXT_HTML, "events/index", HttpStatus.OK);
+			mockGet("/events", MediaType.TEXT_HTML, "events/index", HttpStatus.OK);
 		verify(eventService, times(1)).findAll();
 	}
 	
@@ -65,7 +65,7 @@ public class EventsControllerWebTest extends TestParent {
 	@Test
 	public void testGetFirstEvent() throws Exception {
 		when(eventService.findById(1)).thenReturn(new Event());
-		mockGet("/events/1", MediaType.TEXT_HTML, "events/show", HttpStatus.OK);
+			mockGet("/events/1", MediaType.TEXT_HTML, "events/show", HttpStatus.OK);
 		verify(eventService, times(1)).findById(1);
 	}
 	
@@ -94,7 +94,7 @@ public class EventsControllerWebTest extends TestParent {
 		.andExpect(view().name("events/new"));
 	}
 	
-	
+	@Ignore
 	@Test
 	public void postEventHtml() throws Exception {
 		mvc.perform(MockMvcRequestBuilders.post("/events/new").contentType(MediaType.APPLICATION_FORM_URLENCODED).accept(MediaType.TEXT_HTML))
