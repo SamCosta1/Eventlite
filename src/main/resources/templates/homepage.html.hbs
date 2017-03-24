@@ -1,1 +1,59 @@
-<p>Stub homepage.</p>
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <script type="text/javascript" src="/webjars/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div class="row">
+      <div class = "col-md-3">
+        <div class="container">
+          <h2>Upcoming Events</h2>
+          <p>The next 3 upcoming events:</p>
+          <table class="table table-striped">
+            <tbody>
+              {{#events_soonest3}}
+				      <tr>
+				      	<td><div>
+				      		<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+				      		</div>
+				      	</td>
+				        <td>
+				        	<i class="fa fa-bolt"></i> 
+				        		<span onclick="window.document.location='/events/{{id}}';">
+				        			Event: {{name}}
+				        		</span><br />
+				            <i class="fa fa-map-marker"></i> Venue: {{venue.name}}<br />
+				            <i class="fa fa-calendar"></i> Date: {{date}}
+				        </td>
+				      </tr>
+			        {{/events_soonest3}}
+            </tbody>
+          </table>
+    		</div>     
+      </div>
+    </div>
+    <div class="row">
+      <div class = "col-md-3">
+        <div class="container">
+          <h2>Popular Venues</h2>
+          <p>The 3 most popular venues:</p>
+          <table class="table table-striped">
+            <tbody>
+              {{#venues_top3}}
+				      <tr>
+				        <td>
+				        	  <i class="fa fa-map-marker"></i>  {{name}}<br />
+				        </td>
+				      </tr>
+			        {{/venues_top3}}
+            </tbody>
+          </table>
+    		</div>     
+      </div>
+    </div>
+  </body>
+</html>
