@@ -2,10 +2,16 @@ package uk.ac.man.cs.eventlite.controllers;
 
 import static uk.ac.man.cs.eventlite.helpers.ErrorHelpers.*;
 
+import java.util.List;
+
+import javax.inject.Inject;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.social.connect.ConnectionRepository;
+import org.springframework.social.twitter.api.Tweet;
+import org.springframework.social.twitter.api.Twitter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,17 +30,34 @@ import uk.ac.man.cs.eventlite.entities.Event;
 @Controller
 @RequestMapping("/events")
 public class EventsControllerWeb {
+	
+	private Twitter twitter;
+    private ConnectionRepository connectionRepository;
 
 	@Autowired
 	private EventService eventService;
 	
 	@Autowired
 	private VenueService venueService;
+	
+	@Inject
+    public EventsControllerWeb(Twitter twitter, ConnectionRepository connectionRepository) {
+        this.twitter = twitter;
+        this.connectionRepository = connectionRepository;
+    }
 
 	@RequestMapping(method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE })
 	public String getAllEvents(Model model) {
-
+		if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
+            return "redirect:/connect/twitter";
+        }
 		model.addAttribute("events", eventService.findAll());
+		List<Tweet> tweets = twitter.timelineOperations().getUserTimeline();
+		if (tweets.size()>5) {
+			tweets = tweets.subList(0,5);
+		} 
+		model.addAttribute("tweets",tweets);
+
 		return "events/index";
 	}
 	
@@ -90,10 +113,18 @@ public class EventsControllerWeb {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE,
 			MediaType.APPLICATION_JSON_VALUE })
 	public String event(@PathVariable("id") long id, Model model) {
-
+		if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
+            return "redirect:/connect/twitter";
+        }
 		model.addAttribute("event", eventService.findById(id));
 
 		return "events/show";
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
+	public String createTweetFromForm(@RequestParam("tweet") String tweet)	{ 
+	    twitter.timelineOperations().updateStatus(tweet);
+	    return "redirect:/events/{id}";
 	}
 	
 	
@@ -111,5 +142,7 @@ public class EventsControllerWeb {
 	  eventService.save(event);
 	  return "redirect:/events";
 	}
+	
+	
 	
 }
