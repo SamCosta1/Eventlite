@@ -76,7 +76,12 @@
     <dependency> 
 		<groupId>org.springframework.social</groupId> 
 		<artifactId>spring-social-twitter</artifactId> 
-	</dependency> 
+	</dependency>
+	<dependency>
+    <groupId>com.google.maps</groupId>
+    <artifactId>google-maps-services</artifactId>
+    <version>0.1.17</version>
+	</dependency>
     
   </dependencies>
 

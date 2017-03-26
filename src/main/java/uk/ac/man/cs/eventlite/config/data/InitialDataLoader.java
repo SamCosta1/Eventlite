@@ -39,22 +39,25 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		}
 		
 		// Initial models.
-		Venue newVenue1 = new Venue();
-		newVenue1.setName("Kilburn 1.1");
-		newVenue1.setCapacity(100);
-		newVenue1.setAddress("University");
+		Venue newVenue1 = new Venue("Kilburn 1.1", 100, 
+				"Kilburn Building, University of Manchester, Oxford Rd, Manchester",
+				"M13 9PL");
 		venueService.save(newVenue1);
 		
 		Venue newVenue2 = new Venue();
 		newVenue2.setName("Stopford 6");
 		newVenue2.setCapacity(100);
-		newVenue2.setAddress("Manchester");
+		newVenue2.setAddress("Stopford Building, University of Manchester, Oxford Rd, Manchester");
+		newVenue2.setPostcode("M13 9PT");
+		newVenue2.setCoords();
 		venueService.save(newVenue2);
 		
 		Venue newVenue3 = new Venue();
 		newVenue3.setName("LF 31");
 		newVenue3.setCapacity(10);
-		newVenue3.setAddress("Kilburn");
+		newVenue3.setAddress("Kilburn Building, University of Manchester, Oxford Rd, Manchester");
+		newVenue3.setPostcode("M13 9PL");
+		newVenue2.setCoords();
 		venueService.save(newVenue3);
 		
 		
@@ -63,10 +66,10 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 
 		
 		try {
-			d1 = f.parse("25/3/2017 12:00");
-			d2 = f.parse("12/4/2017 15:00");
-			d3 = f.parse("10/5/2017 17:00");
-			d4 = f.parse("02/5/2017 20:00");
+			d1 = f.parse("25/3/2018 12:00");
+			d2 = f.parse("12/4/2018 15:00");
+			d3 = f.parse("10/5/2018 17:00");
+			d4 = f.parse("02/5/2018 20:00");
 			d5 = f.parse("1/2/2018 00:00");
 			
 			Event newEvent = new Event("Java Lecture", newVenue1, d1, d1, "");
