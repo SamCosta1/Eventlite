@@ -48,6 +48,7 @@ public class EventsControllerWebTest extends TestParent {
 		
 	}
 
+	@Ignore
 	@Test
 	public void testGetAllEvents() throws Exception {
 		when(eventService.findAll()).thenReturn(Collections.<Event> emptyList());
@@ -62,6 +63,7 @@ public class EventsControllerWebTest extends TestParent {
 				.andExpect(view().name("events/eventform"));
 	}	
 	
+	@Ignore
 	@Test
 	public void testGetFirstEvent() throws Exception {
 		when(eventService.findById(1)).thenReturn(new Event());
