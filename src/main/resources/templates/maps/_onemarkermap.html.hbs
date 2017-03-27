@@ -1,0 +1,26 @@
+<div id="map" ></div>
+
+<script>
+  function initMap() {
+    var myLatLng = {lat: {{venue.latitude}}, lng: {{venue.longitude}} };
+  
+  var mapOptions = {
+    zoom: 10,
+    center: myLatLng,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+            
+  var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+  var marker = new google.maps.Marker({
+    position: myLatLng,
+    map: map,
+    title: '{{venue.name}}' 
+  });
+  
+  }
+</script>
+
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzpcBWB8H5T1aQokcF1TQ4ebniKd7JeR8&callback=initMap">
+ </script>
