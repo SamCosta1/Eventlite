@@ -122,9 +122,20 @@ public class EventsControllerWeb {
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
-	public String createTweetFromForm(@RequestParam("tweet") String tweet)	{ 
-	    twitter.timelineOperations().updateStatus(tweet);
-	    return "redirect:/events/{id}";
+	public String createTweetFromForm(@PathVariable("id") long id, @RequestParam("tweet") String tweet, Model model) {
+		if (tweet.equals(""))
+		{
+			model.addAttribute("error", "Empty tweet");
+		}
+		else
+		{
+			twitter.timelineOperations().updateStatus(tweet);
+			model.addAttribute("success", twitter.timelineOperations().getUserTimeline().get(0));
+			
+		}
+	    model.addAttribute("event", eventService.findById(id));
+
+		return "events/show";
 	}
 	
 	
