@@ -88,14 +88,22 @@ public class Venue {
 		this.postcode = postcode;
 	}
 	
-	public double getLng() {
+	public double getLongitude() {
 		return longitude;
 	}
-	
-	public double getLat() {
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
+	public double getLatitude() {
 		return latitude;
 	}
-	
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
 	public void setCoords() {
 		try {
 			GeocodingResult[] results = GeocodingApi.geocode(context, address + ", " + postcode).await();
