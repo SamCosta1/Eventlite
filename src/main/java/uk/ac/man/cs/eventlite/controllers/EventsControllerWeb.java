@@ -9,6 +9,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.social.ApiException;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.Twitter;
@@ -21,6 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.social.twitter.api.MessageTooLongException;
 
 import uk.ac.man.cs.eventlite.dao.EventService;
 import uk.ac.man.cs.eventlite.dao.SearchEvents;
@@ -121,20 +123,21 @@ public class EventsControllerWeb {
 		return "events/show";
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "tweet/{id}", method = RequestMethod.POST)
 	public String createTweetFromForm(@PathVariable("id") long id, @RequestParam("tweet") String tweet, Model model) {
-		if (tweet.equals(""))
-		{
-			model.addAttribute("error", "Empty tweet");
+	
+		String errors = tweet(tweet);
+		if (errors != null) {			
+			model.addAttribute("status", "error");
+			model.addAttribute("status-message", errors);
 		}
-		else
-		{
-			twitter.timelineOperations().updateStatus(tweet);
-			model.addAttribute("success", twitter.timelineOperations().getUserTimeline().get(0));
-			
+		else {
+			model.addAttribute("status", "success");
+			model.addAttribute("status-message", "Success! You just tweeted:" +
+												 twitter.timelineOperations().getUserTimeline().get(0).getText());			
 		}
-	    model.addAttribute("event", eventService.findById(id));
 
+		model.addAttribute("event", eventService.findById(id));
 		return "events/show";
 	}
 	
@@ -154,6 +157,25 @@ public class EventsControllerWeb {
 	  return "redirect:/events";
 	}
 	
-	
-	
+	// Helper to tweet - returns null if there were no errors
+	private String tweet(String message) {
+		String noWhitespace = message.replaceAll("\\s+","");
+		
+		if (noWhitespace.equals("")) { // Discard whitespace-only tweets
+			return "Your tweet is empty!";
+		}
+		
+		try   { twitter.timelineOperations().updateStatus(message); }
+		catch (MessageTooLongException e) { return "Your tweet is too long!";	    }
+		catch (ApiException e)			  { return "Could not connect to twitter";  }
+		catch (Exception e)				  { return "Error: " + e.getMessage();		}
+		
+		return null;	
+	}		
 }
+	
+	
+	
+	
+	
+	

@@ -5,9 +5,13 @@
     flex-direction:column;
 }
 
-.panel-default {
+@mixin main-default-style {
     margin-bottom: 3vh;
-    background-color: $default-background-col;
+    background-color: $default-background-col;	
+}
+
+.panel-default {
+	@include main-default-style;
     @media (min-width: 768px){
         height: 75vh;
     }
@@ -40,6 +44,21 @@
             display: none;
         }
     }
+}
+
+.tweet-container {
+   @include main-default-style;
+   .status-bar {
+	  padding: 5px;
+	  margin-bottom: 10px;
+      &.success {
+      	 background-color: #9aff9a;
+      }
+     
+      &.error {
+      	 background-color: #fb6464;
+      }	
+   }	
 }
 
 #info-panel .panel-body{
