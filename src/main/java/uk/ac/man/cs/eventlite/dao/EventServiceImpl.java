@@ -1,5 +1,8 @@
 package uk.ac.man.cs.eventlite.dao;
 
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +22,22 @@ public class EventServiceImpl implements EventService {
 		return eventRepository.count();
 	}
 	@Override
-	public Iterable<Event> findAll() {
-		return eventRepository.findAllByOrderByDateDescTimeDescNameAsc();
+	public Iterable<Event> findAll() {		
+		List<Event> pastEvents = eventRepository.findAllByDateBeforeOrderByDateDescTimeDescNameAsc(new Date());
+		List<Event> futureEvents = eventRepository.findAllByDateAfterOrderByDateAscTimeAscNameAsc(new Date());
+		futureEvents.addAll(pastEvents);
+		
+		return futureEvents;
+		
 	}
 	
 	@Override
 	public Iterable<Event> searchByName(String name) {	
-		return eventRepository.findByNameContainingIgnoreCaseOrderByDateDescTimeDescNameAsc(name);
+		List<Event> pastEvents = eventRepository.findByNameContainingIgnoreCaseAndDateBeforeOrderByDateDescTimeDescNameAsc(name, new Date());
+		List<Event> futureEvents = eventRepository.findByNameContainingIgnoreCaseAndDateAfterOrderByDateDescTimeDescNameAsc(name, new Date());
+		futureEvents.addAll(pastEvents);
+		
+		return futureEvents;
 	}
 
 	@Override
@@ -60,12 +72,20 @@ public class EventServiceImpl implements EventService {
 	
 	@Override
 	public Iterable<Event> findAllByUser(User user) {
-		return eventRepository.findAllByUserOrderByDateDescTimeDescNameAsc(user);
+		List<Event> pastEvents = eventRepository.findAllByUserAndDateBeforeOrderByDateDescTimeDescNameAsc(user, new Date());
+		List<Event> futureEvents = eventRepository.findAllByUserAndDateAfterOrderByDateDescTimeDescNameAsc(user, new Date());
+		futureEvents.addAll(pastEvents);
+		
+		return futureEvents;
 	}
 	
 	@Override
 	public Iterable<Event> searchByNameByUser(String name, User user) {
-		return eventRepository.findAllByUserAndNameContainingIgnoreCaseOrderByDateDescTimeDescNameAsc(user, name);
+		List<Event> pastEvents = eventRepository.findAllByUserAndNameContainingIgnoreCaseAndDateBeforeOrderByDateDescTimeDescNameAsc(user, name, new Date());
+		List<Event> futureEvents = eventRepository.findAllByUserAndNameContainingIgnoreCaseAndDateAfterOrderByDateDescTimeDescNameAsc(user, name, new Date());
+		futureEvents.addAll(pastEvents);
+		
+		return futureEvents;
 	}
 
 }

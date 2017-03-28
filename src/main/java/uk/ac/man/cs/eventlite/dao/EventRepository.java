@@ -1,5 +1,8 @@
 package uk.ac.man.cs.eventlite.dao;
 
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 
 import uk.ac.man.cs.eventlite.entities.Event;
@@ -10,8 +13,17 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 	
 	Iterable<Event> findAllByOrderByDateDescTimeDescNameAsc();
 	Event findById(long id);
-	Iterable<Event> findByNameContainingIgnoreCaseOrderByDateDescTimeDescNameAsc(String name);
 	Iterable<Event> findAllByVenue(Venue venue);
-	Iterable<Event> findAllByUserOrderByDateDescTimeDescNameAsc(User user);
-	Iterable<Event> findAllByUserAndNameContainingIgnoreCaseOrderByDateDescTimeDescNameAsc(User user, String name);
+	
+	List<Event> findAllByUserAndDateAfterOrderByDateDescTimeDescNameAsc(User user, Date d);
+	List<Event> findAllByUserAndDateBeforeOrderByDateDescTimeDescNameAsc(User user, Date d);
+	
+	List<Event> findAllByUserAndNameContainingIgnoreCaseAndDateBeforeOrderByDateDescTimeDescNameAsc(User user, String name, Date d);
+	List<Event> findAllByUserAndNameContainingIgnoreCaseAndDateAfterOrderByDateDescTimeDescNameAsc(User user, String name, Date d);
+		
+	List<Event> findAllByDateBeforeOrderByDateDescTimeDescNameAsc(Date date);
+	List<Event> findAllByDateAfterOrderByDateAscTimeAscNameAsc(Date date);
+	
+	List<Event> findByNameContainingIgnoreCaseAndDateAfterOrderByDateDescTimeDescNameAsc(String name, Date date);
+	List<Event> findByNameContainingIgnoreCaseAndDateBeforeOrderByDateDescTimeDescNameAsc(String name, Date date);
 }
