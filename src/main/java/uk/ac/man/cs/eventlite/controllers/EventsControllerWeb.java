@@ -59,9 +59,10 @@ public class EventsControllerWeb {
 		List<Tweet> tweets = twitter.timelineOperations().getUserTimeline();
 		if (tweets.size()>5) {
 			tweets = tweets.subList(0,5);
-		} 
+		}
+		
 		model.addAttribute("tweets",tweets);
-
+		model.addAttribute("user", twitter.userOperations().getUserProfile());
 		return "events/index";
 	}
 	

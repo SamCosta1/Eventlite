@@ -32,6 +32,37 @@
 	}
 }
 
+#twitter-container {
+	margin: 0 auto;
+	
+	.tweets-table {
+		.table-striped > tbody >tr:nth-of-type(odd) {
+    		background-color: $default-background-col;
+		}
+	
+		.table-striped > tbody >tr:nth-of-type(even) {
+		    background-color: $lighten-2;
+		}
+	}
+	
+	.panel-heading {
+		justify-content: space-between;
+	    display: flex;
+	    align-items: center;
+	    
+	    .twitter-avatar {
+			vertical-align:text-bottom;
+			width:30px;
+			height:30px;
+		}
+		
+		.twitter-feed-title {
+			display: inline-block;
+			margin-left:5px;
+		}
+	}
+}
+
 .panel-heading{
     justify-content: space-between;
     display: flex;
@@ -41,7 +72,6 @@
     	min-width: 100px;
     }
 }
-
 
 #image_preview {
 	font-size: 70px;
