@@ -19,9 +19,16 @@
 
 .main-container {
 	margin: 25px;
+	margin-top: 10px;
 	
 	.filler {
 		width: 2px; // HACK: Overriding bootstrap to give 'margin' between columns
+	}
+
+	h1 {
+		// HACK: Though the header and the panel are actually lined up, the curved border makes it look wrong
+		// This fixes that
+		margin-left: 4px;	
 	}
 }
 

@@ -27,6 +27,10 @@ import org.springframework.social.twitter.api.Twitter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.ui.ExtendedModelMap;
+import org.springframework.ui.Model;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import uk.ac.man.cs.eventlite.TestParent;
 import uk.ac.man.cs.eventlite.controllers.EventsControllerWeb;
@@ -34,6 +38,7 @@ import uk.ac.man.cs.eventlite.dao.EventService;
 import uk.ac.man.cs.eventlite.dao.VenueService;
 import uk.ac.man.cs.eventlite.entities.Event;
 import uk.ac.man.cs.eventlite.entities.Venue;
+import uk.ac.man.cs.eventlite.entities.User;
 
 @AutoConfigureMockMvc
 public class EventsControllerWebTest extends TestParent {
@@ -70,8 +75,7 @@ public class EventsControllerWebTest extends TestParent {
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		mvc = MockMvcBuilders.standaloneSetup(eventsController).build();
-		
+		mvc = MockMvcBuilders.standaloneSetup(eventsController).build();		
 	}
 
 	@Test
@@ -124,6 +128,13 @@ public class EventsControllerWebTest extends TestParent {
 					.accept(MediaType.TEXT_HTML_VALUE))
 					.andExpect(view().name("events/index"));
 		verify(eventService, times(1)).searchByName("testString");
+	}
+		
+	@Test
+	public void testGetEventsByUser() throws Exception {
+		when(eventService.findAllByUser(null)).thenReturn(Collections.<Event> emptyList());
+			mockGet("/events/userevents", MediaType.TEXT_HTML, "events/userevents", HttpStatus.OK);
+		verify(eventService, times(1)).findAllByUser(null);
 	}
 	
 	@Test

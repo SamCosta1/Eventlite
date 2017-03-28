@@ -1,6 +1,7 @@
 package uk.ac.man.cs.eventlite.dao;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertThat;
 
@@ -21,7 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import uk.ac.man.cs.eventlite.TestParent;
 import uk.ac.man.cs.eventlite.entities.Event;
+import uk.ac.man.cs.eventlite.entities.User;
 import uk.ac.man.cs.eventlite.entities.Venue;
+import uk.ac.man.cs.eventlite.helpers.UserCreateForm;
 
 public class EventServiceTest extends TestParent {
 
@@ -31,9 +34,14 @@ public class EventServiceTest extends TestParent {
 	@Autowired
 	private VenueService venueService;
 	
+	@Autowired
+	private UserService userService;
+	
 	public Venue testVenue, testVenue2;
 	
 	private Date d1, d2, d3, d4, d5;
+	
+	private User testUser = null;
 	
 	
 	@Before
@@ -61,13 +69,26 @@ public class EventServiceTest extends TestParent {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+				
+		testUser = userService.save(new UserCreateForm("test User"));		
+		
+		Event e1 = new Event("a Test Event 1", testVenue, d5, d5, null);
+			e1.setUser(testUser);
+			
+		Event e2 = new Event("z test event 2", testVenue, d1, d1, null);
+			e2.setUser(testUser);
+			
+		eventService.save(e1);	
+		eventService.save(e2);
+		eventService.save(new Event("b Test Event 3", testVenue, d1, d1, null));	
+		eventService.save(new Event("x test Event", testVenue, d2, d2, null));	
+		eventService.save(new Event("t Another random string", testVenue, d3, d3, null));			
+		eventService.save(new Event("Concert", testVenue, d5, d5, ""));
+		eventService.save(new Event("Java Lecture", testVenue, d2, d2, ""));	
 	}
 
 	@Test
 	public void testFindAll() {
-		eventService.save(new Event("a Test Event 1", testVenue, d1, d1, null));	
-		eventService.save(new Event("f test event 2", testVenue, d2, d2, null));
-
 		List<Event> events = (List<Event>) eventService.findAll();
 
 		long count = eventService.count();
@@ -77,31 +98,7 @@ public class EventServiceTest extends TestParent {
 	}
 
 	@Test
-	public void testAscendingByDateAndTime() {
-	
-		eventService.save(new Event("Concert", testVenue, d5, d5, ""));
-		eventService.save(new Event("Java Lecture", testVenue, d2, d2, ""));
-		
-		List<Event> events = (List<Event>) eventService.findAll();
-		boolean correctOrder = false;
-		int count = 0;
-		for (Event event : events) {
-			String current = event.getName();
-			if (current == "Java Lecture" && count == 0)
-				correctOrder = true;
-			count++;
-		}
-		
-		assertTrue("Java Lecture should be first in the list", correctOrder);
-	}
-	
-	@Test
-	public void testSearchByName() {
-		eventService.save(new Event("a Test Event 1", testVenue, d5, d5, null));	
-		eventService.save(new Event("z test event 2", testVenue, d1, d1, null));
-		eventService.save(new Event("x test Event", testVenue, d2, d2, null));	
-		eventService.save(new Event("t Another random string", testVenue, d3, d3, null));	
-		
+	public void testSearchByName() {		
 		String searchTerm = "test Event";
 		
 		List<Event> events = (List<Event>) eventService.searchByName(searchTerm);
@@ -110,9 +107,8 @@ public class EventServiceTest extends TestParent {
 			assertTrue("Names contain substring 'test event' - case insensitive"
 						, e.getName().toLowerCase().contains(searchTerm.toLowerCase()));			
 				
-		assertThat("Three items returned: ", 3, equalTo(events.size()));
-		testListInOrder(events);
-		
+		assertThat("Three items returned: ", 4, equalTo(events.size()));
+		testListInOrder(events);		
 	}
 	
 	@Test
@@ -126,12 +122,9 @@ public class EventServiceTest extends TestParent {
 
 		List<Event> events = (List<Event>) eventService.findAll();
 		
-		boolean isDeleted = true;
 		for (Event e : events)
-			if (e.equals(event) && e.getVenue().equals(testVenue))
-				isDeleted = false;			
+			assertFalse("Deleted event doesn't appear", e.equals(event) && e.getVenue().equals(testVenue));		
 		
-		assertTrue("Deleted event was deleted", isDeleted);
 		assertThat("Count should decrease by one on delete", initialCount - 1, equalTo(eventService.count()));
 		
 	}
@@ -143,8 +136,7 @@ public class EventServiceTest extends TestParent {
 		long initialCount = eventService.count();
 		eventService.save(event);
 		
-		assertThat("Count should increase by one on save", initialCount + 1, equalTo(eventService.count()));		
-		
+		assertThat("Count should increase by one on save", initialCount + 1, equalTo(eventService.count()));				
 	}
 	
 	@Test
@@ -175,30 +167,12 @@ public class EventServiceTest extends TestParent {
 		Event changedEvent = new Event(newName, testVenue2, d4, d4, "test");
 		
 		eventService.update(currentEvent, changedEvent);
-		
-		boolean checkName, checkVenue, checkDate, checkTime, checkDescription;
-		checkName = checkVenue = checkDate = checkTime = checkDescription = false;
-		
-		if (currentEvent.getName().equals(newName))
-			checkName = true;
-
-		if (currentEvent.getVenue().equals(testVenue2))
-			checkVenue = true;
-		
-		if (currentEvent.getDate().equals(d4))
-			checkDate = true;
-		
-		if (currentEvent.getTime().equals(d4))
-			checkTime = true;
-		
-		if (currentEvent.getDescription().equals("test"))
-			checkDescription = true;
-		
-		assertTrue(checkName);
-		assertTrue(checkVenue);
-		assertTrue(checkDate);
-		assertTrue(checkTime);
-		assertTrue(checkDescription);
+			
+		assertTrue(currentEvent.getName().equals(newName));
+		assertTrue(currentEvent.getVenue().equals(testVenue2));
+		assertTrue(currentEvent.getDate().equals(d4));
+		assertTrue(currentEvent.getTime().equals(d4));
+		assertTrue(currentEvent.getDescription().equals("test"));
 	}
 	
 	@Test
@@ -208,8 +182,27 @@ public class EventServiceTest extends TestParent {
 		
 		Event foundEvent = eventService.findById(event.getId());	
 
-		assertTrue("The find by Id method found the correct event", foundEvent.equals(event));
+		assertTrue("The find by Id method found the correct event", foundEvent.equals(event));		
+	}
+	
+	@Test
+	public void testFindByNoUser() {
+		List<Event> events = (List<Event>)eventService.findAllByUser(testUser);
 		
+		for (Event e : events)
+			assertTrue("All users are the test user", e.getUser().equals(testUser));
+		
+		assertThat("There are 2 of them", events.size(), equalTo(2));
+		testListInOrder(events);
+	}
+	
+	@Test
+	public void testFindExistingUser() {
+		List<Event> events = (List<Event>)eventService.findAllByUser(null);
+		
+		for (Event e : events) 
+			assertTrue("All users are the test user", e.getUser() == null);
+		testListInOrder(events);
 	}
 
 	@Test

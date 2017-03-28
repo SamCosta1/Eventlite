@@ -28,6 +28,8 @@ import uk.ac.man.cs.eventlite.dao.EventService;
 import uk.ac.man.cs.eventlite.dao.SearchEvents;
 import uk.ac.man.cs.eventlite.dao.VenueService;
 import uk.ac.man.cs.eventlite.entities.Event;
+import uk.ac.man.cs.eventlite.entities.User;
+import uk.ac.man.cs.eventlite.helpers.CurrentUser;
 
 @Controller
 @RequestMapping("/events")
@@ -78,6 +80,16 @@ public class EventsControllerWeb {
 		model.addAttribute("events", searchCriterion.search(eventService));
 		return "events/index";
 	}
+	
+	@RequestMapping(value = "/userevents",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, 
+			produces = { MediaType.TEXT_HTML_VALUE })
+    public String filterUserEvents(@ModelAttribute("search") SearchEvents searchCriterion, BindingResult result, Model model) {    
+		searchCriterion.setUser(getCurrentUser(model));
+		model.addAttribute("events", searchCriterion.search(eventService));
+		return "events/userevents";
+    }
 	
 	
 	@RequestMapping(value="/{id}/update",
@@ -143,9 +155,15 @@ public class EventsControllerWeb {
 	
 	
 	@RequestMapping (value = "/new", method = RequestMethod.GET)
-	public String showNew(Model model)	{
+	public String showNew(Model model) 	{
 		model.addAttribute("venues", venueService.findAll());
-	    return "events/new";
+		return "events/new";
+	}
+	
+	@RequestMapping (value = "/userevents", method = RequestMethod.GET)
+	public String showUserEvents(Model model) 	{				
+		model.addAttribute("events", eventService.findAllByUser(getCurrentUser(model)));
+		return "events/userevents";
 	}
 	
 
@@ -153,6 +171,7 @@ public class EventsControllerWeb {
 			produces = { MediaType.TEXT_HTML_VALUE })
 	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Event event, BindingResult result,
 			                          Model model)	{ 
+	  event.setUser(getCurrentUser(model));
 	  eventService.save(event);
 	  return "redirect:/events";
 	}
@@ -172,10 +191,11 @@ public class EventsControllerWeb {
 		
 		return null;	
 	}		
+	
+	// Helper that returns the current user
+	private static User getCurrentUser(Model model) {
+		CurrentUser mapVal = ((CurrentUser)model.asMap().get("currentUser"));
+		return mapVal == null ? null : mapVal.getUser();
+	}
+	
 }
-	
-	
-	
-	
-	
-	
