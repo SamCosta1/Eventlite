@@ -7,17 +7,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Collections;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
+
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.social.connect.Connection;
+import org.springframework.social.connect.ConnectionRepository;
+import org.springframework.social.twitter.api.TimelineOperations;
+import org.springframework.social.twitter.api.Tweet;
+import org.springframework.social.twitter.api.Twitter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -25,7 +31,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import uk.ac.man.cs.eventlite.TestParent;
 import uk.ac.man.cs.eventlite.controllers.EventsControllerWeb;
 import uk.ac.man.cs.eventlite.dao.EventService;
+import uk.ac.man.cs.eventlite.dao.VenueService;
 import uk.ac.man.cs.eventlite.entities.Event;
+import uk.ac.man.cs.eventlite.entities.Venue;
 
 @AutoConfigureMockMvc
 public class EventsControllerWebTest extends TestParent {
@@ -39,8 +47,26 @@ public class EventsControllerWebTest extends TestParent {
 	private EventService eventService;
 	
 	@Mock
+	private VenueService venueService;
+	
+	@Mock
 	private Event event;
 	
+	@Mock
+	private Venue venue;
+	
+	@Mock
+	private Twitter twitter;
+	
+	@Mock
+	private ConnectionRepository connectionRepository;
+	
+	@Mock
+	private TimelineOperations timelineOperations;
+	
+	@Mock
+	private Connection<Twitter> connection;
+		    
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
@@ -48,26 +74,44 @@ public class EventsControllerWebTest extends TestParent {
 		
 	}
 
-	@Ignore
 	@Test
 	public void testGetAllEvents() throws Exception {
-		when(eventService.findAll()).thenReturn(Collections.<Event> emptyList());
-		mockGet("/events", MediaType.TEXT_HTML, "events/index", HttpStatus.OK);
+		when(connectionRepository.findPrimaryConnection(Twitter.class)).thenReturn(connection);
+		when(twitter.timelineOperations()).thenReturn(timelineOperations);
+		when(timelineOperations.getUserTimeline()).thenReturn(Collections.<Tweet>emptyList());
+		when(eventService.findAll()).thenReturn(Collections.<Event> emptyList());		
+			mockGet("/events", MediaType.TEXT_HTML, "events/index", HttpStatus.OK);
 		verify(eventService, times(1)).findAll();
+		verify(connectionRepository, times(1)).findPrimaryConnection(Twitter.class);
+		verify(twitter, times(1)).timelineOperations();
+		verify(timelineOperations, times(1)).getUserTimeline();
 	}
 	
-	@Ignore
 	@Test
-	public void testShowUpdateForm() throws Exception {
-		mvc.perform(get("/events/3/update").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
+	public void testGetAllEventNoTwitterConnection() throws Exception {
+		when(connectionRepository.findPrimaryConnection(Twitter.class)).thenReturn(null);
+			mockGet("/events", MediaType.TEXT_HTML, "redirect:/connect/twitter", HttpStatus.FOUND);
+		verify(connectionRepository).findPrimaryConnection(Twitter.class);
+	}
+	
+	@Test
+	public void testShowUpdateForm() throws Exception {		
+		when(eventService.findById(3)).thenReturn(event);
+		when(event.getVenue()).thenReturn(venue);
+		when(venueService.findAllExceptOne(venue)).thenReturn(Collections.<Venue> emptyList());
+			mvc.perform(get("/events/3/update").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
 				.andExpect(view().name("events/eventform"));
+		verify(eventService, times(1)).findById(3);
+		verify(venueService, times(1)).findAllExceptOne(venue);
+		verify(event, times(1)).getVenue();		
 	}	
 	
-	@Ignore
 	@Test
 	public void testGetFirstEvent() throws Exception {
+		when(connectionRepository.findPrimaryConnection(Twitter.class)).thenReturn(connection);
+		when(twitter.timelineOperations()).thenReturn(timelineOperations);
 		when(eventService.findById(1)).thenReturn(new Event());
-		mockGet("/events/1", MediaType.TEXT_HTML, "events/show", HttpStatus.OK);
+			mockGet("/events/1", MediaType.TEXT_HTML, "events/show", HttpStatus.OK);
 		verify(eventService, times(1)).findById(1);
 	}
 	
@@ -89,24 +133,41 @@ public class EventsControllerWebTest extends TestParent {
 			.andExpect(view().name("redirect:/events"));
 	}
 	
-	@Ignore
 	@Test
-	public void getNewEventHtml() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.get("/events/new").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
-			.andExpect(view().name("events/new"));
+	public void testGetNewEventHtml() throws Exception {
+		when(venueService.findAll()).thenReturn(Collections.<Venue> emptyList());
+			mvc.perform(MockMvcRequestBuilders.get("/events/new").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
+				.andExpect(view().name("events/new"));
+		verify(venueService, times(1)).findAll();
 	}
-	
-	
+		
 	@Test
-	public void postEventHtml() throws Exception {
+	public void testPostEventHtml() throws Exception {
 		mvc.perform(MockMvcRequestBuilders.post("/events/new").contentType(MediaType.APPLICATION_FORM_URLENCODED).accept(MediaType.TEXT_HTML))
 			.andExpect(view().name("redirect:/events"));
 	}
 	
-	// Helpers ----
+	@Test
+	public void testValidTweet() throws Exception {
+		testTweet("This is a valid tweet");
+	}
 	
+	@Test
+	public void testEmptyTweet() throws Exception {
+	
+	}
+	
+	// Helpers ----	
 	private void mockGet(String url, MediaType mediaType, String viewName, HttpStatus status) throws Exception {
 		mvc.perform(get(url).accept(mediaType)).andExpect(status().is(status.value()))
 			.andExpect(view().name(viewName));
 	}	
+	
+	private void testTweet(String tweet) throws Exception {		
+		mvc.perform(MockMvcRequestBuilders.post("/events/tweet/1")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+				.param("tweet", tweet)
+				.accept(MediaType.TEXT_HTML_VALUE))
+				.andExpect(view().name("events/show"));
+	}
 }
