@@ -10,10 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Before;
@@ -39,7 +36,7 @@ public class EventServiceTest extends TestParent {
 	
 	public Venue testVenue, testVenue2;
 	
-	private Date d1, d2, d3, d4, d5;
+	private Date d1, d2, d3, d4, d5, d6, d7;
 	
 	private User testUser = null;
 	
@@ -64,7 +61,9 @@ public class EventServiceTest extends TestParent {
 			d2 = f.parse("12/4/2018 00:00");
 			d3 = f.parse("10/5/2018 17:00");
 			d4 = f.parse("02/5/2018 20:00");
-			d5 = f.parse("01/2/2018 01:00");
+			d5 = f.parse("01/2/2012 01:00");
+			d6 = f.parse("01/2/2011 01:00");
+			d7 = f.parse("01/2/2011 01:00");
 		
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -85,6 +84,8 @@ public class EventServiceTest extends TestParent {
 		eventService.save(new Event("t Another random string", testVenue, d3, d3, null));			
 		eventService.save(new Event("Concert", testVenue, d5, d5, ""));
 		eventService.save(new Event("Java Lecture", testVenue, d2, d2, ""));	
+		eventService.save(new Event("A Test", testVenue, d6, d6, ""));
+		eventService.save(new Event("B Test", testVenue, d7, d7, ""));
 	}
 
 	@Test
@@ -233,24 +234,56 @@ public class EventServiceTest extends TestParent {
 	// then check both lists are the same, i.e. the original list was
 	// Correct in the first place
 	private void testListInOrder(List<Event> events) {
-		List<Event> listInOrder = new ArrayList<Event>(events);
-		Collections.sort(listInOrder, new Comparator<Event>() {
-
-			@Override
-			public int compare(Event e1, Event e2) {
-				if (e1.getDate().equals(e2.getDate()) && e1.getTime().equals(e2.getTime()))
-					return e1.getName().compareTo(e2.getName());
+		List<Event> pastEvents = new ArrayList<Event>();
+		List<Event> futureEvents = new ArrayList<Event>();
 		
-				if (e1.getDate().equals(e2.getDate()))
-					return e2.getTime().compareTo(e1.getTime());
-				
-				return e2.getDate().compareTo(e1.getDate());
+		boolean reachedPastEvents = false;
+		for (Event e : events) {
+			if (reachedPastEvents) // Checking all past events come after the future ones
+				assertTrue(e.getDate().before(new Date()));
+			
+			if (e.isPastEvent()) {
+				pastEvents.add(e);
+				reachedPastEvents = true;
+			} else {
+				futureEvents.add(e);
+			}				
+		}
+		Event previous = null;
+		for (Event e : pastEvents) {
+			if (previous == null) {
+				previous = e;
+				continue;
 			}
-		});
+			
+			if (e.getDate().equals(previous.getDate())) {
+				if (e.getTime().equals(previous.getTime()))
+					assertTrue(previous.getName().compareTo(e.getName()) <= 0);
+				else
+					assertTrue(previous.getTime().before(e.getTime()));
+			}
+			else {
+				assertTrue(e.getDate().before(previous.getDate()));
+			}
+		}
 		
-		Iterator<Event> iterator = events.iterator();
-		for (Event e: listInOrder)
-			assertTrue(e.equals(iterator.next()));
+		previous = null;
+		for (Event e : futureEvents) {
+			if (previous == null) {
+				previous = e;
+				continue;
+			}
+			
+			if (e.getDate().equals(previous.getDate())) {
+				if (e.getTime().equals(previous.getTime()))
+					assertTrue(previous.getName().compareTo(e.getName()) <= 0);
+				else
+					assertTrue(previous.getTime().before(e.getTime()));
+			}
+			else {
+				assertTrue(e.getDate().after(previous.getDate()));
+			}
+		}		
 	}
 
 	
@@ -268,8 +301,7 @@ public class EventServiceTest extends TestParent {
 			if (e.equals(event) && e.getVenue().equals(testVenue))
 				isAdded = true;			
 		
-		assertTrue("The event was added", isAdded);
-		
+		assertTrue("The event was added", isAdded);		
 		assertThat("Count should increase by one on add", initialCount + 1, equalTo(eventService.count()));
 	}
 }
