@@ -24,6 +24,8 @@ import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.twitter.api.TimelineOperations;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.Twitter;
+import org.springframework.social.twitter.api.TwitterProfile;
+import org.springframework.social.twitter.api.UserOperations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -38,7 +40,6 @@ import uk.ac.man.cs.eventlite.dao.EventService;
 import uk.ac.man.cs.eventlite.dao.VenueService;
 import uk.ac.man.cs.eventlite.entities.Event;
 import uk.ac.man.cs.eventlite.entities.Venue;
-import uk.ac.man.cs.eventlite.entities.User;
 
 @AutoConfigureMockMvc
 public class EventsControllerWebTest extends TestParent {
@@ -70,7 +71,13 @@ public class EventsControllerWebTest extends TestParent {
 	private TimelineOperations timelineOperations;
 	
 	@Mock
+	private UserOperations userOperations;
+	
+	@Mock
 	private Connection<Twitter> connection;
+	
+	@Mock
+	private TwitterProfile profile;
 		    
 	@Before
 	public void setup() {
@@ -82,6 +89,8 @@ public class EventsControllerWebTest extends TestParent {
 	public void testGetAllEvents() throws Exception {
 		when(connectionRepository.findPrimaryConnection(Twitter.class)).thenReturn(connection);
 		when(twitter.timelineOperations()).thenReturn(timelineOperations);
+		when(twitter.userOperations()).thenReturn(userOperations);
+		when(userOperations.getUserProfile()).thenReturn(profile);
 		when(timelineOperations.getUserTimeline()).thenReturn(Collections.<Tweet>emptyList());
 		when(eventService.findAll()).thenReturn(Collections.<Event> emptyList());		
 			mockGet("/events", MediaType.TEXT_HTML, "events/index", HttpStatus.OK);
