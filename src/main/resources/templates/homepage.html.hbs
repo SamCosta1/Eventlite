@@ -1,13 +1,13 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/webjars/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../css/header.css">
-    <script type="text/javascript" src="/webjars/jquery/2.2.4/jquery.min.js"></script>
-    <script type="text/javascript" src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  </head>
-  <body>
+{{#partial "head"}}
+<link rel="stylesheet" href="../css/main.css">
+{{/partial}}
+
+{{#partial "navbar"}}
+home
+{{/partial}}
+
+{{#partial "content"}}
+
     <div class="row">
       <div class = "col-md-3">
         <div class="container">
@@ -45,7 +45,7 @@
             <tbody>
               {{#venues_top3}}
 				      <tr>
-				        <td>
+				        <td onclick="window.document.location='/venues/{{id}}';">
 				        	  <i class="fa fa-map-marker"></i>  {{name}}<br />
 				        </td>
 				      </tr>
@@ -55,5 +55,8 @@
     		</div>     
       </div>
     </div>
-  </body>
-</html>
+
+
+{{/partial}}
+
+{{> layouts/base title="EventLite events"}}
