@@ -23,8 +23,8 @@ public class EventServiceImpl implements EventService {
 	}
 	@Override
 	public Iterable<Event> findAll() {		
-		List<Event> pastEvents = eventRepository.findAllByDateBeforeOrderByDateDescTimeDescNameAsc(new Date());
-		List<Event> futureEvents = eventRepository.findAllByDateAfterOrderByDateAscTimeAscNameAsc(new Date());
+		List<Event> pastEvents = eventRepository.findAllByDateBeforeOrderByDateDescNameAsc(new Date());
+		List<Event> futureEvents = eventRepository.findAllByDateAfterOrderByDateAscNameAsc(new Date());
 		futureEvents.addAll(pastEvents);
 		
 		return futureEvents;
@@ -33,8 +33,8 @@ public class EventServiceImpl implements EventService {
 	
 	@Override
 	public Iterable<Event> searchByName(String name) {	
-		List<Event> pastEvents = eventRepository.findByNameContainingIgnoreCaseAndDateBeforeOrderByDateDescTimeDescNameAsc(name, new Date());
-		List<Event> futureEvents = eventRepository.findByNameContainingIgnoreCaseAndDateAfterOrderByDateAscTimeAscNameAsc(name, new Date());
+		List<Event> pastEvents = eventRepository.findByNameContainingIgnoreCaseAndDateBeforeOrderByDateDescNameAsc(name, new Date());
+		List<Event> futureEvents = eventRepository.findByNameContainingIgnoreCaseAndDateAfterOrderByDateAscNameAsc(name, new Date());
 		futureEvents.addAll(pastEvents);
 		
 		return futureEvents;
@@ -72,8 +72,8 @@ public class EventServiceImpl implements EventService {
 	
 	@Override
 	public Iterable<Event> findAllByUser(User user) {
-		List<Event> pastEvents = eventRepository.findAllByUserAndDateBeforeOrderByDateDescTimeDescNameAsc(user, new Date());
-		List<Event> futureEvents = eventRepository.findAllByUserAndDateAfterOrderByDateAscTimeDescNameAsc(user, new Date());
+		List<Event> pastEvents = eventRepository.findAllByUserAndDateBeforeOrderByDateDescNameAsc(user, new Date());
+		List<Event> futureEvents = eventRepository.findAllByUserAndDateAfterOrderByDateAscNameAsc(user, new Date());
 		futureEvents.addAll(pastEvents);
 		
 		return futureEvents;
@@ -81,8 +81,8 @@ public class EventServiceImpl implements EventService {
 	
 	@Override
 	public Iterable<Event> searchByNameByUser(String name, User user) {
-		List<Event> pastEvents = eventRepository.findAllByUserAndNameContainingIgnoreCaseAndDateBeforeOrderByDateDescTimeDescNameAsc(user, name, new Date());
-		List<Event> futureEvents = eventRepository.findAllByUserAndNameContainingIgnoreCaseAndDateAfterOrderByDateDescTimeAscNameAsc(user, name, new Date());
+		List<Event> pastEvents = eventRepository.findAllByUserAndNameContainingIgnoreCaseAndDateBeforeOrderByDateDescNameAsc(user, name, new Date());
+		List<Event> futureEvents = eventRepository.findAllByUserAndNameContainingIgnoreCaseAndDateAfterOrderByDateDescNameAsc(user, name, new Date());
 		futureEvents.addAll(pastEvents);
 		
 		return futureEvents;

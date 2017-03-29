@@ -15,15 +15,15 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 	Event findById(long id);
 	Iterable<Event> findAllByVenue(Venue venue);
 	
-	List<Event> findAllByUserAndDateAfterOrderByDateAscTimeDescNameAsc(User user, Date d);
-	List<Event> findAllByUserAndDateBeforeOrderByDateDescTimeDescNameAsc(User user, Date d);
+	List<Event> findAllByUserAndDateAfterOrderByDateAscNameAsc(User user, Date d);
+	List<Event> findAllByUserAndDateBeforeOrderByDateDescNameAsc(User user, Date d);
 	
-	List<Event> findAllByUserAndNameContainingIgnoreCaseAndDateBeforeOrderByDateDescTimeDescNameAsc(User user, String name, Date d);
-	List<Event> findAllByUserAndNameContainingIgnoreCaseAndDateAfterOrderByDateDescTimeAscNameAsc(User user, String name, Date d);
+	List<Event> findAllByUserAndNameContainingIgnoreCaseAndDateBeforeOrderByDateDescNameAsc(User user, String name, Date d);
+	List<Event> findAllByUserAndNameContainingIgnoreCaseAndDateAfterOrderByDateDescNameAsc(User user, String name, Date d);
 		
-	List<Event> findAllByDateBeforeOrderByDateDescTimeDescNameAsc(Date date);
-	List<Event> findAllByDateAfterOrderByDateAscTimeAscNameAsc(Date date);
+	List<Event> findAllByDateBeforeOrderByDateDescNameAsc(Date date);
+	List<Event> findAllByDateAfterOrderByDateAscNameAsc(Date date);
 	
-	List<Event> findByNameContainingIgnoreCaseAndDateAfterOrderByDateAscTimeAscNameAsc(String name, Date date);
-	List<Event> findByNameContainingIgnoreCaseAndDateBeforeOrderByDateDescTimeDescNameAsc(String name, Date date);
+	List<Event> findByNameContainingIgnoreCaseAndDateAfterOrderByDateAscNameAsc(String name, Date date);
+	List<Event> findByNameContainingIgnoreCaseAndDateBeforeOrderByDateDescNameAsc(String name, Date date);
 }

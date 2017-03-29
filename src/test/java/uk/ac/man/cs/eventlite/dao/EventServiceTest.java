@@ -230,9 +230,6 @@ public class EventServiceTest extends TestParent {
 	}
 	
 	// Helper method for checking a result set is in correct order
-	// Works by sorting the elements into the correct order
-	// then check both lists are the same, i.e. the original list was
-	// Correct in the first place
 	private void testListInOrder(List<Event> events) {
 		List<Event> pastEvents = new ArrayList<Event>();
 		List<Event> futureEvents = new ArrayList<Event>();
@@ -256,15 +253,10 @@ public class EventServiceTest extends TestParent {
 				continue;
 			}
 			
-			if (e.getDate().equals(previous.getDate())) {
-				if (e.getTime().equals(previous.getTime()))
-					assertTrue(previous.getName().compareTo(e.getName()) <= 0);
-				else
-					assertTrue(previous.getTime().before(e.getTime()));
-			}
-			else {
-				assertTrue(e.getDate().before(previous.getDate()));
-			}
+			if (e.getDate().equals(previous.getDate())) 
+				assertTrue(previous.getName().compareTo(e.getName()) <= 0);			
+			else 
+				assertTrue(e.getDate().before(previous.getDate()));			
 		}
 		
 		previous = null;
@@ -274,15 +266,10 @@ public class EventServiceTest extends TestParent {
 				continue;
 			}
 			
-			if (e.getDate().equals(previous.getDate())) {
-				if (e.getTime().equals(previous.getTime()))
-					assertTrue(previous.getName().compareTo(e.getName()) <= 0);
-				else
-					assertTrue(previous.getTime().before(e.getTime()));
-			}
-			else {
-				assertTrue(e.getDate().after(previous.getDate()));
-			}
+			if (e.getDate().equals(previous.getDate())) 
+				assertTrue(previous.getName().compareTo(e.getName()) <= 0);		
+			else 
+				assertTrue(e.getDate().after(previous.getDate()));			
 		}		
 	}
 
