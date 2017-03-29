@@ -27,8 +27,14 @@
         }        
     }
 
-    &.userevents {
+    &.events {
         .events-button {
+            @include active;
+        }        
+    }
+    
+    &.userevents {
+        .userevents-button {
             @include active;
         }        
     }
