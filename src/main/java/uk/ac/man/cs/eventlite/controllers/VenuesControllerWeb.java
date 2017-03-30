@@ -50,4 +50,10 @@ public class VenuesControllerWeb {
 		return "venues/show";
 	}
 	
+	@RequestMapping (value = "/map", method = RequestMethod.GET)
+	public String showNew(Model model)	{
+		model.addAttribute("venues", venueService.findAll());
+	    return "events/new";
+	}
+	
 }

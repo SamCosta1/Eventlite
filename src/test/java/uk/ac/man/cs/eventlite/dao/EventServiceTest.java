@@ -43,11 +43,11 @@ public class EventServiceTest extends TestParent {
 	
 	@Before
 	public void setup() {
-		testVenue = new Venue(null, 0, null);
+		testVenue = new Venue(null, 0, null, null);
 		testVenue.setName("Test Event Name");
 		testVenue.setCapacity(10);
 		
-		testVenue2 = new Venue(null, 0, null);
+		testVenue2 = new Venue(null, 0, null, null);
 		testVenue2.setName("Test Event Name 2");
 		testVenue2.setCapacity(20);
 		
@@ -209,7 +209,7 @@ public class EventServiceTest extends TestParent {
 	@Test
 	public void testFindAllByVenue() {
 		
-		testVenue = new Venue(null, 0, null);
+		testVenue = new Venue(null, 0, null, null);
 		testVenue.setName("Test Event Name");
 		testVenue.setCapacity(100);
 		

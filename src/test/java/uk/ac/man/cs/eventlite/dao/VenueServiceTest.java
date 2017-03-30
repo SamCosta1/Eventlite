@@ -23,10 +23,10 @@ public class VenueServiceTest extends TestParent{
 
 	@Test
 	public void findAllTest() {
-		venueService.save(new Venue("z", 10, ""));	
-		venueService.save(new Venue("x", 10, ""));
-		venueService.save(new Venue("a", 10, ""));	
-		venueService.save(new Venue("b", 10, ""));	
+		venueService.save(new Venue("z", 10, "", ""));	
+		venueService.save(new Venue("x", 10, "", ""));
+		venueService.save(new Venue("a", 10, "", ""));	
+		venueService.save(new Venue("b", 10, "", ""));	
 		
 		List<Venue> venues = (List<Venue>) venueService.findAll();
 		long count = venueService.count();
@@ -37,7 +37,7 @@ public class VenueServiceTest extends TestParent{
 	
 	@Test
 	public void findAllExceptOne() {
-		Venue ignoredEvent = new Venue("name1", 100, "address1");
+		Venue ignoredEvent = new Venue("name1", 100, "address1", "");
 		venueService.save(ignoredEvent);
 		boolean found = false;
 		
@@ -52,7 +52,7 @@ public class VenueServiceTest extends TestParent{
 	
 	@Test
 	public void testCount() {
-		Venue newVenue = new Venue("name1", 100, "address1");
+		Venue newVenue = new Venue("name1", 100, "address1", "");
 		
 		long initialCount = venueService.count();
 		venueService.save(newVenue);
@@ -63,10 +63,10 @@ public class VenueServiceTest extends TestParent{
 	
 	@Test
 	public void testSearchByName() {
-		venueService.save(new Venue("d Test Venue 1", 10, "address1"));	
-		venueService.save(new Venue("b test venue 2", 10, "address2"));
-		venueService.save(new Venue("a test Venue", 10, "address3"));	
-		venueService.save(new Venue("f Another random string", 10, "address4"));	
+		venueService.save(new Venue("d Test Venue 1", 10, "address1", ""));	
+		venueService.save(new Venue("b test venue 2", 10, "address2", ""));
+		venueService.save(new Venue("a test Venue", 10, "address3", ""));	
+		venueService.save(new Venue("f Another random string", 10, "address4", ""));	
 		
 		String searchTerm = "test Venue";		
 		List<Venue> venues = (List<Venue>) venueService.searchByName(searchTerm);	
@@ -85,7 +85,7 @@ public class VenueServiceTest extends TestParent{
 
 		long previousCount = venueService.count();
 		
-		Venue newVenue = new Venue("name1", 100, "address1");
+		Venue newVenue = new Venue("name1", 100, "address1", "");
 		venueService.save(newVenue);
 		
 		long newCount = venueService.count();
@@ -104,7 +104,7 @@ public class VenueServiceTest extends TestParent{
 	
 	@Test
 	public void testFindById() {
-		Venue venue = new Venue("test Venue", 1000, "");
+		Venue venue = new Venue("test Venue", 1000, "", "");
 		venueService.save(venue);
 		
 		Venue foundVenue = venueService.findById(venue.getId());	

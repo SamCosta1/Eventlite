@@ -1,0 +1,40 @@
+<div id="map" ></div>
+<style>
+#map{
+	height:500px;
+	width:100%;
+	}
+</style>
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+
+<script>
+  
+function initMap() {
+
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 4,
+    center: locations[0],
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  });
+
+  var markers = locations.map(function(location, i) {
+    return new google.maps.Marker({
+      position: location
+    });
+  });
+
+  var markerCluster = new MarkerClusterer(map, markers,
+      {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+}
+
+var locations = [
+  {{#venues}}
+    { lat: {{latitude}}, lng: {{longitude}} }{{#unless @last}},{{/unless}}
+  {{/venues}}
+]
+
+</script>
+
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzpcBWB8H5T1aQokcF1TQ4ebniKd7JeR8&callback=initMap">
+</script>
