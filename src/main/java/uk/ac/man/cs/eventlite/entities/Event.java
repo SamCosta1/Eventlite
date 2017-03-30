@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -52,6 +51,9 @@ public class Event {
 	@NotNull
 	@ManyToOne
 	private Venue venue;
+	
+	@ManyToOne
+	private User user;
 	
 	@Transient
 	private boolean pastEvent;
@@ -108,6 +110,14 @@ public class Event {
 		this.description = description;
 	}
 	
+	public User getUser() {
+		return user;
+	}
+	
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
 	public Venue getVenue() {
 		return venue;
 	}
@@ -125,11 +135,7 @@ public class Event {
 	}
 	
 	public boolean isPastEvent() {
-		return this.pastEvent;
+		return date.before(new Date());
 	}
 	
-	@PostLoad
-	private void onLoad() {
-		this.pastEvent = date.before(new Date());
-	}
 }

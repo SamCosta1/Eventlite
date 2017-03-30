@@ -3,15 +3,15 @@
 {{/partial}}
 
 {{#partial "navbar"}}
-home
+events
 {{/partial}}
 
 {{#partial "content"}}
 
 <div class="main-container">
-	<h1>All events</h1>
 	<div class="row justify-content-between">
-		<div class="col-md-3 filters-container" id="filterLooks">	
+		<h1>All events</h1>
+		<div class="col-md-3 filters-container" id="filterLooks">
 			<h2>Filters</h2>
 			<form action="/events/" method="post">
 			   <div class="form-group">    
@@ -53,7 +53,37 @@ home
       <a class="btn btn-primary" role="button" onclick="location.href='/events/new'">Add event</a>
     </div>
   </div>
+  
+
+  <div class="col-md-8 panel panel-default" id="twitter-container"> 
+    <div class="panel-heading">
+      <div style="display: inline-block">
+        <img class="twitter-avatar" src="{{user.profileImageUrl}}" />
+        <h3 class="twitter-feed-title"> Twitter Feed <a href="http://www.twitter.com/{{user.screenName}}" target="_blank">@{{user.screenName}}</a></h3>
+      </div>
+    </div>
+
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Message</th>
+          <th>Date</th>
+        <tr>
+      </thead>
+      <tbody>
+        {{#each tweets}}
+          <tr>
+            <td>{{text}}</td>
+            <td>{{createdAt}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+  
 </div>
+
+
 
 {{/partial}}
 

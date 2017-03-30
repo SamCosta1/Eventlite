@@ -1,6 +1,6 @@
 {{#partial "head"}}
-<link rel="stylesheet" href="../css/main.css">
-<link rel="stylesheet" href="../css/show.css">
+<link rel="stylesheet" href="../../css/main.css">
+<link rel="stylesheet" href="../../css/show.css">
 {{/partial}}
 
 {{#partial "navbar"}}
@@ -54,8 +54,23 @@
 	      </div>
 	    </div>
 	  </div>
+  	 {{/event}}      
+      <div class="panel tweet-container">
+      	<div class="panel-body">
+      	   <div class="status-bar {{status}}">
+      	   	  <div class="message">{{status-message}}</div>
+      	   </div>
+      	   <form action="/events/tweet/{{id}}" method="post">
+      		  <div class="form-group">
+      		  	<input class="form-control" type="text" name="tweet" id="tweet" placeholder="Tweet..." />
+      		  </div>
+      		  <button class="btn btn-primary" type="submit">Tweet!</button>
+      		</form> 
+      	</div>
+      </div>
+
   </div>
-  {{/event}}
+ 
 {{/partial}}
 
 {{> layouts/base title="EventLite event view"}}

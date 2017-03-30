@@ -10,6 +10,7 @@
 
     .navbar {
         background-color: $default-background-col;
+        margin-bottom: 10px !important; // Important used to override bootstrap
         a:hover {
             color: $darken-5 !important; // Important used to overidde bootstrap
         }
@@ -28,6 +29,12 @@
 
     &.events {
         .events-button {
+            @include active;
+        }        
+    }
+    
+    &.userevents {
+        .userevents-button {
             @include active;
         }        
     }

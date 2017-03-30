@@ -1,4 +1,4 @@
-package uk.ac.man.cs.eventlite.controllers.events;
+package uk.ac.man.cs.eventlite.controllers.users;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.StringContains.containsString;
@@ -7,7 +7,6 @@ import static org.junit.Assert.assertThat;
 import java.util.Collections;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
@@ -23,7 +22,7 @@ import org.springframework.http.ResponseEntity;
 import uk.ac.man.cs.eventlite.TestParent;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class EventsControllerWebIntegrationTest extends TestParent {
+public class UsersControllerWebIntegrationTest extends TestParent {
 
 	@LocalServerPort
 	private int port;
@@ -39,52 +38,40 @@ public class EventsControllerWebIntegrationTest extends TestParent {
 		headers.setAccept(Collections.singletonList(MediaType.TEXT_HTML));
 		httpEntity = new HttpEntity<String>(headers);
 	}
-
-	@Test
-	public void testGetAllEvents() {
-		get("/events");
-	}
 	
 	@Test
 	public void testGetFirstEvent() {
-		get("/events/1");
+		get("/users/1");
 	}
 	
 	@Test
-	public void testUserEvents() {
-		get("/events/userevents");
-	}	
-
-	@Test
-	public void testFilterUserEvents() {
-		post("/events/userevents", HttpStatus.OK);
+	public void testGetRegister() {
+		get("/users/new");
 	}
 	
 	@Test
-	public void testFilterEvents() {
-		post("/events/", HttpStatus.OK);
+	public void testPostRegister() {
+		post("/users/new");
 	}
 	
 	@Test
-	public void testAddNewEvent() {
-		get("/events/new");
+	public void testGetLogin() {
+		get("/users/login");
 	}
 	
-	@Ignore
 	@Test
-	public void testPost() {
-		post("/events/new", HttpStatus.FOUND);
+	public void testGetLogout() {
+		get("/users/logout");
 	}
 
-	
 	private void get(String url) {
 		ResponseEntity<String> response = template.exchange(url, HttpMethod.GET, httpEntity, String.class);
 		assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
 		assertThat(response.getHeaders().getContentType().toString(), containsString(MediaType.TEXT_HTML_VALUE));
 	}
 	
-	private void post(String url, HttpStatus status) {
+	private void post(String url) {
 		ResponseEntity<String> response = template.exchange(url, HttpMethod.POST, httpEntity, String.class);
-		assertThat(response.getStatusCode(), equalTo(status));
+		assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
 	}
 }
