@@ -24,23 +24,6 @@ home
 			</form>
 		</div>
 		<div class="col-md-1 filler"></div>
-		
-		{{#block "map_view"}}{{/block}}
-	</div>
-
-  <div class="row">
-    <div class = "col-md-3 filters-container">
-      <h3>Add a new event</h3>
-      <a class="btn btn-primary" role="button" onclick="location.href='/events/new'">Add event</a>
-    </div>
-  </div>
-</div>
-
-{{/partial}}
-
-
-{{#partial "list_view"}}
-
 		<div class="col-md-8 panel panel-default" id="panelLooks">	
       		<div class="panel-heading">
 				<div style="display: inline-block"><h3 class="panel-title">Keywords</h3></div>
@@ -62,7 +45,16 @@ home
 			  </tbody>
 			</table>
 		</div>
-		
+	</div>
+
+  <div class="row">
+    <div class = "col-md-3 filters-container">
+      <h3>Add a new event</h3>
+      <a class="btn btn-primary" role="button" onclick="location.href='/events/new'">Add event</a>
+    </div>
+  </div>
+</div>
+
 {{/partial}}
 
 {{> layouts/base title="EventLite events"}}
