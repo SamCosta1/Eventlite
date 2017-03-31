@@ -18,6 +18,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import uk.ac.man.cs.eventlite.TestParent;
 
@@ -30,7 +32,8 @@ public class VenuesControllerWebIntegrationTest extends TestParent {
 	@Autowired
 	private TestRestTemplate template;
 
-	private HttpEntity<String> httpEntity;
+	private HttpEntity<?> httpEntity;
+	private HttpHeaders headers;
 
 	@Before
 	public void setup() {
@@ -56,6 +59,9 @@ public class VenuesControllerWebIntegrationTest extends TestParent {
 	}
 	
 	private void post(String url) {
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
+		body.add("","");
+		httpEntity = new HttpEntity<Object>(body, headers);
 		ResponseEntity<String> response = template.exchange(url, HttpMethod.POST, httpEntity, String.class);
 		assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
 	}
