@@ -39,8 +39,8 @@ public class VenueEntityTest extends TestParent {
 		double trueLat = 53.46722639999999;
 		Venue created = new Venue(name, capacity, address, postcode);
 		
-		assertEquals("Venue should have the correct longitude", trueLng, created.getLongitude(),  0.000001);
-		assertEquals("Venue should have the correct latitude", trueLat, created.getLatitude(),  0.000001);
+		assertEquals("Venue should have the correct longitude", trueLng, created.getLongitude(),  0.001);
+		assertEquals("Venue should have the correct latitude", trueLat, created.getLatitude(),  0.001);
 		
 	}
 	
@@ -53,8 +53,8 @@ public class VenueEntityTest extends TestParent {
 		double trueLng = -2.2340865;
 		double trueLat = 53.46722639999999;
 		
-		assertEquals("Venue should have the correct longitude", trueLng, created.getLongitude(),  0.000001);
-		assertEquals("Venue should have the correct latitude", trueLat, created.getLatitude(),  0.000001);
+		assertEquals("Venue should have the correct longitude", trueLng, created.getLongitude(),  0.001);
+		assertEquals("Venue should have the correct latitude", trueLat, created.getLatitude(),  0.001);
 		
 	}
 }
