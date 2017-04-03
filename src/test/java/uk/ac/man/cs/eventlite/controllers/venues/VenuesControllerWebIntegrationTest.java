@@ -43,7 +43,7 @@ public class VenuesControllerWebIntegrationTest extends TestParent {
 	}
 
 	@Test
-	public void testFilterEvents() {
+	public void testFilterVenues() {
 		post("/venues/");
 	}
 	

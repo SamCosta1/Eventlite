@@ -32,15 +32,15 @@ public class VenuesControllerWeb {
 	}	
 	
 	@RequestMapping(method = RequestMethod.POST, 
-		consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,  
-        produces = { MediaType.TEXT_HTML_VALUE })
+					consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,  
+					produces = { MediaType.TEXT_HTML_VALUE })
 	public String filter(@ModelAttribute("search") SearchVenues searchCriterion, BindingResult result, Model model) {
 		model.addAttribute("venues", searchCriterion.search(venueService)); 
 		return "venues/index";
 	}
  
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE,
-			MediaType.APPLICATION_JSON_VALUE })
+					MediaType.APPLICATION_JSON_VALUE })
 	public String venue(@PathVariable("id") long id, Model model) {
 
 		Venue venue = venueService.findById(id);

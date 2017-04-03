@@ -20,7 +20,7 @@ public class EventsControllerWebTest extends TestParent {
 	
 
 	@Test
-	public void testNonExistantURL() throws Exception {		
+	public void testError() throws Exception {		
 		mockGet("/error", MediaType.TEXT_HTML, "/error", HttpStatus.OK);		
 	}
 	

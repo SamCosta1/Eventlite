@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Collections;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -46,6 +45,9 @@ public class VenuesControllerWebTest extends TestParent {
 	@Mock
 	private Venue venue;
 	
+	@Mock
+	private Event event;
+	
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
@@ -72,13 +74,12 @@ public class VenuesControllerWebTest extends TestParent {
 	}
 	
 	@Test
-	public void testGetFirstVenue() throws Exception {
-		Venue testVenue = new Venue();		
-		when(venueService.findById(1)).thenReturn(testVenue);
-		when(eventService.findById(1)).thenReturn(new Event());
-		mockGet("/venues/1", MediaType.TEXT_HTML, "venues/show", HttpStatus.OK);
+	public void testGetFirstVenue() throws Exception {		
+		when(venueService.findById(1)).thenReturn(venue);
+		when(eventService.findById(1)).thenReturn(event);
+			mockGet("/venues/1", MediaType.TEXT_HTML, "venues/show", HttpStatus.OK);
 		verify(venueService, times(1)).findById(1);
-		verify(eventService, times(1)).findAllByVenue(testVenue);
+		verify(eventService, times(1)).findAllByVenue(venue);
 	}
 		
 	// Helpers ----	

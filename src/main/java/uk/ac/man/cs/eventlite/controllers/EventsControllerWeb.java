@@ -52,14 +52,16 @@ public class EventsControllerWeb {
 
 	@RequestMapping(method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE })
 	public String getAllEvents(Model model) {
-		if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
+		
+		if (connectionRepository.findPrimaryConnection(Twitter.class) == null) 
             return "redirect:/connect/twitter";
-        }
+        
 		model.addAttribute("events", eventService.findAll());
 		List<Tweet> tweets = twitter.timelineOperations().getUserTimeline();
-		if (tweets.size()>5) {
+		
+		if (tweets.size()>5) 
 			tweets = tweets.subList(0,5);
-		}
+		
 		
 		model.addAttribute("tweets",tweets);
 		model.addAttribute("user", twitter.userOperations().getUserProfile());
@@ -67,8 +69,7 @@ public class EventsControllerWeb {
 	}
 	
 	@RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
- 	public String deleteEvent(@ModelAttribute Event event) {
-		
+ 	public String deleteEvent(@ModelAttribute Event event) {		
  		eventService.delete(event);
  		return "redirect:/events";
  	}
@@ -83,9 +84,9 @@ public class EventsControllerWeb {
 	}
 	
 	@RequestMapping(value = "/userevents",
-			method = RequestMethod.POST,
-			consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, 
-			produces = { MediaType.TEXT_HTML_VALUE })
+					method = RequestMethod.POST,
+					consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, 
+					produces = { MediaType.TEXT_HTML_VALUE })
     public String filterUserEvents(@ModelAttribute("search") SearchEvents searchCriterion, BindingResult result, Model model) {    
 		searchCriterion.setUser(getCurrentUser(model));
 		model.addAttribute("events", searchCriterion.search(eventService));
@@ -126,11 +127,12 @@ public class EventsControllerWeb {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE,
-			MediaType.APPLICATION_JSON_VALUE })
+					MediaType.APPLICATION_JSON_VALUE })
 	public String event(@PathVariable("id") long id, Model model) {
-		if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
+		
+		if (connectionRepository.findPrimaryConnection(Twitter.class) == null) 
             return "redirect:/connect/twitter";
-        }
+        
 		model.addAttribute("event", eventService.findById(id));
 
 		return "events/show";
@@ -169,7 +171,7 @@ public class EventsControllerWeb {
 	
 
 	@RequestMapping(value = "/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
-			produces = { MediaType.TEXT_HTML_VALUE })
+					produces = { MediaType.TEXT_HTML_VALUE })
 	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Event event, BindingResult result,
 			                          Model model)	{ 
 	  event.setUser(getCurrentUser(model));

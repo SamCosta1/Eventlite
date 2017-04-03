@@ -41,7 +41,7 @@ public class EventsControllerWebIntegrationTest extends TestParent {
 
 	@Test
 	public void testError() {
-		get("/error"); // A URL that certainly isn't used
+		get("/error");
 	}
 
 	private void get(String url) {
