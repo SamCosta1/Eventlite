@@ -54,7 +54,6 @@
 	      </div>
 	    </div>
 	  </div>
-  	 {{/event}}      
       <div class="panel tweet-container">
       	<div class="panel-body">
       	   <div class="status-bar {{status}}">
@@ -62,12 +61,13 @@
       	   </div>
       	   <form action="/events/tweet/{{id}}" method="post">
       		  <div class="form-group">
-      		  	<input class="form-control" type="text" name="tweet" id="tweet" placeholder="Tweet..." />
+      		  	<input class="form-control" type="text" name="tweet" id="tweet" placeholder="{{name}}" />
       		  </div>
       		  <button class="btn btn-primary" type="submit">Tweet!</button>
       		</form> 
       	</div>
       </div>
+  	 {{/event}}      
 
   </div>
  
