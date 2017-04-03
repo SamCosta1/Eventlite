@@ -49,11 +49,9 @@ public class VenuesControllerWebTest extends TestParent {
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		mvc = MockMvcBuilders.standaloneSetup(venuesController).build();
-		
+		mvc = MockMvcBuilders.standaloneSetup(venuesController).build();		
 	}
-
-	@Ignore
+	
 	@Test
 	public void testGetAllVenues() throws Exception {
 		when(venueService.findAll()).thenReturn(Collections.<Venue> emptyList());

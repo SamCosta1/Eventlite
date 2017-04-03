@@ -73,10 +73,9 @@ public class EventsControllerWebIntegrationTest extends TestParent {
 		get("/events/new");
 	}
 	
-	@Ignore
 	@Test
 	public void testPost() {
-		post("/events/new", HttpStatus.FOUND);
+		post("/events/new", HttpStatus.OK);
 	}
 
 	
