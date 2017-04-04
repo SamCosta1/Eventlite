@@ -1,0 +1,101 @@
+@import "colour-maps.scss";
+
+body {
+	display: flex;
+	flex-direction: column;	
+}
+.header-container {
+	display: flex;
+	flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: $default-background-col;
+	height: 100vh;
+	.title, h2 {
+		color: white;	
+	}
+}
+
+@media (max-width: $screen-md-min) {		
+	.header-container {
+		.title {
+			font-size: 50px;
+		}
+	}	
+	.info-container {
+		width: 90vw;
+	    align-self: center;	
+	}	
+}
+
+@media (min-width: $screen-md-min) {
+	.header-container {
+		.title {
+			font-size: 120px;
+		}		
+	}
+	.info-container {
+		width: 65vw;
+	    align-self: center;	
+	}
+}	
+
+.info-container {
+	color: #444444;
+	h2 {
+		font-size: 45px;	
+		margin: 55px 0px;
+	}
+
+	a {
+		width: 25px;
+	}
+
+	hr {
+		margin-top: 0px;	
+		border-color: $lighten-1;
+	}
+
+	.link {
+		&:hover {
+			cursor: pointer;
+			color: black;	
+		}
+	}
+
+	.name {
+		font-size: 30px;	
+	}
+
+	.event-container {
+		display: flex;	
+		flex-direction: row;
+		height: 130px;	
+		justify-content: space-between;	
+		
+		span {
+			margin-bottom: 2px;	
+		}
+	
+		.left-side {
+			display: flex;
+			flex-direction: column;
+		}
+	
+		.right-side {
+			width: 45vw;
+			display: flex;
+			flex-direction: row-reverse;	
+		}
+	}	
+
+	.venue-container {
+		display: flex;	
+		flex-direction: column;
+		height: 120px;
+	}
+
+}
+
+
+

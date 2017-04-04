@@ -1,5 +1,6 @@
 {{#partial "head"}}
 <link rel="stylesheet" href="../css/main.css">
+<link rel="stylesheet" href="../css/home.css">
 {{/partial}}
 
 {{#partial "navbar"}}
@@ -7,57 +8,51 @@ home
 {{/partial}}
 
 {{#partial "content"}}
-
-    <div class="row">
-      <div class = "col-md-3">
-        <div class="container">
-          <h2>Upcoming Events</h2>
-          <p>The next 3 upcoming events:</p>
-          <table class="table table-striped">
-            <tbody>
-              {{#events_soonest3}}
-				      <tr>
-				      	<td><div>
-				      		<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
-				      		</div>
-				      	</td>
-				        <td>
-				        	<i class="fa fa-bolt"></i> 
-				        		<span onclick="window.document.location='/events/{{id}}';">
-				        			Event: {{name}}
-				        		</span><br />
-				        	<i class="fa fa-bolt"></i> 
-				        		<span onclick="window.document.location='/venues/{{id}}';">
-				        			Event: {{venue.name}}
-				        		</span><br />
-				            <i class="fa fa-calendar"></i> Date: {{date}}
-				        </td>
-				      </tr>
-			  {{/events_soonest3}}
-            </tbody>
-          </table>
-    		</div>     
-      </div>
-    </div>
-    <div class="row">
-      <div class = "col-md-3">
-        <div class="container">
-          <h2>Popular Venues</h2>
-          <p>The 3 most popular venues:</p>
-          <table class="table table-striped">
-            <tbody>
-              {{#venues_top3}}
-				      <tr>
-				        <td onclick="window.document.location='/venues/{{id}}';">
-				        	  <i class="fa fa-map-marker"></i>  {{name}}<br />
-				        </td>
-				      </tr>
+	<div>
+		<div class="header-container">
+			<div class="title">Eventlite</div>
+			<h2 class="hidden-xs">For events and stuff</h2>
+			<hr>
+		</div>
+		
+	</div>
+	<div class="info-container">    
+        <div class="events-container">
+        	<h2>Coming Up Soon!</h2>         
+            {{#events_soonest3}}
+		      	<span class="name link" onclick="window.document.location='/events/{{id}}';">{{name}}</span>
+             	<div class="event-container">             		
+             		<div class="left-side">             			
+				      	<span class="link" onclick="window.document.location='/venues/{{id}}';">
+				      		<a class="fa fa-map-marker"></a>{{venue.name}}
+				      	</span>
+				      	<span> <a class="glyphicon glyphicon-time"></a>{{time}}</span>
+				      	<span> <a class="glyphicon glyphicon-calendar"></a>{{date}}</span> 
+				    </div>          		
+             		<div class="right-side hidden-sm hidden-md hidden-xs">
+             			<span">{{description}}</span>
+             		</div>
+             	</div>
+             	<hr>
+		   {{/events_soonest3}}       
+ 
+        <div class="venues-container">
+        <h2>Popular Venues</h2>       
+        
+              {{#venues_top3}}	
+              		<div class="venue-container">			    
+				        <span class="link name" onclick="window.document.location='/venues/{{id}}';">
+				        	<a class="fa fa-map-marker"></a>{{name}}
+				        </span>
+				        <span>{{address}}</span>
+				        <span>{{postcode}}</span>
+				    </div>
+				    <hr>
 			  {{/venues_top3}}
-            </tbody>
-          </table>
-    		</div>     
-      </div>
-    </div>
+          
+    	</div>
+     </div>
+   </div>
 
 
 {{/partial}}

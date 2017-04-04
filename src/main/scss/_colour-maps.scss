@@ -1,5 +1,5 @@
 // The main theme colour off which everything else is based
-$theme-colour: #808080;
+$theme-colour: #87b6c7;
 
 // The difference between each shade below
 $shift-amount: 15%;
@@ -18,5 +18,13 @@ $darken-4: darken($theme-colour, $shift-amount * 4);
 $darken-5: darken($theme-colour, $shift-amount * 5);
 
 
-$default-background-col: $lighten-3;
+$default-background-col: $theme-colour;
 $default-border-col: $darken-2;
+
+// Bootstraps screen values
+$screen-sm-min: 768px;
+$screen-xs-max: ($screen-sm-min - 1);
+$screen-md-min: 992px;
+$screen-sm-max: ($screen-md-min - 1);
+$screen-lg-min: 1200px;
+$screen-md-max: ($screen-lg-min - 1);

@@ -73,13 +73,13 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 			d5 = f.parse("1/2/2018 00:00");
 			
 			Event newEvent = new Event("Java Lecture", newVenue1, d1, d1, "");
-			newEvent.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eget est gravida, aliquet arcu ac, laoreet nisl. Maecenas feugiat tempus hendrerit. Proin in finibus leo. Ut mattis, lacus id volutpat mollis, magna tortor facilisis elit, vitae vestibulum erat neque vitae ipsum. Morbi quis gravida tellus. Morbi tincidunt turpis vitae augue pharetra elementum. Donec tincidunt, eros nec consequat tempor, nulla nibh volutpat augue, eget porttitor nisl erat nec urna.");
+			newEvent.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras pellentesque tincidunt dui, in viverra ligula luctus in. Quisque aliquet odio elementum ipsum euismod venenatis. Vivamus et tempor metus. Sed vehicula diam et fermentum euismod. Sed consequat placerat justo, nec rhoncus nibh. Donec vel massa eget libero interdum hendrerit. Quisque eros nibh, tincidunt vel placerat vitae, sollicitudin porttitor eros. In commodo magna leo, ultrices tempor elit congue nec. Mauris a sem sit amet sem amet.");
 			
 			eventService.save(newEvent);
-			eventService.save(new Event("Concert", newVenue1, d2, d2, ""));
-			eventService.save(new Event("Pokemon", newVenue2, d3, d3, ""));
-			eventService.save(new Event("Go", newVenue2, d4, d4, ""));
-			eventService.save(new Event("Alvaro Lecture1", newVenue1, d5, d5, ""));
+			eventService.save(new Event("Concert", newVenue1, d2, d2, "This is a short description"));
+			eventService.save(new Event("Pokemon", newVenue2, d3, d3, "Slightly longer description but not as long as it could possibly be"));
+			eventService.save(new Event("Go", newVenue2, d5, d5, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras pellentesque tincidunt dui, in viverra ligula luctus in. Quisque aliquet odio elementum ipsum euismod venenatis. Vivamus et tempor metus. Sed vehicula dia"));
+			eventService.save(new Event("Alvaro Lecture1", newVenue3, d4, d4, ""));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
