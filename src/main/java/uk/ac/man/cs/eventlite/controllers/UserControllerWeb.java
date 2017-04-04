@@ -26,6 +26,7 @@ public class UserControllerWeb {
 
 	@Autowired
     private UserService userService;
+	
 	@Autowired
     private UserCreateFormValidator userCreateFormValidator;
 
@@ -50,7 +51,7 @@ public class UserControllerWeb {
 	
 
 	@RequestMapping(value = "/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
-			produces = { MediaType.TEXT_HTML_VALUE })
+					produces = { MediaType.TEXT_HTML_VALUE })
 	public String createUserFromForm(@RequestBody @Valid @ModelAttribute UserCreateForm form, BindingResult result,
 			                          Model model)	{ 
 		if (result.hasErrors()) {

@@ -43,15 +43,10 @@ public class VenueServiceTest extends TestParent{
 		String postcode = "M13 9PL";
 		Venue ignoredEvent = new Venue("name1", 100, address, postcode);
 		venueService.save(ignoredEvent);
-		boolean found = false;
-		
+				
 		Iterable<Venue> venues = venueService.findAllExceptOne(ignoredEvent);
-		for (Venue v : venues) {
-			if (v.equals(ignoredEvent))
-				found = true;
-		}
-		
-		assertFalse(found);
+		for (Venue v : venues) 
+			assertFalse(v.equals(ignoredEvent));		
 	}
 	
 	@Test

@@ -6,8 +6,7 @@ public class SearchVenues{
 	
 	private String name = null;	
 	
-	public SearchVenues() {		
-	}
+	public SearchVenues() {}	
 	
 	public SearchVenues(String name) {
 		this.name = name;

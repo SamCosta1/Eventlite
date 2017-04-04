@@ -3,17 +3,11 @@ package uk.ac.man.cs.eventlite.controllers.venues;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import uk.ac.man.cs.eventlite.TestParent;
-import uk.ac.man.cs.eventlite.dao.VenueService;
 import uk.ac.man.cs.eventlite.entities.Venue;
 
 public class VenueEntityTest extends TestParent {
-	
-	@Autowired
-	private VenueService venueService;
-	
+		
 	@Test
 	public void testVenueCreation () {
 		String name = "test";
@@ -40,8 +34,7 @@ public class VenueEntityTest extends TestParent {
 		Venue created = new Venue(name, capacity, address, postcode);
 		
 		assertEquals("Venue should have the correct longitude", trueLng, created.getLongitude(),  0.001);
-		assertEquals("Venue should have the correct latitude", trueLat, created.getLatitude(),  0.001);
-		
+		assertEquals("Venue should have the correct latitude", trueLat, created.getLatitude(),  0.001);		
 	}
 	
 	@Test
@@ -54,7 +47,6 @@ public class VenueEntityTest extends TestParent {
 		double trueLat = 53.46722639999999;
 		
 		assertEquals("Venue should have the correct longitude", trueLng, created.getLongitude(),  0.001);
-		assertEquals("Venue should have the correct latitude", trueLat, created.getLatitude(),  0.001);
-		
+		assertEquals("Venue should have the correct latitude", trueLat, created.getLatitude(),  0.001);		
 	}
 }

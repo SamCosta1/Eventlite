@@ -1,6 +1,6 @@
 package uk.ac.man.cs.eventlite.dao;
 
-import java.util.Iterator;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class VenueServiceImpl implements VenueService {
 	}
 	
 	@Override
-	public Iterable<Venue> searchByName(String name) {	
+	public List<Venue> searchByName(String name) {	
 		return venueRepository.findByNameContainingIgnoreCaseOrderByNameAsc(name);
 	}
 	
@@ -39,14 +39,10 @@ public class VenueServiceImpl implements VenueService {
 	}
 
 	@Override
-	public Iterable<Venue> findAllExceptOne(Venue venue) {
-		Iterable<Venue> venues = venueRepository.findAll();
-		Iterator<Venue> i = venues.iterator();
-		while (i.hasNext()) {
-			Venue v = i.next();
-			if (v.getId() == venue.getId())
-				i.remove();
-		}
+	public List<Venue> findAllExceptOne(Venue venue) {
+		List<Venue> venues = venueRepository.findAll();
+		venues.remove(venue);
+		
 		return venues;
 	}
 

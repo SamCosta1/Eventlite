@@ -29,11 +29,6 @@ import org.springframework.social.twitter.api.UserOperations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.ui.ExtendedModelMap;
-import org.springframework.ui.Model;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import uk.ac.man.cs.eventlite.TestParent;
 import uk.ac.man.cs.eventlite.controllers.EventsControllerWeb;
 import uk.ac.man.cs.eventlite.dao.EventService;
@@ -154,7 +149,7 @@ public class EventsControllerWebTest extends TestParent {
 	}
 	
 	@Test
-	public void testGetNewEventHtml() throws Exception {
+	public void testGetNewEventPage() throws Exception {
 		when(venueService.findAll()).thenReturn(Collections.<Venue> emptyList());
 			mvc.perform(MockMvcRequestBuilders.get("/events/new").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
 				.andExpect(view().name("events/new"));
@@ -162,7 +157,7 @@ public class EventsControllerWebTest extends TestParent {
 	}
 		
 	@Test
-	public void testPostEventHtml() throws Exception {
+	public void testNewEvent() throws Exception {
 		mvc.perform(MockMvcRequestBuilders.post("/events/new").contentType(MediaType.APPLICATION_FORM_URLENCODED).accept(MediaType.TEXT_HTML))
 			.andExpect(view().name("redirect:/events"));
 	}

@@ -8,8 +8,7 @@ public class SearchEvents{
 	private String name = null;
 	private User user = null;	
 	
-	public SearchEvents() {		
-	}
+	public SearchEvents() {}
 	
 	public SearchEvents(String name) {
 		this.name = name;
@@ -36,8 +35,7 @@ public class SearchEvents{
 		}
 		
 		if (user != null)
-			return eventService.findAllByUser(user);
-			
+			return eventService.findAllByUser(user);			
 		
 		return eventService.findAll();
 	}

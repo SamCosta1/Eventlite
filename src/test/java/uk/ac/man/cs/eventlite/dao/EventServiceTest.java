@@ -193,7 +193,7 @@ public class EventServiceTest extends TestParent {
 		for (Event e : events)
 			assertTrue("All users are the test user", e.getUser().equals(testUser));
 		
-		assertThat("There are 2 of them", events.size(), equalTo(2));
+		assertThat(events.size(), equalTo(2));
 		testListInOrder(events);
 	}
 	
@@ -207,8 +207,7 @@ public class EventServiceTest extends TestParent {
 	}
 
 	@Test
-	public void testFindAllByVenue() {
-		
+	public void testFindAllByVenue() {		
 		testVenue = new Venue(null, 0, null, null);
 		testVenue.setName("Test Event Name");
 		testVenue.setCapacity(100);
@@ -227,6 +226,24 @@ public class EventServiceTest extends TestParent {
 
 		assertTrue("The find by venue method found the correct events", givenEvents.equals(events));
 		
+	}
+	
+	@Test
+	public void testAddEvent() {
+		long initialCount = eventService.count();
+		
+		Event event = new Event("Test Event Add", testVenue, d1, d2, "");
+		eventService.save(event);
+		
+        List<Event> events = (List<Event>) eventService.findAll();
+		
+		boolean isAdded = false;
+		for (Event e : events)
+			if (e.equals(event) && e.getVenue().equals(testVenue))
+				isAdded = true;			
+		
+		assertTrue("The event was added", isAdded);		
+		assertThat("Count should increase by one on add", initialCount + 1, equalTo(eventService.count()));
 	}
 	
 	// Helper method for checking a result set is in correct order
@@ -271,24 +288,5 @@ public class EventServiceTest extends TestParent {
 			else 
 				assertTrue(e.getDate().after(previous.getDate()));			
 		}		
-	}
-
-	
-	@Test
-	public void testAddEvent() {
-		long initialCount = eventService.count();
-		
-		Event event = new Event("Test Event Add", testVenue, d1, d2, "");
-		eventService.save(event);
-		
-        List<Event> events = (List<Event>) eventService.findAll();
-		
-		boolean isAdded = false;
-		for (Event e : events)
-			if (e.equals(event) && e.getVenue().equals(testVenue))
-				isAdded = true;			
-		
-		assertTrue("The event was added", isAdded);		
-		assertThat("Count should increase by one on add", initialCount + 1, equalTo(eventService.count()));
 	}
 }

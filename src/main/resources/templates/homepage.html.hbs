@@ -26,11 +26,14 @@ home
 				        		<span onclick="window.document.location='/events/{{id}}';">
 				        			Event: {{name}}
 				        		</span><br />
-				            <i class="fa fa-map-marker"></i> Venue: {{venue.name}}<br />
+				        	<i class="fa fa-bolt"></i> 
+				        		<span onclick="window.document.location='/venues/{{id}}';">
+				        			Event: {{venue.name}}
+				        		</span><br />
 				            <i class="fa fa-calendar"></i> Date: {{date}}
 				        </td>
 				      </tr>
-			        {{/events_soonest3}}
+			  {{/events_soonest3}}
             </tbody>
           </table>
     		</div>     
@@ -49,7 +52,7 @@ home
 				        	  <i class="fa fa-map-marker"></i>  {{name}}<br />
 				        </td>
 				      </tr>
-			        {{/venues_top3}}
+			  {{/venues_top3}}
             </tbody>
           </table>
     		</div>     

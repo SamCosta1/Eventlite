@@ -40,12 +40,12 @@
 		          <li class="venues-button"><a href="/venues"><span class="glyphicon glyphicon-list-alt"></span>Venues</a></li>		         
 			    </ul>
 			    <ul class="nav navbar-nav navbar-right">
-			      {{#if currentUser}}
-              <li class="logout-button"><a href="/users/logout"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
-            {{else}}
+			    {{#if currentUser}}
+                  <li class="logout-button"><a href="/users/logout"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+                {{else}}
 			        <li class="register-button"><a href="/users/new"><span class="glyphicon glyphicon-user"></span>Register</a></li>
 			        <li class="login-button"><a href="/users/login"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
-            {{/if}}
+                {{/if}}
 			    </ul>
 	      </div>
 	    </div>

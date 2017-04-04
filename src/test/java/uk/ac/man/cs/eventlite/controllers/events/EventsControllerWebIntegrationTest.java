@@ -7,7 +7,6 @@ import static org.junit.Assert.assertThat;
 import java.util.Collections;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
@@ -54,7 +53,7 @@ public class EventsControllerWebIntegrationTest extends TestParent {
 	}
 	
 	@Test
-	public void testUserEvents() {
+	public void testGetUserEvents() {
 		get("/events/userevents");
 	}	
 
@@ -69,14 +68,13 @@ public class EventsControllerWebIntegrationTest extends TestParent {
 	}
 	
 	@Test
-	public void testAddNewEvent() {
+	public void testNewEventPage() {
 		get("/events/new");
 	}
 	
-	@Ignore
 	@Test
-	public void testPost() {
-		post("/events/new", HttpStatus.FOUND);
+	public void testAddNewEvent() {
+		post("/events/new", HttpStatus.OK);
 	}
 
 	
