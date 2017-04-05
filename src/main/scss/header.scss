@@ -1,17 +1,22 @@
 @import "colour-maps.scss";
 
+$hover-col: $darken-5;
 @mixin active {
-    a {color: black !important;}
+    a {color: $hover-col !important;}
 }
 
 
 .header {
 
-    .navbar {
-        background-color: $default-background-col;
+    .navbar {    
+        background-color: white;
         margin-bottom: 0px !important; // Important used to override bootstrap
-        a:hover {
-            color: $darken-5 !important; // Important used to overidde bootstrap
+        
+        a {        	
+	        color: $theme-colour !important;
+	        &:hover {
+	            color: $hover-col !important; // Important used to overidde bootstrap
+	        }
         }
     }
     

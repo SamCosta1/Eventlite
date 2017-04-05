@@ -10,8 +10,10 @@ home
 {{#partial "content"}}
 	<div>
 		<div class="header-container">
-			<div class="title">Eventlite</div>
-			<h2 class="hidden-xs">For events and stuff</h2>
+			<div class="title-container">			
+				<div class="title">Eventlite</div>
+				<h2 class="hidden-xs">For events and stuff</h2>
+			</div>
 			<hr>
 		</div>
 		
@@ -30,30 +32,31 @@ home
 				      	<span> <a class="glyphicon glyphicon-calendar"></a>{{date}}</span> 
 				    </div>          		
              		<div class="right-side hidden-sm hidden-md hidden-xs">
-             			<span">{{description}}</span>
+             			<span>{{description}}</span>
              		</div>
              	</div>
              	<hr>
-		   {{/events_soonest3}}       
- 
-        <div class="venues-container">
-        <h2>Popular Venues</h2>       
-        
-              {{#venues_top3}}	
-              		<div class="venue-container">			    
-				        <span class="link name" onclick="window.document.location='/venues/{{id}}';">
-				        	<a class="fa fa-map-marker"></a>{{name}}
-				        </span>
-				        <span>{{address}}</span>
-				        <span>{{postcode}}</span>
-				    </div>
-				    <hr>
-			  {{/venues_top3}}
-          
-    	</div>
+		   {{/events_soonest3}} 
+		</div> 
+	</div>     
+	
+ 	<div class="info-container">
+	    <div class="venues-container">
+	        <h2>Popular Venues</h2>       
+	        
+	              {{#venues_top3}}	
+	              		<div class="venue-container">			    
+					        <span class="link name" onclick="window.document.location='/venues/{{id}}';">
+					        	<a class="fa fa-map-marker"></a>{{name}}
+					        </span>
+					        <span>{{address}}</span>
+					        <span>{{postcode}}</span>
+					    </div>
+					    <hr>
+				  {{/venues_top3}}
+	          
+	    	</div>
      </div>
-   </div>
-
 
 {{/partial}}
 

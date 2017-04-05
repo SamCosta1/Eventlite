@@ -6,15 +6,30 @@ body {
 }
 .header-container {
 	display: flex;
-	flex-direction: column;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: $default-background-col;
+    background-image: url("../images/party.png");
+    background-repeat: no-repeat;
 	height: 100vh;
-	.title, h2 {
-		color: white;	
+	
+	@media (min-width: 2572px) {
+		background-repeat: round;	
+	}
+	.title-container {
+	    background-color: $default-background-col;
+		display: flex;
+		flex-direction: column;
+   		align-items: center;
+    	justify-content: center;
+	
+		width: 100vw;
+		.title, h2 {
+			color: white;	
+		}
 	}
 }
+
 
 @media (max-width: $screen-md-min) {		
 	.header-container {
@@ -40,6 +55,12 @@ body {
 	}
 }	
 
+hr {
+	margin-top: 0px;	
+	border-color: $lighten-1;
+	width: 100%;
+}
+
 .info-container {
 	color: #444444;
 	h2 {
@@ -49,11 +70,6 @@ body {
 
 	a {
 		width: 25px;
-	}
-
-	hr {
-		margin-top: 0px;	
-		border-color: $lighten-1;
 	}
 
 	.link {
@@ -87,6 +103,10 @@ body {
 			display: flex;
 			flex-direction: row-reverse;	
 		}
+	
+	}	
+	hr:last-child {
+		display: none;		
 	}	
 
 	.venue-container {
