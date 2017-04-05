@@ -199,7 +199,7 @@ public class EventServiceTest extends TestParent {
 	}
 	
 	@Test
-	public void testFindByNoUser() {
+	public void testFindByExistingUser() {
 		List<Event> events = (List<Event>)eventService.findAllByUser(testUser);
 		
 		for (Event e : events)
@@ -210,7 +210,7 @@ public class EventServiceTest extends TestParent {
 	}
 	
 	@Test
-	public void testFindExistingUser() {
+	public void testFindByNoUser() {
 		List<Event> events = (List<Event>)eventService.findAllByUser(null);
 		
 		for (Event e : events) 

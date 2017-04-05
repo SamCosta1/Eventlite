@@ -87,6 +87,8 @@ public class EventServiceImpl implements EventService {
 	public Iterable<Event> searchByNameByUser(String name, User user) {
 		List<Event> pastEvents = eventRepository.findAllByUserAndNameContainingIgnoreCaseAndDateBeforeOrderByDateDescNameAsc(user, name, new Date());
 		List<Event> futureEvents = eventRepository.findAllByUserAndNameContainingIgnoreCaseAndDateAfterOrderByDateDescNameAsc(user, name, new Date());
+		sortByWholeWordMatch(pastEvents, name);
+		sortByWholeWordMatch(futureEvents, name);
 		futureEvents.addAll(pastEvents);
 		
 		return futureEvents;
