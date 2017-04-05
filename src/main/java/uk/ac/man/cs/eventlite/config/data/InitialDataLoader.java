@@ -79,7 +79,11 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 			eventService.save(new Event("Concert", newVenue1, d2, d2, ""));
 			eventService.save(new Event("Pokemon", newVenue2, d3, d3, ""));
 			eventService.save(new Event("Go", newVenue2, d4, d4, ""));
-			eventService.save(new Event("Alvaro Lecture1", newVenue1, d5, d5, ""));
+			eventService.save(new Event("Alvaro Lecture", newVenue1, d5, d5, ""));
+			eventService.save(new Event("Alvaro", newVenue1, d3, d3, ""));
+			eventService.save(new Event("Lecture", newVenue1, d5, d5, ""));
+			eventService.save(new Event("Aro", newVenue1, d5, d5, ""));
+
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

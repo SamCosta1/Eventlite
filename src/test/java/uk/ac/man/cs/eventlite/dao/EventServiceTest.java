@@ -84,6 +84,7 @@ public class EventServiceTest extends TestParent {
 		eventService.save(new Event("t Another random string", testVenue, d3, d3, null));			
 		eventService.save(new Event("Concert", testVenue, d5, d5, ""));
 		eventService.save(new Event("Java Lecture", testVenue, d2, d2, ""));	
+		eventService.save(new Event("test Event", testVenue, d1, d1, null));	
 		eventService.save(new Event("A Test", testVenue, d6, d6, ""));
 		eventService.save(new Event("B Test", testVenue, d7, d7, ""));
 	}
@@ -101,15 +102,26 @@ public class EventServiceTest extends TestParent {
 	@Test
 	public void testSearchByName() {		
 		String searchTerm = "test Event";
-		
 		List<Event> events = (List<Event>) eventService.searchByName(searchTerm);
-				
-		for (Event e : events) 
+		List<Event> nonWholeWordMatches = new ArrayList<Event>();
+		boolean isWholeWord = true;
+		for (Event e : events) {
+			
+			// Ensure that all the whole word matches come first
+			if (!isWholeWord) {
+				assertTrue(!e.getName().trim().toLowerCase().equals(searchTerm));
+				nonWholeWordMatches.add(e);
+			}
+			
+			if (!e.getName().trim().toLowerCase().equals(searchTerm))
+				isWholeWord = false;
+			
 			assertTrue("Names contain substring 'test event' - case insensitive"
-						, e.getName().toLowerCase().contains(searchTerm.toLowerCase()));			
-				
-		assertThat("Three items returned: ", 4, equalTo(events.size()));
-		testListInOrder(events);		
+						, e.getName().toLowerCase().contains(searchTerm.toLowerCase()));	
+		}				
+		
+		// The non whole word matches should be in the same order as the others
+		testListInOrder(nonWholeWordMatches);
 	}
 	
 	@Test
