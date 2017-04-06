@@ -1,34 +1,15 @@
-<tr class="{{#if pastEvent}}past-events{{/if}}">
-  <td><div>
-    <span class="glyphicon glyphicon-picture" aria-hidden="true" id="image_preview"></span>
+	
+	<span class="name link" onclick="window.document.location='/events/{{id}}';">{{name}}</span>
+  	<div class="event-container  {{#if pastEvent}}past-events{{/if}}">             		
+  		<div class="left-side">             			
+			<span class="link" onclick="window.document.location='/venues/{{venue.id}}';">
+ 				<a class="fa fa-map-marker"></a>{{venue.name}}
+ 			</span>
+ 			<span> <a class="glyphicon glyphicon-time"></a>{{time}}</span>
+ 			<span> <a class="glyphicon glyphicon-calendar"></a>{{date}}</span> 
+		</div>   
+		<div class="right-side">
+			<button class="btn btn-primary" onclick="location.href='/events/{{id}}/update'">Update</button>
+		</div>
     </div>
-  </td>
-  <td id="event_preview">
-    <i class="fa fa-bolt"></i> 
-    <span onclick="window.document.location='/events/{{id}}';">
-      Event: {{name}}
-    </span><br />
-    <div id="venue-name" onclick="window.document.location='/venues/{{venue.id}}';">
-      <i class="fa fa-map-marker"></i> Venue: {{venue.name}}<br />
-    </div>
-    <i class="fa fa-calendar"></i> Date: {{date}}
-    {{#if pastEvent}}
-      <span class="missed-notif">
-        <i class="glyphicon glyphicon-exclamation-sign"></i> 
-        Missed it
-      </span>
-    {{/if}}
-    <br />
-    <i class="fa fa-clock-o"></i> Time: {{time}}
-  </td>
-  <td id="event_preview">
-    <button class="btn btn-primary" onclick="location.href='/events/{{id}}/update'">
-      Update
-    </button>
-  </td>
-  <td id="event_preview">
-    <form action="/events/{{id}}/delete" method="post">  
-      <button class="btn btn-primary" type="submit">Delete</button>
-    </form>
-  <td>
-</tr>
+    <hr>

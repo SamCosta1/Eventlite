@@ -5,10 +5,31 @@ body {
 	flex-direction: column;	
 }
 
+.row {
+	margin-left: 0px !important;
+	margin-right: 0px !important;	
+}
+
+.link {
+	&:hover {
+		cursor: pointer;
+		color: black;	
+	}
+}
+
+.name {
+	font-size: 30px;	
+}
+
 @media (max-width: $screen-md-min) {	
 	.main-content-container {
 		width: 90vw;
 	    align-self: center;	
+	}	
+	.header-container {
+		.title {
+			font-size: 50px;
+		}
 	}	
 }
 
@@ -17,9 +38,66 @@ body {
 		width: 65vw;
 	    align-self: center;	
 	}
+	.header-container {
+		.title {
+			font-size: 120px;
+		}
+	}
+}
+
+.event-container {
+	display: flex;	
+	flex-direction: row;
+	
+	justify-content: space-between;	
+	
+	span {
+		margin-bottom: 2px;	
+	}
+
+	.left-side {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.right-side {
+		width: 45vw;
+		display: flex;
+		flex-direction: row-reverse;	
+	}
+
 }	
+hr:last-child {
+	display: none;		
+}		
 
 
+
+.header-container {
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-repeat: no-repeat;
+		
+	@media (min-width: 2572px) {
+		background-repeat: round;	
+	}
+	.title-container {
+	    background-color: $default-background-col;
+		display: flex;
+		flex-direction: column;
+   		align-items: center;
+    	justify-content: center;
+		width: 100vw;		
+		color: white;	
+		
+	}
+}
+
+.subtitle {
+	font-size: 30px;
+	padding: 10px;
+}
 
 /*
 .filters-container {

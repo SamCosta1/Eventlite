@@ -9,44 +9,31 @@ events
 
 {{#partial "content"}}
 
+<div class="header-container">
+	<div class="title-container">		
+		<div class="subtitle">Events</div>
+	</div>	
+</div>	
+	
 <div class="main-content-container">
 	<div class="row justify-content-between">
-		<h1>All events</h1>
+	<!-- 
 		<div class="col-md-3 filters-container" id="filterLooks">
 			<h2>Filters</h2>
 			<form action="/events/" method="post">
 			   <div class="form-group">    
 				   <label for="name">Event Name:</label><input class="form-control" type="text" name="name" id="name" placeholder="Search.." autofocus />    
 			   </div>
-			   
-			   <!-- Other filters / Search stuff goes here -->
-			
 			   <button class="btn btn-primary" type="submit">Search!</button>
 			</form>
+		</div>-->
+		<div class="events-container">		
+		    {{#events}}
+			    {{> events/_detail}}
+		    {{/events}}
 		</div>
-		<div class="col-md-1 filler"></div>
-		<div class="col-md-8 panel panel-default" id="panelLooks">	
-      		<div class="panel-heading">
-				<div style="display: inline-block"><h3 class="panel-title">Keywords</h3></div>
-				<div class="dropdown" id="dropdown_sortby">
-			    	<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Sort by
-			      		<span class="caret"></span>
-			    	</button>
-			   		<ul class="dropdown-menu">
-			      		<li><a href="#">Date</a></li>
-			      		<li><a href="#">Venue</a></li>
-			    	</ul>
-			 	</div>
-      		</div>
-			<table class="table table-striped table-hover">
-			  <tbody>
-			    {{#events}}
-				    {{> events/_detail}}
-			    {{/events}}
-			  </tbody>
-			</table>
-		</div>
-	</div>
+
+
 
   <div class="row">
     <div class = "col-md-3 filters-container">
@@ -55,7 +42,7 @@ events
     </div>
   </div>
   
-
+<!-- 
   <div class="col-md-8 panel panel-default" id="twitter-container"> 
     <div class="panel-heading">
       <div style="display: inline-block">
@@ -81,7 +68,7 @@ events
       </tbody>
     </table>
   </div>
-  
+  -->
 </div>
 
 
