@@ -1,6 +1,7 @@
-	
+
+<div class="{{#if pastEvent}}past-events{{/if}}">
 	<span class="name link" onclick="window.document.location='/events/{{id}}';">{{name}}</span>
-  	<div class="event-container  {{#if pastEvent}}past-events{{/if}}">             		
+  	<div class="event-container">             		
   		<div class="left-side">             			
 			<span class="link" onclick="window.document.location='/venues/{{venue.id}}';">
  				<a class="fa fa-map-marker"></a>{{venue.name}}
@@ -9,7 +10,14 @@
  			<span> <a class="glyphicon glyphicon-calendar"></a>{{date}}</span> 
 		</div>   
 		<div class="right-side">
+			{{#if pastEvent}} 
+		      <span class="missed-notif"> 
+		        <a class="glyphicon glyphicon-exclamation-sign"></a>  
+		        Missed it 
+		      </span> 
+    		{{/if}} 
 			<button class="btn btn-primary" onclick="location.href='/events/{{id}}/update'">Update</button>
 		</div>
     </div>
-    <hr>
+</div>
+<hr>

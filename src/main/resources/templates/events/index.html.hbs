@@ -16,7 +16,20 @@ events
 </div>	
 	
 <div class="main-content-container">
-	<div class="row justify-content-between">
+	<div class="twitter-container"> 
+	   <div>
+	   	  <img class="twitter-logo" src="../images/twitter-logo.png"/>
+	      <img class="twitter-avatar" src="{{user.profileImageUrl}}" />
+	      <h3 class="twitter-feed-title"> Twitter Feed <a href="http://www.twitter.com/{{user.screenName}}" target="_blank">@{{user.screenName}}</a></h3>
+	    
+	   </div>  
+	   {{#each tweets}}  
+	      <div class="tweet-content">{{text}}</div>
+	      <div class="tweet-datetime">{{createdAt}}</div>       
+	   {{/each}}
+	
+	</div>
+	
 	<!-- 
 		<div class="col-md-3 filters-container" id="filterLooks">
 			<h2>Filters</h2>
@@ -27,49 +40,22 @@ events
 			   <button class="btn btn-primary" type="submit">Search!</button>
 			</form>
 		</div>-->
-		<div class="events-container">		
+		<div class="events-container list-container">		
 		    {{#events}}
 			    {{> events/_detail}}
 		    {{/events}}
 		</div>
+ 	
 
 
-
-  <div class="row">
-    <div class = "col-md-3 filters-container">
-      <h3>Add a new event</h3>
-      <a class="btn btn-primary" role="button" onclick="location.href='/events/new'">Add event</a>
-    </div>
-  </div>
-  
-<!-- 
-  <div class="col-md-8 panel panel-default" id="twitter-container"> 
-    <div class="panel-heading">
-      <div style="display: inline-block">
-        <img class="twitter-avatar" src="{{user.profileImageUrl}}" />
-        <h3 class="twitter-feed-title"> Twitter Feed <a href="http://www.twitter.com/{{user.screenName}}" target="_blank">@{{user.screenName}}</a></h3>
-      </div>
-    </div>
-
-    <table class="table table-striped table-hover">
-      <thead>
-        <tr>
-          <th>Message</th>
-          <th>Date</th>
-        <tr>
-      </thead>
-      <tbody>
-        {{#each tweets}}
-          <tr>
-            <td>{{text}}</td>
-            <td>{{createdAt}}</td>
-          </tr>
-        {{/each}}
-      </tbody>
-    </table>
-  </div>
-  -->
+	<div class="row">
+	  <div class = "col-md-3 filters-container">
+	    <h3>Add a new event</h3>
+	    <a class="btn btn-primary" role="button" onclick="location.href='/events/new'">Add event</a>
+	  </div>
+	</div>
 </div>
+
 
 
 

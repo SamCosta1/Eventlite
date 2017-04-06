@@ -5,21 +5,38 @@ body {
 	flex-direction: column;	
 }
 
+hr {
+	margin-top: 0px;	
+	border-color: rgba($lighten-1, 0.25);
+	width: 100%;
+}
+
 .row {
 	margin-left: 0px !important;
 	margin-right: 0px !important;	
 }
 
-.link {
-	&:hover {
-		cursor: pointer;
-		color: black;	
+a {
+	color: $darken-1;	
+}
+
+.list-container {
+	a {
+		width: 25px;
+	}
+	.link {
+		&:hover {
+			cursor: pointer;
+			color: black;	
+		}
+	}
+	.name {
+		font-size: 30px;
+		margin-top: 5px;
+		margin-bottom: 9px;
 	}
 }
 
-.name {
-	font-size: 30px;	
-}
 
 @media (max-width: $screen-md-min) {	
 	.main-content-container {
@@ -50,6 +67,7 @@ body {
 	flex-direction: row;
 	
 	justify-content: space-between;	
+	margin-bottom: 15px;
 	
 	span {
 		margin-bottom: 2px;	
@@ -59,13 +77,6 @@ body {
 		display: flex;
 		flex-direction: column;
 	}
-
-	.right-side {
-		width: 45vw;
-		display: flex;
-		flex-direction: row-reverse;	
-	}
-
 }	
 hr:last-child {
 	display: none;		
