@@ -1,9 +1,6 @@
 @import "colour-maps.scss";
 
-body {
-	display: flex;
-	flex-direction: column;	
-}
+
 .header-container {
 	display: flex;
     flex-direction: column;
@@ -37,21 +34,13 @@ body {
 			font-size: 50px;
 		}
 	}	
-	.info-container {
-		width: 90vw;
-	    align-self: center;	
-	}	
 }
 
 @media (min-width: $screen-md-min) {
 	.header-container {
 		.title {
 			font-size: 120px;
-		}		
-	}
-	.info-container {
-		width: 65vw;
-	    align-self: center;	
+		}
 	}
 }	
 
@@ -61,7 +50,7 @@ hr {
 	width: 100%;
 }
 
-.info-container {
+.main-content-container {
 	color: #444444;
 	h2 {
 		font-size: 45px;	

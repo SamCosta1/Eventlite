@@ -1,0 +1,108 @@
+@import "colour-maps.scss";
+#twitter-container {
+	margin: 0 auto;
+	
+	.tweets-table {
+		.table-striped > tbody >tr:nth-of-type(odd) {
+    		background-color: $default-background-col;
+		}
+	
+		.table-striped > tbody >tr:nth-of-type(even) {
+		    background-color: $lighten-2;
+		}
+	}
+	
+	.panel-heading {
+		justify-content: space-between;
+	    display: flex;
+	    align-items: center;
+	    
+	    .twitter-avatar {
+			vertical-align:text-bottom;
+			width:30px;
+			height:30px;
+		}
+		
+		.twitter-feed-title {
+			display: inline-block;
+			margin-left:5px;
+		}
+	}
+}
+
+.panel-heading{
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    
+    .dropdown-menu {
+    	min-width: 100px;
+    }
+}
+
+#image_preview {
+	font-size: 70px;
+}
+
+#event_preview {
+	vertical-align: middle;
+}
+
+.panel {
+    padding: 0px;
+	table {
+		overflow-y: scroll;
+	}
+}
+
+.table-striped > tbody >tr:nth-of-type(odd) {
+    background-color: $default-background-col;
+}
+
+.table-striped > tbody >tr:nth-of-type(even) {
+    background-color: $lighten-2;
+}
+
+.table-striped > tbody > tr.past-events {
+  	transition: background 0.5s linear;
+ 	background: rgba(222, 22, 21, 1); /* For browsers that do not support gradients */
+ 	background: -webkit-linear-gradient(left, rgba(250, 223, 165, 1) 20%, rgba(222,222,222,0) 35%, rgba(222,222,222,0) 80%, rgba(222, 222, 222, 0) 100%); /* Chrome10-25,Safari5.1-6 */
+ 	background: -moz-linear-gradient(left, rgba(250, 223, 165, 1) 20%, rgba(222,222,222,0) 35%, rgba(222,222,222,0) 80%, rgba(222, 222, 222, 0) 100%); /* FF3.6-15 */
+	background: -linear-gradient(to right, rgba(250, 223, 165, 1) 20%, rgba(222,222,222,0) 35%, rgba(222,222,222,0) 80%, rgba(222, 222, 222, 0) 100%);  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+ 	background-attachment:fixed;
+}
+
+.table-striped > tbody > tr.past-events {
+	border-top-style: solid;
+	
+	~ tr.past-events {
+		border-top-style: none;
+	}
+}
+
+.table-striped > tbody > tr:hover.past-events {
+ 	background-color:rgba(250, 223, 165, 1);
+ 	
+ 	.missed-notif{
+	 	animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+	 	display: inline-block;
+	}
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}

@@ -18,14 +18,14 @@ home
 		</div>
 		
 	</div>
-	<div class="info-container">    
+	<div class="main-content-container">    
         <div class="events-container">
         	<h2>Coming Up Soon!</h2>         
             {{#events_soonest3}}
 		      	<span class="name link" onclick="window.document.location='/events/{{id}}';">{{name}}</span>
              	<div class="event-container">             		
              		<div class="left-side">             			
-				      	<span class="link" onclick="window.document.location='/venues/{{id}}';">
+				      	<span class="link" onclick="window.document.location='/venues/{{venue.id}}';">
 				      		<a class="fa fa-map-marker"></a>{{venue.name}}
 				      	</span>
 				      	<span> <a class="glyphicon glyphicon-time"></a>{{time}}</span>
@@ -40,7 +40,7 @@ home
 		</div> 
 	</div>     
 	
- 	<div class="info-container">
+ 	<div class="main-content-container">
 	    <div class="venues-container">
 	        <h2>Popular Venues</h2>       
 	        
