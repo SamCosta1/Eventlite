@@ -1,14 +1,12 @@
-<div id="map" ></div>
-<style>
-#map{
-	height:500px;
-	width:100%;
-	}
-</style>
+
+<div class="main-content-container">
+	<div id="map" ></div>
+</div>
+
 <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
 
 <script>
-  
+
 function initMap() {
 
   var map = new google.maps.Map(document.getElementById('map'), {
@@ -28,10 +26,10 @@ function initMap() {
 }
 
 var locations = [
-  {{#venues}}
-    { lat: {{latitude}}, lng: {{longitude}} }{{#unless @last}},{{/unless}}
-  {{/venues}}
-]
+  {{#events}}
+    { lat: {{venue.latitude}}, lng: {{venue.longitude}} }{{#unless @last}},{{/unless}}
+  {{/events}}
+];
 
 </script>
 

@@ -1,4 +1,3 @@
-
 <div class="subsection-title-container">
 	<div class="main-content-container search-header">		
 		<div class="subsubtitle">Events</div>
@@ -8,13 +7,13 @@
 			</form>		
 	   	    <div id="search-button" class="glyphicon glyphicon-search"></div>	
 	   	</div>
-   	    </div>		  
-	</div>
+   	</div>	   
 </div>
 
+{{> maps/_toggle-buttons}}
 <div class="main-content-container">
 
-	<div class="events-container list-container">		
+	<div id="list" class="events-container list-container">		
 	    {{#events}}
 		    {{> events/_detail}}
 	    {{/events}}
