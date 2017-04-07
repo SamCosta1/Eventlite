@@ -7,29 +7,44 @@
 
 <script>
 
+var locations = [
+  {{#events}}
+	   {{#unless pastEvent}}
+	   	 { lat: {{venue.latitude}}, lng: {{venue.longitude}} }{{#unless @last}},{{/unless}}
+	   {{/unless}}
+  {{/events}}
+];
+
+var labels = [
+	{{#events}}
+		{{#unless pastEvent}}
+			"{{name}}"{{#unless @last}},{{/unless}}
+		{{/unless}}
+	{{/events}}
+];
+
+
 function initMap() {
+	
 
   var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 4,
-    center: locations[0],
+    zoom: 13,
+    center: { lat: 53.479411, lng: -2.244006},
     mapTypeId: google.maps.MapTypeId.ROADMAP
   });
 
   var markers = locations.map(function(location, i) {
     return new google.maps.Marker({
-      position: location
+      position: location,
+      label: labels[i]
     });
   });
 
   var markerCluster = new MarkerClusterer(map, markers,
       {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+  map.setCenter(new google.maps.LatLng(53.479411, -2.244006))
 }
 
-var locations = [
-  {{#events}}
-    { lat: {{venue.latitude}}, lng: {{venue.longitude}} }{{#unless @last}},{{/unless}}
-  {{/events}}
-];
 
 </script>
 

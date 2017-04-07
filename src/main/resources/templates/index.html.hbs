@@ -40,18 +40,10 @@ home
 	</div>     
 	
  	<div class="main-content-container">
-	    <div class="venues-container">
-	        <h2>Popular Venues</h2>       
-	        
+	    <div class="venues-container list-container">
+	        <h2>Popular Venues</h2>       	        
 	              {{#venues_top3}}	
-	              		<div class="venue-container">			    
-					        <span class="link name" onclick="window.document.location='/venues/{{id}}';">
-					        	<a class="fa fa-map-marker"></a>{{name}}
-					        </span>
-					        <span>{{address}}</span>
-					        <span>{{postcode}}</span>
-					    </div>
-					    <hr>
+	              		{{> venues/_detail}}
 				  {{/venues_top3}}
 	          
 	    	</div>

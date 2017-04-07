@@ -21,6 +21,11 @@ a {
 	
 }
 
+.venue-container {
+	display: flex;
+	flex-direction: column;
+}
+
 .buttons-group {
 	float: right;	
 	.btn {

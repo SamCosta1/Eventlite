@@ -1,6 +1,8 @@
 {{#partial "head"}}
 <link rel="stylesheet" href="../css/main.css">
 <link rel="stylesheet" href="../css/events-list.css">
+
+<script src="../js/site.js"></script>
 {{/partial}}
 
 {{#partial "navbar"}}
@@ -14,7 +16,9 @@ userevents
 	</div>	
 </div>	
 
-	{{> events/_events_view}}
+{{> events/_events_view}}
+{{> maps/_clustermap}}      
+
 {{/partial}}
 
 {{> layouts/base title="EventLite events"}}

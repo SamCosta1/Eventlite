@@ -1,30 +1,40 @@
 {{#partial "head"}}
 <link rel="stylesheet" href="../css/main.css">
+<link rel="stylesheet" href="../css/users.css">
 {{/partial}}
 
 {{#partial "navbar"}}
-login
+register
 {{/partial}}
 
 {{#partial "content"}}
 
-<form role="form" action="/users/login" method="post">
-    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-    <div>
-        <label for="username">Username</label>
-        <input type="text" name="username" id="username" required autofocus>
-    </div>
-    <div>
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" required>
-    </div>
-    <div>
-        <label for="remember-me">Remember me</label>
-        <input type="checkbox" name="remember-me" id="remember-me">
-    </div>
-    <button type="submit">Sign in</button>
-</form>
+<div class="header-container">
+	<div class="title-container">		
+		<div class="subtitle">Register</div>
+	</div>	
+</div>	
+
+<div class="main-content-container">
+	<form role="form" action="/users/login" method="post">
+	    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	     <div class="form-group">
+	        <label for="username">Username</label>
+	        <input class="form-control" type="text" name="username" id="username" required autofocus>
+	    
+	        <label for="password">Password</label>
+	        <input class="form-control" type="password" name="password" id="password" required>
+	   
+	        <label for="remember-me">Remember me</label>
+	        <input type="checkbox" name="remember-me" id="remember-me">
+	    </div>
+	    <button type="submit">Sign in</button>
+	    
+	</form>
+</div>
+
 
 {{/partial}}
 
 {{> layouts/base title="EventLite events"}}
+

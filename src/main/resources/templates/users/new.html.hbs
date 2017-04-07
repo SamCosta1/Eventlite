@@ -1,5 +1,6 @@
 {{#partial "head"}}
 <link rel="stylesheet" href="../css/main.css">
+<link rel="stylesheet" href="../css/users.css">
 {{/partial}}
 
 {{#partial "navbar"}}
@@ -8,28 +9,32 @@ register
 
 {{#partial "content"}}
 
-<h1>Add a new user</h1>
-<div class="row">
-  <div class = "col-md-3">
-    <form method="post" action="/users/new">
-      <div class="form-group {{#if errors.template}}has-error{{/if}}">
-        <label for="username">Username</label>
-        <input class="form-control" type="text" name="username" id="username" placeholder="Username" required autofocus />
-        
-        <label for="password">Password</label>
-        <input class="form-control" type="password" name="password" id="password" placeholder="Password" required />
-        
-        <label for="passwordRepeated">Repat password</label>
-        <input class="form-control" type="password" name="passwordRepeated" id="passwordRepeated" placeholder="Password" required />
-        {{#if errors.template}}
-          <p class="text-danger">{{errors.template}}</p>
-        {{/if}}
-      </div>
-  
-      <button class="btn btn-primary" type="submit">Submit</button>
-    </form>
-  </div>
+<div class="header-container">
+	<div class="title-container">		
+		<div class="subtitle">Register</div>
+	</div>	
+</div>	
+
+<div class="main-content-container">
+   <form method="post" action="/users/new">
+     <div class="form-group {{#if errors.template}}has-error{{/if}}">
+       <label for="username">Username</label>
+       <input class="form-control" type="text" name="username" id="username" placeholder="Username" required autofocus />
+       
+       <label for="password">Password</label>
+       <input class="form-control" type="password" name="password" id="password" placeholder="Password" required />
+       
+       <label for="passwordRepeated">Repat password</label>
+       <input class="form-control" type="password" name="passwordRepeated" id="passwordRepeated" placeholder="Password" required />
+       {{#if errors.template}}
+         <p class="text-danger">{{errors.template}}</p>
+       {{/if}}
+     </div>
+ 
+     <button class="btn btn-primary" type="submit">Submit</button>
+   </form>
 </div>
+
 
 {{/partial}}
 
