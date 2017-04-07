@@ -26,19 +26,7 @@ a {
 	flex-direction: column;
 }
 
-.buttons-group {
-	float: right;	
-	.btn {
-		border-top-right-radius: 0px;
-		border-top-left-radius: 0px;
-		
-		border-bottom-left-radius: 5px;
-		border-bottom-right-radius: 5px;	
-		
-		&:not(.active) { background-color: $theme-colour; }
-		.active        { background-color: $darken-3; 	}
-	}
-}
+
 
 #map {
 	width: 100%;

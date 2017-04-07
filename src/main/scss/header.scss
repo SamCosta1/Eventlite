@@ -1,6 +1,6 @@
 @import "colour-maps.scss";
 
-$hover-col: $darken-5;
+$hover-col: $darken-4;
 @mixin active {
     a {color: $hover-col !important;}
 }
