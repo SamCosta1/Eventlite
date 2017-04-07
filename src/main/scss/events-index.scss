@@ -5,71 +5,25 @@
     background-image: url("../images/fireworks.png");
 }
 
-.events-container {
-	margin-top: 40px;	
-	
-	button {
-		background-color: $darken-1;	
-	}
+.twitter-image {
+    border-radius: 10px;
+    width: 40px;	
+    height: 40px;
 }
-
-.past-events {
- 	color: gray;
- 	
- 	a {
- 		color: $lighten-2;	
- 	}
- 
- 	.missed-notif {
- 		color: $error;
- 		
- 		a {
- 			color: $error;	
- 		}	
- 	}
- 
- 	button {
- 		background-color: $lighten-1;		
- 		margin-left: 10px;
- 	}
- 
- 	 &:hover {
-	 	.missed-notif{
-		 	animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
-		 	display: inline-block;
-		}
-	}
-}
-
-@keyframes shake {
-  10%, 90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-  
-  20%, 80% {
-    transform: translate3d(2px, 0, 0);
-  }
-
-  30%, 50%, 70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-
-  40%, 60% {
-    transform: translate3d(4px, 0, 0);
-  }
-}
-
 
 .twitter-container {
-    border-radius: 10px;
-    border-style: solid;
-    border-color: gray;
-    
     padding: 10px;
-    margin-top: 10px;
+    margin: 10px 0px;
     
-    img {
-    	border-radius: 10px;
-    	width: 50px;	
-    }
+    .tweet-container {
+    	padding: 10px;
+    	border-radius: 5px;
+    	margin: 10px 0px;
+    	background-color: #e6e6e6;	
+    	
+    	.tweet-datetime {
+    		text-align: right;
+    	}	
+    }    
+    
 }

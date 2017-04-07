@@ -1,6 +1,7 @@
 {{#partial "head"}}
 <link rel="stylesheet" href="../css/main.css">
 <link rel="stylesheet" href="../css/events-index.css">
+<link rel="stylesheet" href="../css/events-list.css">
 {{/partial}}
 
 {{#partial "navbar"}}
@@ -15,48 +16,34 @@ events
 	</div>	
 </div>	
 	
+<div class="subsection-title-container" data-toggle="collapse" href="#tweets-container">
+	<div class="main-content-container">
+		<img class="twitter-logo twitter-image" src="../images/twitter-logo.png"/>
+		<div class="subsubtitle">Twitter Feed</div>
+	</div>
+</div>
 <div class="main-content-container">
-	<div class="twitter-container"> 
-	   <div>
-	   	  <img class="twitter-logo" src="../images/twitter-logo.png"/>
-	      <img class="twitter-avatar" src="{{user.profileImageUrl}}" />
-	      <h3 class="twitter-feed-title"> Twitter Feed <a href="http://www.twitter.com/{{user.screenName}}" target="_blank">@{{user.screenName}}</a></h3>
-	    
-	   </div>  
-	   {{#each tweets}}  
-	      <div class="tweet-content">{{text}}</div>
-	      <div class="tweet-datetime">{{createdAt}}</div>       
-	   {{/each}}
+	<div class="twitter-container"> 	  
+	     
+	   <div id="tweets-container" class="tweets-container collapse in">
+		   {{#each tweets}}  
+		   	  <div class="tweet-container">
+			      <div class="tweet-content">{{text}}</div>
+			      <div class="tweet-datetime">{{createdAt}}</div>
+		      </div>       
+		   {{/each}}
+	   </div>   
 	
 	</div>
-	
-	<!-- 
-		<div class="col-md-3 filters-container" id="filterLooks">
-			<h2>Filters</h2>
-			<form action="/events/" method="post">
-			   <div class="form-group">    
-				   <label for="name">Event Name:</label><input class="form-control" type="text" name="name" id="name" placeholder="Search.." autofocus />    
-			   </div>
-			   <button class="btn btn-primary" type="submit">Search!</button>
-			</form>
-		</div>-->
-		<div class="events-container list-container">		
-		    {{#events}}
-			    {{> events/_detail}}
-		    {{/events}}
-		</div>
- 	
+</div>
 
-
-	<div class="row">
+{{> events/_events_view}}
+<div class="row">
 	  <div class = "col-md-3 filters-container">
 	    <h3>Add a new event</h3>
 	    <a class="btn btn-primary" role="button" onclick="location.href='/events/new'">Add event</a>
 	  </div>
 	</div>
-</div>
-
-
 
 
 {{/partial}}

@@ -82,6 +82,18 @@ hr:last-child {
 	display: none;		
 }		
 
+.subsection-title-container {
+	display: flex;
+	justify-content: center;
+	background-color: $darken-3;
+	color: white;
+	min-height: 50px;
+	
+	.main-content-container {
+		display: flex;
+		align-items: center;
+	}
+}
 
 
 .header-container {
@@ -110,35 +122,6 @@ hr:last-child {
 	padding: 10px;
 }
 
-/*
-.filters-container {
-	background-color: $lighten-1;
-	padding-bottom: 20px;
-	padding-top: 1px;
-	border-radius: 10px;
-	
-	margin-bottom: 5px;
+.subsubtitle {
+	font-size: 20px;	
 }
-
-.container { 
-    @media (min-width: 1200px) { 
-        margin-left: 2%; 
-        margin-right: 2%; 
-        width: 96%; 
-    }
-}
-
-.main-container {
-	margin: 25px;
-	margin-top: 10px;
-	
-	.filler {
-		width: 2px; // HACK: Overriding bootstrap to give 'margin' between columns
-	}
-
-	h1 {
-		// HACK: Though the header and the panel are actually lined up, the curved border makes it look wrong
-		// This fixes that
-		margin-left: 4px;	
-	}
-}*/
