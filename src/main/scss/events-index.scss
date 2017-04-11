@@ -1,5 +1,9 @@
 @import "colour-maps.scss";
 
+#map {
+	display: none;	
+}
+
 .twitter-image {
     border-radius: 10px;
     width: 40px;	
