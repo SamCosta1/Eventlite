@@ -9,7 +9,7 @@ $hover-col: $darken-4;
 .header {
 
     .navbar {    
-        background-color: white;
+        background-color: white !important;
         margin-bottom: 0px !important; // Important used to override bootstrap
         
         a {        	
