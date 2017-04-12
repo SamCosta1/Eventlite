@@ -217,14 +217,19 @@ public class EventServiceTest extends TestParent {
 		Event event1 = new Event("Test event1", testVenue, d3, d3, "");
 		Event event2 = new Event("Test event2", testVenue, d3, d3, "");
 		
+		
 		List<Event> givenEvents = Arrays.asList(event1, event2);
 		
 		eventService.save(event1);
 		eventService.save(event2);
 		
 		List<Event> events = (List<Event>)eventService.findAllByVenue(testVenue);	
-
-		assertTrue("The find by venue method found the correct events", givenEvents.equals(events));
+		
+		for (Event e : events)
+			assertTrue("event is in the future", e.getDate().after(new Date()));
+		
+		testListInOrder(events);
+		assertTrue("Correct events returned", givenEvents.equals(events));
 		
 	}
 	

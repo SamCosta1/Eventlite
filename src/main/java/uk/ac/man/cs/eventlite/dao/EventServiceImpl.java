@@ -67,7 +67,7 @@ public class EventServiceImpl implements EventService {
 	
 	@Override
 	public Iterable<Event> findAllByVenue(Venue venue) {	
-		return eventRepository.findAllByVenue(venue);
+		return eventRepository.findAllByVenueAndDateAfterOrderByDateAscNameAsc(venue, new Date());
 	}
 	
 	@Override

@@ -13,7 +13,7 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 	
 	Iterable<Event> findAllByOrderByDateDescTimeDescNameAsc();
 	Event findById(long id);
-	Iterable<Event> findAllByVenue(Venue venue);
+	Iterable<Event> findAllByVenueAndDateAfterOrderByDateAscNameAsc(Venue venue, Date d);
 	
 	List<Event> findAllByUserAndDateAfterOrderByDateAscNameAsc(User user, Date d);
 	List<Event> findAllByUserAndDateBeforeOrderByDateDescNameAsc(User user, Date d);
