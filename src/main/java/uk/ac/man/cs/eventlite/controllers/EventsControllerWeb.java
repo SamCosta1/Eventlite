@@ -101,7 +101,7 @@ public class EventsControllerWeb {
 		if (errors.hasErrors()) {
 			model.addAttribute("errors", formErrorHelper(errors));
 			model.addAttribute("id", eventID);
-			model.addAttribute("eventForm", eventService.findById(eventID));
+			model.addAttribute("event", eventService.findById(eventID));
 			model.addAttribute("venues", venueService.findAllExceptOne(event.getVenue()));
 			
 			return "events/eventform";
@@ -116,7 +116,7 @@ public class EventsControllerWeb {
 	public String showUpdateEventForm(@PathVariable("id") long id, Model model) {
 		
 	   	Event event = eventService.findById(id);
-		model.addAttribute("eventForm", event);
+		model.addAttribute("event", event);
 		model.addAttribute("venues", venueService.findAllExceptOne(event.getVenue()));
 
 		return "events/eventform";
