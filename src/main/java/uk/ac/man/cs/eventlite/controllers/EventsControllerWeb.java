@@ -59,11 +59,11 @@ public class EventsControllerWeb {
 		model.addAttribute("events", eventService.findAll());
 		List<Tweet> tweets = twitter.timelineOperations().getUserTimeline();
 		
-		if (tweets.size()>5) 
-			tweets = tweets.subList(0,5);
+		if (tweets.size() > 5) 
+			tweets = tweets.subList(0, 5);
 		
 		
-		model.addAttribute("tweets",tweets);
+		model.addAttribute("tweets", tweets);
 		model.addAttribute("user", twitter.userOperations().getUserProfile());
 		return "events/index";
 	}
@@ -94,12 +94,12 @@ public class EventsControllerWeb {
     }
 	
 	
-	@RequestMapping(value="/{id}/update",
+	@RequestMapping(value = "/{id}/update",
 				    method = RequestMethod.POST, 
 					consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 					produces = { MediaType.TEXT_HTML_VALUE })
 	public String updateEvent(@RequestBody @Valid @ModelAttribute("eventForm") Event event, BindingResult errors,
-								@RequestParam(value="event") long eventID, Model model) {
+							  @RequestParam(value = "event") long eventID, Model model) {
 		
 		if (errors.hasErrors()) {
 			model.addAttribute("errors", formErrorHelper(errors));
@@ -158,13 +158,13 @@ public class EventsControllerWeb {
 	
 	
 	@RequestMapping (value = "/new", method = RequestMethod.GET)
-	public String showNew(Model model) 	{
+	public String showNew(Model model) {
 		model.addAttribute("venues", venueService.findAll());
 		return "events/new";
 	}
 	
 	@RequestMapping (value = "/userevents", method = RequestMethod.GET)
-	public String showUserEvents(Model model) 	{				
+	public String showUserEvents(Model model) {				
 		model.addAttribute("events", eventService.findAllByUser(getCurrentUser(model)));
 		return "events/userevents";
 	}
@@ -173,32 +173,36 @@ public class EventsControllerWeb {
 	@RequestMapping(value = "/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 					produces = { MediaType.TEXT_HTML_VALUE })
 	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Event event, BindingResult result,
-			                          Model model)	{ 
-	  event.setUser(getCurrentUser(model));
-	  eventService.save(event);
-	  return "redirect:/events";
+			                          Model model) {
+		if (result.hasErrors()) {
+			return "events/new";
+        }
+	  
+	    event.setUser(getCurrentUser(model));
+	    eventService.save(event);
+	    return "redirect:/events";
 	}
 	
-	// Helper to tweet - returns null if there were no errors
+	// Helper to tweet - returns null if there were no errors.
 	private String tweet(String message) {
-		String noWhitespace = message.replaceAll("\\s+","");
+		String noWhitespace = message.replaceAll("\\s+", "");
 		
-		if (noWhitespace.equals("")) { // Discard whitespace-only tweets
+		if (noWhitespace.equals("")) {  // Discard whitespace-only tweets.
 			return "Your tweet is empty!";
 		}
 		
 		try   { twitter.timelineOperations().updateStatus(message); }
-		catch (MessageTooLongException e) { return "Your tweet is too long!";	    }
-		catch (ApiException e)			  { return "Could not connect to twitter";  }
-		catch (Exception e)				  { return "Error: " + e.getMessage();		}
+		catch (MessageTooLongException e) { return "Your tweet is too long!";	   }
+		catch (ApiException e)			  { return "Could not connect to twitter"; }
+		catch (Exception e)				  { return "Error: " + e.getMessage();	   }
 		
 		return null;	
-	}		
+	}
 	
-	// Helper that returns the current user
+	// Helper that returns the current user.
 	private static User getCurrentUser(Model model) {
 		CurrentUser mapVal = ((CurrentUser)model.asMap().get("currentUser"));
 		return mapVal == null ? null : mapVal.getUser();
 	}
-	
+
 }
