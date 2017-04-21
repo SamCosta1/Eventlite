@@ -1,0 +1,15 @@
+@import "colour-maps.scss";
+
+label {
+	margin-top: 15px	
+}
+
+form {
+	.btn {
+		background-color: $theme-colour;	
+	}	
+
+	textarea {
+		min-height: 140px;	
+	}
+}

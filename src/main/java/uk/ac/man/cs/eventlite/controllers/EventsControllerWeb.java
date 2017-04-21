@@ -55,16 +55,9 @@ public class EventsControllerWeb {
 		
 		if (connectionRepository.findPrimaryConnection(Twitter.class) == null) 
             return "redirect:/connect/twitter";
-        
+       
 		model.addAttribute("events", eventService.findAll());
-		List<Tweet> tweets = twitter.timelineOperations().getUserTimeline();
-		
-		if (tweets.size()>5) 
-			tweets = tweets.subList(0,5);
-		
-		
-		model.addAttribute("tweets",tweets);
-		model.addAttribute("user", twitter.userOperations().getUserProfile());
+		addTweets(model);
 		return "events/index";
 	}
 	
@@ -79,7 +72,11 @@ public class EventsControllerWeb {
 					produces = { MediaType.TEXT_HTML_VALUE })
 	public String filter(@ModelAttribute("search") SearchEvents searchCriterion, BindingResult result, Model model) {
 	
+		if (connectionRepository.findPrimaryConnection(Twitter.class) == null) 
+            return "redirect:/connect/twitter";
+		
 		model.addAttribute("events", searchCriterion.search(eventService));
+		addTweets(model);
 		return "events/index";
 	}
 	
@@ -104,7 +101,7 @@ public class EventsControllerWeb {
 		if (errors.hasErrors()) {
 			model.addAttribute("errors", formErrorHelper(errors));
 			model.addAttribute("id", eventID);
-			model.addAttribute("eventForm", eventService.findById(eventID));
+			model.addAttribute("event", eventService.findById(eventID));
 			model.addAttribute("venues", venueService.findAllExceptOne(event.getVenue()));
 			
 			return "events/eventform";
@@ -119,7 +116,7 @@ public class EventsControllerWeb {
 	public String showUpdateEventForm(@PathVariable("id") long id, Model model) {
 		
 	   	Event event = eventService.findById(id);
-		model.addAttribute("eventForm", event);
+		model.addAttribute("event", event);
 		model.addAttribute("venues", venueService.findAllExceptOne(event.getVenue()));
 
 		return "events/eventform";
@@ -199,6 +196,19 @@ public class EventsControllerWeb {
 	private static User getCurrentUser(Model model) {
 		CurrentUser mapVal = ((CurrentUser)model.asMap().get("currentUser"));
 		return mapVal == null ? null : mapVal.getUser();
+	}
+	
+	
+	// Helper to add tweets and user info to model
+	private void addTweets(Model model) {
+		List<Tweet> tweets = twitter.timelineOperations().getUserTimeline();
+		
+		if (tweets.size() > 5) 
+			tweets = tweets.subList(0,5);
+		
+		
+		model.addAttribute("tweets",tweets);
+		model.addAttribute("user", twitter.userOperations().getUserProfile());
 	}
 	
 }

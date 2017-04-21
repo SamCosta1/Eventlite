@@ -125,6 +125,10 @@ public class EventsControllerWebTest extends TestParent {
 	
 	@Test
 	public void testFilterEvents() throws Exception {
+		when(connectionRepository.findPrimaryConnection(Twitter.class)).thenReturn(connection);
+		when(twitter.timelineOperations()).thenReturn(timelineOperations);
+		when(twitter.userOperations()).thenReturn(userOperations);
+		when(userOperations.getUserProfile()).thenReturn(profile);
 		when(eventService.searchByName("")).thenReturn(Collections.<Event> emptyList());
 			mvc.perform(MockMvcRequestBuilders.post("/events/")
 					.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -132,6 +136,9 @@ public class EventsControllerWebTest extends TestParent {
 					.accept(MediaType.TEXT_HTML_VALUE))
 					.andExpect(view().name("events/index"));
 		verify(eventService, times(1)).searchByName("testString");
+		verify(connectionRepository, times(1)).findPrimaryConnection(Twitter.class);
+		verify(twitter, times(1)).timelineOperations();
+		verify(timelineOperations, times(1)).getUserTimeline();
 	}
 		
 	@Test

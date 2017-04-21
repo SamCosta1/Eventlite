@@ -35,9 +35,14 @@
 			  <div class="collapse navbar-collapse" id="header-collapse-section">
 			    <ul class="nav navbar-nav">			         		        
 		          <li class="home-button"><a href="/"><span class="glyphicon glyphicon-home"></span>Home</a></li>	
-		          <li class="events-button"><a href="/events"><span class="glyphicon glyphicon-home"></span>Events</a></li>		
+		          <li class="events-button"><a href="/events"><span class="glyphicon glyphicon-list"></span>Events</a></li>		
                   <li class="userevents-button"><a href="/events/userevents"><span class="glyphicon glyphicon-list-alt"></span>Your Events</a></li>               
-		          <li class="venues-button"><a href="/venues"><span class="glyphicon glyphicon-list-alt"></span>Venues</a></li>		         
+		          <li class="venues-button"><a href="/venues"><span class="glyphicon glyphicon-map-marker"></span>Venues</a></li>		
+		          <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-plus"></span>Create<span class="caret"></span></a>
+		          <ul class="dropdown-menu">
+          			<li><a href="/events/new">Add Event</a></li>
+          			<li><a href="/venues/new">Add Venue</a></li>
+      			  </ul>         
 			    </ul>
 			    <ul class="nav navbar-nav navbar-right">
 			    {{#if currentUser}}

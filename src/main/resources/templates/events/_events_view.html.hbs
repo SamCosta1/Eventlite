@@ -1,0 +1,33 @@
+<div class="subsection-title-container">
+	<div class="main-content-container search-header">		
+		<div class="subsubtitle">Events</div>
+		<div class="search-container">
+			<form id="search-form" action="/events/" method="post">			   
+				<input class="form-control" type="text" name="name" id="name" placeholder="Search.." autofocus />    
+			</form>		
+	   	    <div id="search-button" class="glyphicon glyphicon-search"></div>	
+	   	</div>
+   	</div>	   
+</div>
+
+{{> maps/_toggle-buttons}}
+<div class="main-content-container">
+
+	<div id="list" class="events-container list-container">		
+	    {{#events}}
+		    {{> events/_detail}}
+	    {{/events}}
+	</div>
+ 	
+	
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+		
+    $('#search-button').click(function(){
+      $('#search-form').submit();
+    });
+   
+});
+</script>

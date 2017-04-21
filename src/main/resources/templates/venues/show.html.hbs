@@ -8,58 +8,58 @@
 
 {{#partial "content"}}
   {{#venue}}
-  <div class="container">
-  <div class="row">
-    <div class="col-sm-12">
-      <h1>{{name}}</h1>
-    </div>
+  
+    
+  <div class="header-container">
+	<div class="title-container">		
+		<div class="subtitle">View a Venue</div>
+	</div>	
+  </div>	
+	
+  <div class="subsection-title-container">
+	<div class="main-content-container">
+		<div class="subsubtitle">{{name}}</div>
+	</div>
   </div>
-    <div class="row">
-      <div class="col-sm-4">
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="panel panel-default" id ="info-panel">
-              <div class="panel-body">
-                <h4>Info</h4>
-                <div id = "info-content">
-                  <div>
-                    <p>Capacity: {{capacity}}</p>
-                    <p>Address: {{address}}</p>
-                    <p>Postcode: {{postcode}}</p>
-                  </div>
-                  <a class="btn btn-primary" id="back-button" role="button" onclick="goBack()">Back</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-12">
-            <div class="panel panel-default" id ="map-panel">
-              <div class="panel-body">
-                <h4>Map</h4>
-                {{> maps/_onemarkermap}}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-8">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <h4>Events</h4>
-            {{#if events}}
-              <table class="table table-striped table-hover">
-                <tbody>
-                  {{#events}}
-                    {{> events/_detail}}
-                  {{/events}}
-                </tbody>
-              </table>
-            {{else}}
-              <p id = "no-description">No Events</p>
-            {{/if}}
-          </div>
-        </div>
-      </div>
+    
+  <div class="main-content-container">
+
+    <div class="row">      
+	     <div class="col-sm-4 no-pad">
+	       <div class="panel panel-default" id ="info-panel">
+	         <div class="panel-body">
+	           <h4>Info</h4>
+	           <div id = "info-content">
+	             <div>
+	               <p>Capacity: {{capacity}}</p>
+	               <p>Address: {{address}}</p>
+	               <p>Postcode: {{postcode}}</p>
+	             </div>
+	             <a class="btn btn-primary" id="back-button" role="button" onclick="goBack()">Back</a>
+	           </div>
+	         </div>
+	       </div>
+	     </div>
+         
+      
+	      <div class="col-sm-8">
+	        <div class="panel panel-default">
+	          <div class="panel-body">
+	            <h4>Events</h4>
+	            {{#if events}}
+	              <table class="table table-striped table-hover">
+	                <tbody>
+	                  {{#events}}
+	                    {{> events/_detail}}
+	                  {{/events}}
+	                </tbody>
+	              </table>
+	            {{else}}
+	              <p id = "no-description">No Events</p>
+	            {{/if}}
+	          </div>
+	        </div>
+	      </div>
     </div>
   </div>
   {{/venue}}

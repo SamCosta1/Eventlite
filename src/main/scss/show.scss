@@ -10,77 +10,48 @@
     background-color: $default-background-col;	
 }
 
-.panel-default {
-	@include main-default-style;
-    @media (min-width: 768px){
-        height: 75vh;
-    }
-    .panel-body {
-        height:100%;
-        #no-description{
-            font-size: 300%;
-            text-align:center; 
-            color: #d3d3d3;
-            @media (min-width: 768px){
-                /* Safari */
-                -webkit-transform: translateX(-50%) translateY(-50%) rotate(45deg);
-
-                /* Firefox */
-                -moz-transform: translateX(-50%) translateY(-50%) rotate(45deg);
-
-                /* IE */
-                -ms-transform: translateX(-50%) translateY(-50%) rotate(45deg);
-
-                /* Opera */
-                -o-transform: translateX(-50%) translateY(-50%) rotate(45deg);
-  
-                font-size: 400%;
-                position: absolute; 
-                top: 50%;
-                left: 50%;
-            }
-        }
-        #venue-name{
-            display: none;
-        }
-    }
+// Override bootstrap's padding
+.no-pad {
+	padding-left: 0px !important;
 }
 
+.row {
+	margin-top: 20px;
+	.panel {
+		border-color: $default-border-col;
+	}	
+}
+
+
+
 .tweet-container {
+   margin-top: 20px;
    @include main-default-style;
    .status-bar {
 	  padding: 5px;
 	  margin-bottom: 10px;
-      &.success {
-      	 background-color: #9aff9a;
-      }
+	  display: none;
+	}
+
+	.success {
+		 .status-bar {      	 	
+		  	 display: block;
+		  	 background-color: $success-background;
+	  	 }
+	}
      
-      &.error {
-      	 background-color: #fb6464;
-      }	
-   }	
+  .error {
+  	 .status-bar { 
+      	 display: block;
+      	 background-color: $error-background;
+      }
+  	 textarea {
+  	 	border-bottom-style: solid;
+  	 	border-bottom-color: $error;	
+  	 }
+     
+  }	
+   
 }
 
-#info-panel .panel-body{
-    @extend %column-flex;
-    #info-content{
-        @extend %column-flex;
-        flex-grow: 1;
-        justify-content:space-between;
-        @media (max-width: 767px){
-            flex-direction:row;
-        }
-        #back-button{
-            width: 70px;
-            @media (max-width: 767px){
-                padding-top: 1.5em;
-            }
-        }
-    }
-}
 
-#info-panel, #map-panel{
-    @media (min-width: 768px){
-        height: 36vh;
-    }
-}

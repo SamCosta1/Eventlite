@@ -1,0 +1,54 @@
+{{#partial "head"}}
+<link rel="stylesheet" href="../css/main.css">
+<link rel="stylesheet" href="../css/home.css">
+<link rel="stylesheet" href="../css/events-list.css">
+{{/partial}}
+
+{{#partial "navbar"}}
+home
+{{/partial}}
+
+{{#partial "content"}}
+
+	<div class="header-container">
+		<div class="title-container">			
+			<div class="title">Eventlite</div>
+			<div class="subtitle hidden-xs">For events and stuff</div>
+		</div>		
+	</div>			
+	
+	<div class="main-content-container">    
+        <div class="events-container list-container">
+        	<h2>Coming Up Soon!</h2>         
+            {{#events_soonest3}}
+		      	<span class="name link" onclick="window.document.location='/events/{{id}}';">{{name}}</span>
+             	<div class="event-container">             		
+             		<div class="left-side">             			
+				      	<span class="link" onclick="window.document.location='/venues/{{venue.id}}';">
+				      		<a class="icon fa fa-map-marker"></a>{{venue.name}}
+				      	</span>
+				      	<span> <a class="icon glyphicon glyphicon-calendar"></a>{{date}}</span> 
+				      	<span> <a class="icon glyphicon glyphicon-time"></a>{{time}}</span>
+				    </div>          		
+             		<div class="right-side hidden-sm hidden-md hidden-xs">
+             			<span>{{description}}</span>
+             		</div>
+             	</div>
+             	<hr>
+		   {{/events_soonest3}} 
+		</div> 
+	</div>     
+	
+ 	<div class="main-content-container">
+	    <div class="venues-container list-container">
+	        <h2>Popular Venues</h2>       	        
+	              {{#venues_top3}}	
+	              		{{> venues/_detail}}
+				  {{/venues_top3}}
+	          
+	    	</div>
+     </div>
+
+{{/partial}}
+
+{{> layouts/base title="EventLite events"}}

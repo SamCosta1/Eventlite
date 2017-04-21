@@ -26,7 +26,7 @@ public class HomepageControllerWeb {
 		
 		model.addAttribute("events_soonest3", (soonest3events(eventService.findAll())));
 		model.addAttribute("venues_top3", (top3venues(eventService.findAll())));
-		return "homepage";
+		return "index";
 	}
 	
 	private Event[] soonest3events(Iterable<Event> iterable) {

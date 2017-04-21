@@ -48,7 +48,7 @@ public class VenuesControllerWebIntegrationTest extends TestParent {
 	}
 	
 	@Test
-	public void testGetFirstVenue() {
+	public void testVenueDetails() {
 		get("/venues/1");
 	}
 

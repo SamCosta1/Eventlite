@@ -11,7 +11,7 @@ public class SearchEvents{
 	public SearchEvents() {}
 	
 	public SearchEvents(String name) {
-		this.name = name;
+		this.name = name.trim();
 	}
 
 	public String getName() {
@@ -19,7 +19,7 @@ public class SearchEvents{
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.name = name.trim();
 	}
 	
 	public String toString() {

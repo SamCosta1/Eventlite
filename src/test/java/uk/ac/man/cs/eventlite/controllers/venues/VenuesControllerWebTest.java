@@ -74,9 +74,9 @@ public class VenuesControllerWebTest extends TestParent {
 	}
 	
 	@Test
-	public void testGetFirstVenue() throws Exception {		
+	public void testVenueDetails() throws Exception {		
 		when(venueService.findById(1)).thenReturn(venue);
-		when(eventService.findById(1)).thenReturn(event);
+		when(eventService.findAllByVenue(venue)).thenReturn(Collections.<Event> emptyList());
 			mockGet("/venues/1", MediaType.TEXT_HTML, "venues/show", HttpStatus.OK);
 		verify(venueService, times(1)).findById(1);
 		verify(eventService, times(1)).findAllByVenue(venue);
