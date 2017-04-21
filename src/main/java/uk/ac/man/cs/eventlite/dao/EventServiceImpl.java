@@ -1,5 +1,7 @@
 package uk.ac.man.cs.eventlite.dao;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +37,8 @@ public class EventServiceImpl implements EventService {
 	public Iterable<Event> searchByName(String name) {	
 		List<Event> pastEvents = eventRepository.findByNameContainingIgnoreCaseAndDateBeforeOrderByDateDescNameAsc(name, new Date());
 		List<Event> futureEvents = eventRepository.findByNameContainingIgnoreCaseAndDateAfterOrderByDateAscNameAsc(name, new Date());
+		sortByWholeWordMatch(pastEvents, name);
+		sortByWholeWordMatch(futureEvents, name);
 		futureEvents.addAll(pastEvents);
 		
 		return futureEvents;
@@ -83,9 +87,33 @@ public class EventServiceImpl implements EventService {
 	public Iterable<Event> searchByNameByUser(String name, User user) {
 		List<Event> pastEvents = eventRepository.findAllByUserAndNameContainingIgnoreCaseAndDateBeforeOrderByDateDescNameAsc(user, name, new Date());
 		List<Event> futureEvents = eventRepository.findAllByUserAndNameContainingIgnoreCaseAndDateAfterOrderByDateDescNameAsc(user, name, new Date());
+		sortByWholeWordMatch(pastEvents, name);
+		sortByWholeWordMatch(futureEvents, name);
 		futureEvents.addAll(pastEvents);
 		
 		return futureEvents;
 	}
+	
+	// Helper to bring whole word matches to the top of the list	
+	private List<Event> sortByWholeWordMatch(List<Event> events, final String searchTerm) {
+		Collections.sort(events, new Comparator<Event>() {
+
+			@Override
+			public int compare(Event e1, Event e2) {
+				if (wholeWordMatches(e1.getName(), searchTerm) && !wholeWordMatches(e2.getName(), searchTerm)) 
+					return -1;
+				if (!wholeWordMatches(e1.getName(), searchTerm) && wholeWordMatches(e2.getName(), searchTerm)) 
+					return 1;
+				return 0;
+			}
+			
+		});
+		return events;		
+	}
+	
+	private boolean wholeWordMatches(String str1, String str2) {
+		return str1.toLowerCase().trim().equals(str2.trim().toLowerCase());
+	}
+	
 
 }
