@@ -95,7 +95,7 @@ public class EventServiceImpl implements EventService {
 	}
 	
 	// Helper to bring whole word matches to the top of the list	
-	private List<Event> sortByWholeWordMatch(List<Event> events, String searchTerm) {
+	private List<Event> sortByWholeWordMatch(List<Event> events, final String searchTerm) {
 		Collections.sort(events, new Comparator<Event>() {
 
 			@Override
