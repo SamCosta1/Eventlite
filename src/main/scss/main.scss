@@ -26,6 +26,10 @@ a {
 	flex-direction: column;
 }
 
+a:focus, a:hover {
+	color: $darken-1;	
+	text-decoration: none;
+}
 
 
 #map {
