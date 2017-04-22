@@ -1,0 +1,35 @@
+ {{#partial "head"}}
+ <link rel="stylesheet" href="../../css/updateform.css">
+ {{/partial}}
+ 
+ {{#partial "content"}}
+ {{#venueForm}}
+ 	<h1>Updating <b>{{name}}</b></h1>
+ 	
+ 	{{#if errors}}
+ 		<p class="h2 text-danger"> There were errors in your updated event information!</p>
+ 	{{/if}}
+     <form action="/venues/{{id}}/update" method="post">
+ 		<div class="form-group {{#if errors.template}}has-error{{/if}}">
+     	
+     	<input type="hidden" name="venue" id="venue" value="{{id}}" />
+     	
+     	<p class="title">Name</p><p class="value"> <input type="text" name="name" id="name" value="{{name}}" />
+     	
+     	<p class="title">Address</p><p class="value"> <textarea name="address" id="address">{{address}}</textarea></p>
+     	<p class="title">Postcode</p><p class="value"> <input type="text" name="postcode" id="postcode" value="{{postcode}}" />
+        	<p class="title">Capacity</p><p class="value"><input type="number" name="capacity" id="capacity" value="{{capacity}}" />
+ 
+         {{/venueForm}}
+ 		{{#if errors.template}}
+       	<p class="text-danger">{{errors.template}}</p>
+       	{{/if}}
+         </div>
+         	<button type="submit">Submit</button>
+            	<button type="reset">Reset</button>
+            	<a href="/venues" role="button"><button>Cancel</button></a>
+         </p>
+     </form>
+ 
+ {{/partial}}
+ {{> layouts/base title="EventLite - Update a venue"}}

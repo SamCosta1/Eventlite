@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.util.Collections;
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +30,9 @@ import org.springframework.social.twitter.api.UserOperations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
 import uk.ac.man.cs.eventlite.TestParent;
 import uk.ac.man.cs.eventlite.controllers.EventsControllerWeb;
 import uk.ac.man.cs.eventlite.dao.EventService;
@@ -55,6 +59,9 @@ public class EventsControllerWebTest extends TestParent {
 	
 	@Mock
 	private Venue venue;
+	
+	@Mock
+	private Date date;
 	
 	@Mock
 	private Twitter twitter;
@@ -113,6 +120,29 @@ public class EventsControllerWebTest extends TestParent {
 		verify(venueService, times(1)).findAllExceptOne(venue);
 		verify(event, times(1)).getVenue();		
 	}	
+	
+	@Test
+ 	public void testUpdateEvent() throws Exception {
+		
+ 		when(eventService.findById(3)).thenReturn(event);
+ 		when(event.getDescription()).thenReturn("description");
+ 		when(event.getVenue()).thenReturn(venue);
+ 		when(event.getDate()).thenReturn(date);
+		MultiValueMap<String, String> eventParams = new LinkedMultiValueMap<String, String>();
+		eventParams.add("id", "3");
+		eventParams.add("name", "new name");
+		eventParams.add("description", event.getDescription());
+		eventParams.add("venue", event.getVenue().getName());
+		eventParams.add("date", event.getDate().toString());
+		eventParams.add("time", event.getDate().toString());
+ 			mvc.perform(MockMvcRequestBuilders.post("/events/{id}/update", 3L)
+ 					.params(eventParams)
+ 					.accept(MediaType.TEXT_HTML)
+ 					.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE))
+ 					.andExpect(status().isFound());
+	
+ 		verify(eventService, times(1)).update(event, event);
+ 	}
 	
 	@Test
 	public void testGetFirstEvent() throws Exception {
