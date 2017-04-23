@@ -22,6 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.social.twitter.api.MessageTooLongException;
 
 import uk.ac.man.cs.eventlite.dao.EventService;
@@ -51,19 +52,22 @@ public class EventsControllerWeb {
     }
 
 	@RequestMapping(method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE })
-	public String getAllEvents(Model model) {
+	public String getAllEvents(Model model, @ModelAttribute("successMessage") String successMessage) {
 		
 		if (connectionRepository.findPrimaryConnection(Twitter.class) == null) 
             return "redirect:/connect/twitter";
        
 		model.addAttribute("events", eventService.findAll());
 		addTweets(model);
+		model.addAttribute("success", successMessage);
 		return "events/index";
 	}
 	
 	@RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
- 	public String deleteEvent(@ModelAttribute Event event) {		
+ 	public String deleteEvent(@ModelAttribute Event event, Model model, @ModelAttribute("successMessage") String successMessage, final RedirectAttributes redirectAttributes) {		
  		eventService.delete(event);
+ 		successMessage = event.getName() + " has been deleted successfully!";
+		redirectAttributes.addFlashAttribute("successMessage", successMessage);
  		return "redirect:/events";
  	}
 	
@@ -95,8 +99,9 @@ public class EventsControllerWeb {
 				    method = RequestMethod.POST, 
 					consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 					produces = { MediaType.TEXT_HTML_VALUE })
-	public String updateEvent(@RequestBody @Valid @ModelAttribute("eventForm") Event event, BindingResult errors,
-								@RequestParam(value="event") long eventID, Model model) {
+	public String updateEvent(@RequestBody @Valid @ModelAttribute("eventForm") Event event, 
+								BindingResult errors, @ModelAttribute("successMessage") String successMessage,
+								@RequestParam(value="event") long eventID, Model model, final RedirectAttributes redirectAttributes) {
 		
 		if (errors.hasErrors()) {
 			model.addAttribute("errors", formErrorHelper(errors));
@@ -108,6 +113,8 @@ public class EventsControllerWeb {
 		}
 		
 		eventService.update(eventService.findById(eventID), event);
+		successMessage = event.getName() + " has been updated successfully!";
+		redirectAttributes.addFlashAttribute("successMessage", successMessage);
 		
 		return "redirect:/events";
 	}
@@ -170,9 +177,11 @@ public class EventsControllerWeb {
 	@RequestMapping(value = "/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 					produces = { MediaType.TEXT_HTML_VALUE })
 	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Event event, BindingResult result,
-			                          Model model)	{ 
+			                          Model model, @ModelAttribute("successMessage") String successMessage, final RedirectAttributes redirectAttributes)	{ 
 	  event.setUser(getCurrentUser(model));
 	  eventService.save(event);
+	  successMessage = event.getName() + "has been created successfully!";
+      redirectAttributes.addFlashAttribute("successMessage", successMessage);
 	  return "redirect:/events";
 	}
 	

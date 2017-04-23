@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import uk.ac.man.cs.eventlite.dao.UserService;
 import uk.ac.man.cs.eventlite.helpers.UserCreateForm;
@@ -53,7 +54,7 @@ public class UserControllerWeb {
 	@RequestMapping(value = "/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 					produces = { MediaType.TEXT_HTML_VALUE })
 	public String createUserFromForm(@RequestBody @Valid @ModelAttribute UserCreateForm form, BindingResult result,
-			                          Model model)	{ 
+			                          Model model, @ModelAttribute("successMessage") String successMessage, final RedirectAttributes redirectAttributes)	{ 
 		if (result.hasErrors()) {
             return "users/new";
         }
@@ -63,7 +64,9 @@ public class UserControllerWeb {
         	result.reject("username.exists", "Username already exists");
             return "users/new";
         }
-        return "redirect:/";
+        successMessage = "You have registered successfully! Here you can login with your new user.";
+		redirectAttributes.addFlashAttribute("successMessage", successMessage);
+        return "redirect:login";
 	}
 
 }
