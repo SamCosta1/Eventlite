@@ -100,6 +100,12 @@ public class EventServiceImpl implements EventService {
 
 			@Override
 			public int compare(Event e1, Event e2) {
+				if (e1.isPastEvent() && !e2.isPastEvent())
+					return 1;
+				
+				if (!e1.isPastEvent() && e2.isPastEvent())
+					return -1;
+				
 				if (wholeWordMatches(e1.getName(), searchTerm) && !wholeWordMatches(e2.getName(), searchTerm)) 
 					return -1;
 				if (!wholeWordMatches(e1.getName(), searchTerm) && wholeWordMatches(e2.getName(), searchTerm)) 

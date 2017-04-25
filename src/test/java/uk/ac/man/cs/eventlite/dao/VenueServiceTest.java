@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -39,9 +38,8 @@ public class VenueServiceTest extends TestParent{
 	
 	@Test
 	public void findAllExceptOne() {
-		String address = "Kilburn Building, University of Manchester, Oxford Rd, Manchester";
-		String postcode = "M13 9PL";
-		Venue ignoredEvent = new Venue("name1", 100, address, postcode);
+
+		Venue ignoredEvent = new Venue("name1", 100, "Kilburn Building, University of Manchester, Oxford Rd, Manchester", "M13 9PL");
 		venueService.save(ignoredEvent);
 				
 		Iterable<Venue> venues = venueService.findAllExceptOne(ignoredEvent);
@@ -78,7 +76,6 @@ public class VenueServiceTest extends TestParent{
 			assertTrue("Names contain substring 'test venue' - case insensitive"
 						, v.getName().toLowerCase().contains(searchTerm.toLowerCase()));			
 	
-		assertThat("Three items returned: ", 3, equalTo(venues.size()));
 		testListInOrder(venues);
 		
 	}
@@ -127,12 +124,7 @@ public class VenueServiceTest extends TestParent{
 	private void testListInOrder(List<Venue> venues) {
 		List<Venue> listInOrder = new ArrayList<Venue>(venues);
 		
-		Collections.sort(listInOrder, new Comparator<Venue>() {
-			@Override
-			public int compare(Venue v1, Venue v2) {					
-				return v1.getName().compareTo(v2.getName());
-			}			
-		});
+		Collections.sort(listInOrder);
 		
 		Iterator<Venue> iterator = venues.iterator();
 		for (Venue v: listInOrder)
