@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import uk.ac.man.cs.eventlite.dao.EventService;
 import uk.ac.man.cs.eventlite.dao.SearchVenues;
 import uk.ac.man.cs.eventlite.dao.VenueService;
+import uk.ac.man.cs.eventlite.entities.Event;
 import uk.ac.man.cs.eventlite.entities.Venue;
 
 @Controller
@@ -31,6 +33,21 @@ public class VenuesControllerWeb {
 		return "venues/index";
 	}	
 	
+	@RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
+ 	public String deleteEvent(@ModelAttribute Venue venue, final RedirectAttributes redirectAttributes) {
+		Iterable<Event> events = eventService.findAllByVenue(venue);
+		
+		if (events.iterator().hasNext()) {
+			redirectAttributes.addFlashAttribute("status-message", "You cannot delete this venue since some event is linked to it.");
+			return "redirect:/venues/{id}";
+		}
+		else {
+			venueService.delete(venue);
+			redirectAttributes.addFlashAttribute("status-message", venue.getName() + " has been deleted successfully.");
+			return "redirect:/venues";
+		}
+ 	}
+
 	@RequestMapping(method = RequestMethod.POST, 
 					consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,  
 					produces = { MediaType.TEXT_HTML_VALUE })

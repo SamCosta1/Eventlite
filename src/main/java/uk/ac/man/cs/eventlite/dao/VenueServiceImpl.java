@@ -24,6 +24,11 @@ public class VenueServiceImpl implements VenueService {
 	}
 	
 	@Override
+	public void delete(Venue venue) {
+		venueRepository.delete(venue);
+	}	
+	
+	@Override
 	public List<Venue> searchByName(String name) {	
 		return venueRepository.findByNameContainingIgnoreCaseOrderByNameAsc(name);
 	}
