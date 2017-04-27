@@ -2,6 +2,7 @@ package uk.ac.man.cs.eventlite.controllers;
 
 import static uk.ac.man.cs.eventlite.helpers.ErrorHelpers.*;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -117,8 +118,9 @@ public class EventsControllerWeb {
 		
 	   	Event event = eventService.findById(id);
 		model.addAttribute("event", event);
+		model.addAttribute("eventTime", new SimpleDateFormat("HH:mm").format(event.getTime()));
 		model.addAttribute("venues", venueService.findAllExceptOne(event.getVenue()));
-
+		
 		return "events/eventform";
 
 	}
