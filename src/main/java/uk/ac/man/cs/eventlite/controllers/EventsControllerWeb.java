@@ -2,12 +2,15 @@ package uk.ac.man.cs.eventlite.controllers;
 
 import static uk.ac.man.cs.eventlite.helpers.ErrorHelpers.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.social.ApiException;
 import org.springframework.social.connect.ConnectionRepository;
@@ -29,6 +32,7 @@ import uk.ac.man.cs.eventlite.dao.SearchEvents;
 import uk.ac.man.cs.eventlite.dao.VenueService;
 import uk.ac.man.cs.eventlite.entities.Event;
 import uk.ac.man.cs.eventlite.entities.User;
+import uk.ac.man.cs.eventlite.entities.Venue;
 import uk.ac.man.cs.eventlite.helpers.CurrentUser;
 
 @Controller
@@ -168,16 +172,33 @@ public class EventsControllerWeb {
 		model.addAttribute("events", eventService.findAllByUser(getCurrentUser(model)));
 		return "events/userevents";
 	}
-	
+
 
 	@RequestMapping(value = "/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 					produces = { MediaType.TEXT_HTML_VALUE })
-	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Event event, BindingResult result,
-			                          Model model) {
+	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Event event, BindingResult result, Model model, 
+			                          @RequestParam("name") String name, @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, 
+			                          @RequestParam("time") @DateTimeFormat(pattern = "HH:mm") Date time, 
+			                          @RequestParam("venue") Venue venue, @RequestParam("description") String description) {
 		if (result.hasErrors()) {
+			model.addAttribute("name", name);
+			
+			if (date != null) {
+				String date_str = new SimpleDateFormat("yyyy-MM-dd").format(date);
+				model.addAttribute("date", date_str);
+			}
+			
+			if (time != null) {
+				String time_str = new SimpleDateFormat("HH:mm").format(time);
+				model.addAttribute("time", time_str);
+			}
+			
+			model.addAttribute("venue", venue);
+			model.addAttribute("venues", venueService.findAllExceptOne(venue));
+			model.addAttribute("description", description);
 			return "events/new";
         }
-	  
+
 	    event.setUser(getCurrentUser(model));
 	    eventService.save(event);
 	    return "redirect:/events";

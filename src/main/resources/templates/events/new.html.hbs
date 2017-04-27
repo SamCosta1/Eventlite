@@ -9,23 +9,26 @@
     <form method="post" action="/events/new">
       <div class="form-group {{#if errors.template}}has-error{{/if}}">
         <label for="name">Name</label>
-        <input class="form-control" type="text" name="name" id="name" placeholder="Name" autofocus />
+        <p><input class="form-control" type="text" name="name" id="name" placeholder="Name" autofocus value="{{name}}" /></p>
         
         <label for="date">Date</label>
-        <input class="form-control" type="text" name="date" id="date" placeholder="yyyy-MM-dd" />
+        <p><input class="form-control" type="text" name="date" id="date" placeholder="yyyy-MM-dd" value="{{date}}" /></p>
          
         <label for="time">Time</label>
-        <input class="form-control" type="text" name="time" id="time" placeholder="HH:mm" />
+        <p><input class="form-control" type="text" name="time" id="time" placeholder="HH:mm" value="{{time}}" /></p>
 
         <label for="venue">Venue</label>
-        <select type="venue" name="venue" id="venue" class="form-control" />
-        {{#venues}}
-          <option value={{id}}>{{name}}</option>
-        {{/venues}}
-        </select>
+        <p>
+        <select type="venue" name="venue" id="venue" value="{{venue}}" />
+       	  <option selected value={{venue.id}}>{{venue.name}}</option>
+       	  {{#venues}}
+       	    <option value={{id}}>{{name}}</option>
+       	  {{/venues}}
+       	</select>
+       	</p>
         
         <label for="description">Description</label>
-        <input class="form-control" type="text" name="description" id="description" placeholder="Description" />
+        <p><input class="form-control" type="text" name="description" id="description" placeholder="Description" value="{{description}}" /></p>
         
         {{#if errors.template}}
           <p class="text-danger">{{errors.template}}</p>
@@ -36,7 +39,6 @@
     </form>
   </div>
 </div>
-
 {{/partial}}
 
 {{> layouts/base title="EventLite New Event"}}
