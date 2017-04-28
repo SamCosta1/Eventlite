@@ -4,11 +4,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -52,14 +52,13 @@ public class VenuesControllerWebTest extends TestParent {
 	@Mock
 	private Event event;
 
-	@Mock
 	private List<Event> events;
 	
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
 		mvc = MockMvcBuilders.standaloneSetup(venuesController).build();
-
+		events = Arrays.asList(event, event, event);
 	}
 	
 	@Test
@@ -101,14 +100,13 @@ public class VenuesControllerWebTest extends TestParent {
 		verify(eventService, times(1)).findAllByVenue(venue);
 	}
 	
-	@Ignore
 	@Test
 	public void testDeleteVenueWithEvents() throws Exception {
 		when(venueService.findById(1)).thenReturn(venue);
 		when(eventService.findAllByVenue(venue)).thenReturn(events);
 		mvc.perform(MockMvcRequestBuilders.post("/venues/1/delete")
 			.contentType(MediaType.APPLICATION_FORM_URLENCODED).accept(MediaType.TEXT_HTML)).andExpect(status().isFound())
-			.andExpect(view().name("redirect:/venues/1"));
+			.andExpect(view().name("redirect:/venues/{id}"));
 		verify(venueService, times(1)).findById(1);
 		verify(eventService, times(1)).findAllByVenue(venue);
 	}
