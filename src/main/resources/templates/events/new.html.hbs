@@ -8,27 +8,64 @@
   <div class = "col-md-3">
     <form method="post" action="/events/new">
       <div class="form-group {{#if errors.template}}has-error{{/if}}">
-        <label for="name">Name</label>
-        <p><input class="form-control" type="text" name="name" id="name" placeholder="Name" autofocus value="{{name}}" /></p>
-        
-        <label for="date">Date</label>
-        <p><input class="form-control" type="text" name="date" id="date" placeholder="yyyy-MM-dd" value="{{date}}" /></p>
-         
-        <label for="time">Time</label>
-        <p><input class="form-control" type="text" name="time" id="time" placeholder="HH:mm" value="{{time}}" /></p>
+        <table>
+          <tr>
+            <td><label for="name">Name</label></td>
+            <td><input class="form-control" type="text" name="name" id="name" placeholder="Name" autofocus value="{{name}}" /></td>
+            <td class="text-danger">
+              {{#if errors.name}}
+                {{errors.name}}
+              {{/if}}
+            </td>
+          </tr>
+          
+          <tr>
+            <td><label for="date">Date</label></td>
+            <td><input class="form-control" type="text" name="date" id="date" placeholder="yyyy-MM-dd" value="{{date}}" /></td>
+            <td class="text-danger">
+              {{#if errors.date}}
+                {{errors.date}}
+              {{/if}}
+            </td>
+          </tr>
+          
+          <tr>
+        	<td><label for="time">Time</label></td>
+        	<td><input class="form-control" type="text" name="time" id="time" placeholder="HH:mm" value="{{time}}" /></td>
+		    <td class="text-danger">
+              {{#if errors.time}}
+                {{errors.time}}
+              {{/if}}
+            </td>
+		  </tr>
 
-        <label for="venue">Venue</label>
-        <p>
-        <select type="venue" name="venue" id="venue" value="{{venue}}" />
-       	  <option selected value={{venue.id}}>{{venue.name}}</option>
-       	  {{#venues}}
-       	    <option value={{id}}>{{name}}</option>
-       	  {{/venues}}
-       	</select>
-       	</p>
-        
-        <label for="description">Description</label>
-        <p><input class="form-control" type="text" name="description" id="description" placeholder="Description" value="{{description}}" /></p>
+          <tr>
+        	<td><label for="venue">Venue</label></td>
+        	<td>
+          	  <select type="venue" name="venue" id="venue" value="{{venue}}" />
+       	        <option selected value={{venue.id}}>{{venue.name}}</option>
+       	        {{#venues}}
+       	          <option value={{id}}>{{name}}</option>
+       	        {{/venues}}
+       	      </select>
+       		</td>
+       	    <td class="text-danger">
+              {{#if errors.venue}}
+                {{errors.venue}}
+              {{/if}}
+            </td>
+       	  </tr>
+       		
+          <tr>
+        	<td><label for="description">Description</label></td>
+        	<td><input class="form-control" type="text" name="description" id="description" placeholder="Description" value="{{description}}" /></td>
+            <td class="text-danger">
+              {{#if errors.description}}
+                {{errors.description}}
+              {{/if}}
+            </td>
+          </tr>
+        </table>
         
         {{#if errors.template}}
           <p class="text-danger">{{errors.template}}</p>

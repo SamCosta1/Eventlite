@@ -181,6 +181,7 @@ public class EventsControllerWeb {
 			                          @RequestParam("time") @DateTimeFormat(pattern = "HH:mm") Date time, 
 			                          @RequestParam("venue") Venue venue, @RequestParam("description") String description) {
 		if (result.hasErrors()) {
+			model.addAttribute("errors", formErrorHelper(result));
 			model.addAttribute("name", name);
 			
 			if (date != null) {
