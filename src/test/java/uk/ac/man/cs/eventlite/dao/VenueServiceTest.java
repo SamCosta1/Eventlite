@@ -6,12 +6,16 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import uk.ac.man.cs.eventlite.entities.Event;
 import uk.ac.man.cs.eventlite.entities.Venue;
 import uk.ac.man.cs.eventlite.TestParent;
 
@@ -20,6 +24,9 @@ public class VenueServiceTest extends TestParent{
 
 	@Autowired
 	private VenueService venueService;
+	
+	@Autowired
+	private EventService eventService;
 
 	@Test
 	public void findAllTest() {
@@ -117,6 +124,26 @@ public class VenueServiceTest extends TestParent{
 		Venue foundVenue = venueService.findById(venue.getId());	
 
 		assertTrue("The find by Id method found the correct venue", foundVenue.equals(venue));
+		
+	}
+	
+	@Test
+	public void testFindMostPopularVenues() {
+		Venue[] venues = venueService.findMostPopularVenues();
+		List<Venue> allVenues = (List<Venue>) venueService.findAll();
+		
+		Set<Integer> noEvents = new HashSet<Integer>();
+		for (Venue v : allVenues)
+			noEvents.add(((List<Event>)eventService.findAllByVenue(v)).size());
+		
+		List<Integer> sorted = new ArrayList<Integer>(noEvents);
+		Collections.sort(sorted);
+		
+		if (sorted.size() > 3)
+			sorted = sorted.subList(0,3);
+		
+		for (Venue v : venues)
+			assertTrue(sorted.contains(((List<Event>)eventService.findAllByVenue(v)).size()));
 		
 	}
 	

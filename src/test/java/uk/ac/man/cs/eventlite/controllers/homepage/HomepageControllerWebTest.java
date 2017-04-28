@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import uk.ac.man.cs.eventlite.TestParent;
 import uk.ac.man.cs.eventlite.controllers.HomepageControllerWeb;
 import uk.ac.man.cs.eventlite.dao.EventService;
+import uk.ac.man.cs.eventlite.dao.VenueService;
 import uk.ac.man.cs.eventlite.entities.Event;
 import uk.ac.man.cs.eventlite.entities.Venue;
 import static org.mockito.Mockito.when;
@@ -38,6 +39,9 @@ public class HomepageControllerWebTest extends TestParent {
 	private EventService eventService;
 	
 	@Mock
+	private VenueService venueService;
+	
+	@Mock
 	private Venue venue;
 	
 	@Mock
@@ -51,9 +55,11 @@ public class HomepageControllerWebTest extends TestParent {
 	
 	@Test
 	public void testHomepage() throws Exception {
-		when(eventService.findThreeSoonestEvents()).thenReturn(Collections.<Event> emptyList());
-		mockGet("/", MediaType.TEXT_HTML, "index", HttpStatus.OK);
+		when(venueService.findMostPopularVenues()).thenReturn(new Venue[]{});
+		when(eventService.findThreeSoonestEvents()).thenReturn(Collections.<Event> emptyList());		
+			mockGet("/", MediaType.TEXT_HTML, "index", HttpStatus.OK);
 		verify(eventService, times(1)).findThreeSoonestEvents();
+		verify(venueService, times(1)).findMostPopularVenues();
 	}
 	
 	// Helpers ----	
