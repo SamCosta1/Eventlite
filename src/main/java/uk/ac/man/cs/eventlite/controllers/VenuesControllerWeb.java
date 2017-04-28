@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import uk.ac.man.cs.eventlite.dao.EventService;
@@ -33,8 +34,9 @@ public class VenuesControllerWeb {
 		return "venues/index";
 	}	
 	
-	@RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
- 	public String deleteEvent(@ModelAttribute Venue venue, final RedirectAttributes redirectAttributes) {
+	@RequestMapping(value = "/{id}/delete",consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,  method = RequestMethod.POST)
+ 	public String deleteVenue(@PathVariable("id") long id, final RedirectAttributes redirectAttributes) {
+		Venue venue = venueService.findById(id);
 		Iterable<Event> events = eventService.findAllByVenue(venue);
 		
 		if (events.iterator().hasNext()) {

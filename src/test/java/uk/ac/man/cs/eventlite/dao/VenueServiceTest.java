@@ -12,6 +12,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import uk.ac.man.cs.eventlite.entities.Event;
 import uk.ac.man.cs.eventlite.entities.Venue;
 import uk.ac.man.cs.eventlite.TestParent;
 
@@ -137,6 +138,24 @@ public class VenueServiceTest extends TestParent{
 		Iterator<Venue> iterator = venues.iterator();
 		for (Venue v: listInOrder)
 			assertTrue(v.equals(iterator.next()));
+	}
+	
+	@Test
+	public void testDeleteVenue(){
+		Venue venue = new Venue();
+		venueService.save(venue);
+		
+		long initialCount = venueService.count();
+		
+		venueService.delete(venue);
+
+		List<Venue> venues = (List<Venue>) venueService.findAll();
+		
+		for (Venue v : venues)
+			assertFalse("Deleted event doesn't appear", v.equals(venue));		
+		
+		assertThat("Count should decrease by one on delete", initialCount - 1, equalTo(venueService.count()));
+		
 	}
 
 }
