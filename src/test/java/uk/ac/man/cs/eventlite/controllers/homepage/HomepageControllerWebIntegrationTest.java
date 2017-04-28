@@ -18,8 +18,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import uk.ac.man.cs.eventlite.TestParent;
 
@@ -33,7 +31,6 @@ public class HomepageControllerWebIntegrationTest extends TestParent {
 	private TestRestTemplate template;
 
 	private HttpEntity<?> httpEntity;
-	private HttpHeaders headers;
 
 	@Before
 	public void setup() {

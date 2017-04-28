@@ -142,8 +142,14 @@ public class VenueServiceTest extends TestParent{
 		if (sorted.size() > 3)
 			sorted = sorted.subList(0,3);
 		
-		for (Venue v : venues)
-			assertTrue(sorted.contains(((List<Event>)eventService.findAllByVenue(v)).size()));
+		int previousFrequency = -1;
+		for (Venue v : venues) {
+			int freq = ((List<Event>)eventService.findAllByVenue(v)).size();
+			if (previousFrequency == -1)
+				previousFrequency = freq;
+			assertTrue("This venue has one of the highest numbers of events", sorted.contains(freq));
+			assertTrue("Venues in decreasing order of popularity", freq <= previousFrequency);
+		}
 		
 	}
 	
