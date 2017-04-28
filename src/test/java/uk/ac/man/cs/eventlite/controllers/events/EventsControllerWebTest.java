@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.util.Collections;
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +30,7 @@ import org.springframework.social.twitter.api.UserOperations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
 import uk.ac.man.cs.eventlite.TestParent;
 import uk.ac.man.cs.eventlite.controllers.EventsControllerWeb;
 import uk.ac.man.cs.eventlite.dao.EventService;
@@ -106,12 +108,14 @@ public class EventsControllerWebTest extends TestParent {
 	public void testShowUpdateForm() throws Exception {		
 		when(eventService.findById(3)).thenReturn(event);
 		when(event.getVenue()).thenReturn(venue);
+		when(event.getTime()).thenReturn(new Date());
 		when(venueService.findAllExceptOne(venue)).thenReturn(Collections.<Venue> emptyList());
 			mvc.perform(get("/events/3/update").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
 				.andExpect(view().name("events/eventform"));
 		verify(eventService, times(1)).findById(3);
 		verify(venueService, times(1)).findAllExceptOne(venue);
-		verify(event, times(1)).getVenue();		
+		verify(event, times(1)).getVenue();	
+		verify(event, times(1)).getTime();
 	}	
 	
 	@Test
