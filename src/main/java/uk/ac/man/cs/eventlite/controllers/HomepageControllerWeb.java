@@ -24,32 +24,10 @@ public class HomepageControllerWeb {
 	@RequestMapping(method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE })
 	public String featured(Model model) {
 		
-		model.addAttribute("events_soonest3", (soonest3events(eventService.findAll())));
-		model.addAttribute("venues_top3", (top3venues(eventService.findAll())));
+		model.addAttribute("events_soonest3", eventService.findThreeSoonestEvents());
+	//	model.addAttribute("venues_top3", (top3venues(eventService.findAll())));
 		return "index";
-	}
-	
-	private Event[] soonest3events(Iterable<Event> iterable) {
-		Event[] the3Events = new Event[3];
-		for (int i=0; i < 3; i++) the3Events[i] = null;
-		
-		for (Event x : iterable) {
-			
-			if((the3Events[0]==null) || (x.getDate().compareTo(the3Events[0].getDate())<=0)) {
-				the3Events[2]=the3Events[1];
-				the3Events[1]=the3Events[0];
-				the3Events[0]=x;	
-			}
-			else if((the3Events[1]==null) || (x.getDate().compareTo(the3Events[1].getDate())<=0)) {
-				the3Events[2]=the3Events[1];
-				the3Events[1]=x;
-			}
-			else if((the3Events[2]==null) || (x.getDate().compareTo(the3Events[2].getDate())<=0)) {
-				the3Events[2]=x;
-			}
-		}
-		return the3Events;
-	}
+	}	
 	
 	private Venue[] top3venues(Iterable<Event> iterable) {
 		Venue[] the3Venues = new Venue[3];
