@@ -18,4 +18,5 @@ public interface EventService {
 	
 	public Iterable<Event> findAllByVenue(Venue venue);
 	public Iterable<Event> searchByNameByUser(String name, User user);
+	public Iterable<Event>  findThreeSoonestEvents();
 }

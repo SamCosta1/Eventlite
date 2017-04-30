@@ -4,15 +4,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
+
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.HttpStatus;
@@ -47,11 +51,14 @@ public class VenuesControllerWebTest extends TestParent {
 	
 	@Mock
 	private Event event;
+
+	private List<Event> events;
 	
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		mvc = MockMvcBuilders.standaloneSetup(venuesController).build();		
+		mvc = MockMvcBuilders.standaloneSetup(venuesController).build();
+		events = Arrays.asList(event, event, event);
 	}
 	
 	@Test
@@ -78,6 +85,28 @@ public class VenuesControllerWebTest extends TestParent {
 		when(venueService.findById(1)).thenReturn(venue);
 		when(eventService.findAllByVenue(venue)).thenReturn(Collections.<Event> emptyList());
 			mockGet("/venues/1", MediaType.TEXT_HTML, "venues/show", HttpStatus.OK);
+		verify(venueService, times(1)).findById(1);
+		verify(eventService, times(1)).findAllByVenue(venue);
+	}
+	
+	@Test
+	public void testDeleteVenueWithNoEvents() throws Exception {
+		when(venueService.findById(1)).thenReturn(venue);
+		when(eventService.findAllByVenue(venue)).thenReturn(Collections.<Event> emptyList());
+		mvc.perform(MockMvcRequestBuilders.post("/venues/1/delete")
+			.contentType(MediaType.APPLICATION_FORM_URLENCODED).accept(MediaType.TEXT_HTML)).andExpect(status().isFound())
+			.andExpect(view().name("redirect:/venues"));
+		verify(venueService, times(1)).findById(1);
+		verify(eventService, times(1)).findAllByVenue(venue);
+	}
+	
+	@Test
+	public void testDeleteVenueWithEvents() throws Exception {
+		when(venueService.findById(1)).thenReturn(venue);
+		when(eventService.findAllByVenue(venue)).thenReturn(events);
+		mvc.perform(MockMvcRequestBuilders.post("/venues/1/delete")
+			.contentType(MediaType.APPLICATION_FORM_URLENCODED).accept(MediaType.TEXT_HTML)).andExpect(status().isFound())
+			.andExpect(view().name("redirect:/venues/{id}"));
 		verify(venueService, times(1)).findById(1);
 		verify(eventService, times(1)).findAllByVenue(venue);
 	}

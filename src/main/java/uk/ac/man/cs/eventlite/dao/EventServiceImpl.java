@@ -94,6 +94,11 @@ public class EventServiceImpl implements EventService {
 		return futureEvents;
 	}
 	
+	@Override
+	public Iterable<Event> findThreeSoonestEvents() {
+		return eventRepository.findAllByDateAfterOrderByDateAscNameAsc(new Date()).subList(0, 3);
+	}
+	
 	// Helper to bring whole word matches to the top of the list	
 	private List<Event> sortByWholeWordMatch(List<Event> events, final String searchTerm) {
 		Collections.sort(events, new Comparator<Event>() {

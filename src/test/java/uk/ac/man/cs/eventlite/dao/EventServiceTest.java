@@ -249,6 +249,23 @@ public class EventServiceTest extends TestParent {
 			
 	}
 	
+	@Test
+	public void testGetThreeSoonestEvents() {
+		List<Event> threeEvents = (List<Event>) eventService.findThreeSoonestEvents();
+		List<Event> allEvents = (List<Event>) eventService.findAll();
+		
+		assertTrue("Should return at most three events", threeEvents.size() <= 3);
+		for (Event e : threeEvents)
+			assertTrue("Event hasn't already happened", !e.isPastEvent());
+		
+		Iterator<Event> it = allEvents.iterator();		
+		for (int i = 0; i < 3; i++)
+			if (it.hasNext())
+				assertTrue(threeEvents.contains(it.next())); // The first three results in find all should be the soonest ones
+	
+		testListInOrder(threeEvents);
+	}
+	
 	// Helper method for checking a result set is in correct order
 	private void testListInOrder(List<Event> events) {
 		List<Event> pastEvents = new ArrayList<Event>();
