@@ -43,7 +43,6 @@ public class Venue implements Comparable<Venue> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(this.longitude + " " + this.latitude);
 	}
 	
 	public Venue() {}

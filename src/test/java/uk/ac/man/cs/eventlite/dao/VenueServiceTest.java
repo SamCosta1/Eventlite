@@ -5,12 +5,12 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import uk.ac.man.cs.eventlite.entities.Event;
@@ -112,15 +112,12 @@ public class VenueServiceTest extends TestParent{
 	
 	@Test
 	public void testFindById() {
-		String address = "Kilburn Building, University of Manchester, Oxford Rd, Manchester";
-		String postcode = "M13 9PL";
-		Venue venue = new Venue("test Venue", 1000, address, postcode);
+		Venue venue = new Venue("test Venue", 1000, "Kilburn Building, University of Manchester, Oxford Rd, Manchester", "M13 9PL");
 		venueService.save(venue);
 		
 		Venue foundVenue = venueService.findById(venue.getId());	
 
-		assertTrue("The find by Id method found the correct venue", foundVenue.equals(venue));
-		
+		assertTrue("The find by Id method found the correct venue", foundVenue.equals(venue));		
 	}
 	
 	@Test
@@ -134,19 +131,14 @@ public class VenueServiceTest extends TestParent{
 		
 		List<Integer> sorted = new ArrayList<Integer>(noEvents);
 		Collections.sort(sorted);
+		Collections.reverse(sorted);
 		
 		if (sorted.size() > 3)
-			sorted = sorted.subList(0,3);
-		
-		int previousFrequency = -1;
+			sorted = sorted.subList(0,3);		
 		for (Venue v : venues) {
 			int freq = ((List<Event>)eventService.findAllByVenue(v)).size();
-			if (previousFrequency == -1)
-				previousFrequency = freq;
 			assertTrue("This venue has one of the highest numbers of events", sorted.contains(freq));
-			assertTrue("Venues in decreasing order of popularity", freq <= previousFrequency);
-		}
-		
+		}		
 	}
 	
 	// Helper method for checking a result set is in correct order
