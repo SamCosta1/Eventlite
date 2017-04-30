@@ -35,7 +35,12 @@
 	               <p>Address: {{address}}</p>
 	               <p>Postcode: {{postcode}}</p>
 	             </div>
+	             <div style="display: inline">
+	             <form action="/venues/{{id}}/delete" method="post" style="display: inline">
+ 	  				<button class="btn btn-primary" type="submit">Delete</button>
+	  			 </form>
 	             <a class="btn btn-primary" id="back-button" role="button" onclick="goBack()">Back</a>
+	  			 </div>
 	           </div>
 	         </div>
 	       </div>

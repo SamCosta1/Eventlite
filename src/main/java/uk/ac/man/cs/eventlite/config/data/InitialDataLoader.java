@@ -57,8 +57,16 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		newVenue3.setCapacity(10);
 		newVenue3.setAddress("Kilburn Building, University of Manchester, Oxford Rd, Manchester");
 		newVenue3.setPostcode("M13 9PL");
-		newVenue2.setCoords();
+		newVenue3.setCoords();
 		venueService.save(newVenue3);
+		
+		Venue newVenue4 = new Venue();
+		newVenue4.setName("G23");
+		newVenue4.setCapacity(10);
+		newVenue4.setAddress("Kilburn Building, University of Manchester, Oxford Rd, Manchester");
+		newVenue4.setPostcode("M13 9PL");
+		newVenue4.setCoords();
+		venueService.save(newVenue4);
 		
 		
 		DateFormat f = new SimpleDateFormat("dd/MM/yyyy HH:mm");

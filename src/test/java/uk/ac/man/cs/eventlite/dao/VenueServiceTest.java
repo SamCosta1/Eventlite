@@ -171,5 +171,23 @@ public class VenueServiceTest extends TestParent{
 		for (Venue v: listInOrder)
 			assertTrue(v.equals(iterator.next()));
 	}
+	
+	@Test
+	public void testDeleteVenue(){
+		Venue venue = new Venue();
+		venueService.save(venue);
+		
+		long initialCount = venueService.count();
+		
+		venueService.delete(venue);
+
+		List<Venue> venues = (List<Venue>) venueService.findAll();
+		
+		for (Venue v : venues)
+			assertFalse("Deleted event doesn't appear", v.equals(venue));		
+		
+		assertThat("Count should decrease by one on delete", initialCount - 1, equalTo(venueService.count()));
+		
+	}
 
 }
