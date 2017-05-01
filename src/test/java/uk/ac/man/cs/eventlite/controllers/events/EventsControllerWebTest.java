@@ -29,6 +29,7 @@ import org.springframework.social.twitter.api.UserOperations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
 import uk.ac.man.cs.eventlite.TestParent;
 import uk.ac.man.cs.eventlite.controllers.EventsControllerWeb;
 import uk.ac.man.cs.eventlite.dao.EventService;
@@ -73,7 +74,7 @@ public class EventsControllerWebTest extends TestParent {
 	
 	@Mock
 	private TwitterProfile profile;
-		    
+	
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
@@ -111,7 +112,7 @@ public class EventsControllerWebTest extends TestParent {
 				.andExpect(view().name("events/eventform"));
 		verify(eventService, times(1)).findById(3);
 		verify(venueService, times(1)).findAllExceptOne(venue);
-		verify(event, times(1)).getVenue();		
+		verify(event, times(1)).getVenue();
 	}	
 	
 	@Test
@@ -127,10 +128,10 @@ public class EventsControllerWebTest extends TestParent {
 	public void testFilterEvents() throws Exception {
 		when(eventService.searchByName("")).thenReturn(Collections.<Event> emptyList());
 			mvc.perform(MockMvcRequestBuilders.post("/events/")
-					.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-					.param("name", "testString")
-					.accept(MediaType.TEXT_HTML_VALUE))
-					.andExpect(view().name("events/index"));
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+				.param("name", "testString")
+				.accept(MediaType.TEXT_HTML_VALUE))
+				.andExpect(view().name("events/index"));
 		verify(eventService, times(1)).searchByName("testString");
 	}
 		
@@ -155,11 +156,29 @@ public class EventsControllerWebTest extends TestParent {
 				.andExpect(view().name("events/new"));
 		verify(venueService, times(1)).findAll();
 	}
-		
+
 	@Test
-	public void testNewEvent() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.post("/events/new").contentType(MediaType.APPLICATION_FORM_URLENCODED).accept(MediaType.TEXT_HTML))
-			.andExpect(view().name("redirect:/events"));
+	public void testNewEventHasFormErrors() throws Exception {
+			mvc.perform(MockMvcRequestBuilders.post("/events/new").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.param("name", "A Name")
+				.param("date", "2016-10-10")
+				.param("time", "10:00")
+				.param("venue.id", "1")
+				.param("description", "Desc")
+				.accept(MediaType.TEXT_HTML))
+				.andExpect(view().name("events/new"));
+	}
+
+	@Test
+	public void testNewEventNoFormErrors() throws Exception {
+			mvc.perform(MockMvcRequestBuilders.post("/events/new").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.param("name", "A Name")
+				.param("date", "2019-10-10")
+				.param("time", "10:00")
+				.param("venue.id", "1")
+				.param("description", "Desc")
+				.accept(MediaType.TEXT_HTML))
+				.andExpect(view().name("redirect:/events"));
 	}
 	
 	@Test
