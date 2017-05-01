@@ -21,7 +21,7 @@
           
           <tr>
             <td><label for="date">Date</label></td>
-            <td><input class="form-control" type="text" name="date" id="date" placeholder="yyyy-MM-dd" value="{{date}}" /></td>
+            <td><input class="form-control" type="date" name="date" id="date" placeholder="yyyy-MM-dd" value="{{date}}" /></td>
             <td class="text-danger">
               {{#if errors.date}}
                 {{errors.date}}
@@ -31,7 +31,7 @@
           
           <tr>
         	<td><label for="time">Time</label></td>
-        	<td><input class="form-control" type="text" name="time" id="time" placeholder="HH:mm" value="{{time}}" /></td>
+        	<td><input class="form-control" type="time" name="time" id="time" placeholder="HH:mm" value="{{time}}" /></td>
 		    <td class="text-danger">
               {{#if errors.time}}
                 {{errors.time}}
