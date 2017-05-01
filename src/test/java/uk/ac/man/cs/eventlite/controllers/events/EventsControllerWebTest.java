@@ -165,7 +165,7 @@ public class EventsControllerWebTest extends TestParent {
 				.param("time", "10:00")
 				.param("venue.id", "1")
 				.param("description", "Desc")
-				.accept(MediaType.TEXT_HTML))
+				.accept(MediaType.TEXT_HTML)) 
 				.andExpect(view().name("events/new"));
 	}
 
