@@ -110,9 +110,7 @@ public class Venue implements Comparable<Venue> {
 			this.latitude = results[0].geometry.location.lat;
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		System.out.println(this.longitude + " " + this.latitude);
-		
+		}		
 	}
 	
 	public boolean equals(Venue other) {

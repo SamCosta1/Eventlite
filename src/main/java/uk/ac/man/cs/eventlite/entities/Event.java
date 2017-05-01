@@ -144,7 +144,7 @@ public class Event {
 	}
 	
 	public String toString() {
-		return "ID: " + id + " Name: " + name + " Date: " + date + " Venue: " + venue.toString();
+		return "ID: " + id + " Name: " + name + " Date: " + date + " Time: " + time + " Description: " + description + " Venue: [" + venue.toString() + "]";
 	}
 	
 	public boolean isPastEvent() {

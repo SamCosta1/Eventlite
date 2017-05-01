@@ -9,9 +9,11 @@ import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
@@ -34,6 +36,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import uk.ac.man.cs.eventlite.TestParent;
 import uk.ac.man.cs.eventlite.controllers.EventsControllerWeb;
 import uk.ac.man.cs.eventlite.dao.EventService;
+import uk.ac.man.cs.eventlite.dao.EventTestHelper;
 import uk.ac.man.cs.eventlite.dao.VenueService;
 import uk.ac.man.cs.eventlite.entities.Event;
 import uk.ac.man.cs.eventlite.entities.Venue;
@@ -80,6 +83,7 @@ public class EventsControllerWebTest extends TestParent {
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
 		mvc = MockMvcBuilders.standaloneSetup(eventsController).build();		
+		EventTestHelper.init(venueService);
 	}
 
 	@Test
@@ -153,10 +157,10 @@ public class EventsControllerWebTest extends TestParent {
 	}
 	
 	@Test
-	public void testDeleteEvent() throws Exception {
+	public void testDeleteEvent() throws Exception {		
 		mvc.perform(MockMvcRequestBuilders.post("/events/1/delete")
 			.contentType(MediaType.APPLICATION_FORM_URLENCODED).accept(MediaType.TEXT_HTML)).andExpect(status().isFound())
-			.andExpect(view().name("redirect:/events"));
+			.andExpect(view().name("redirect:/events"));		
 	}
 	
 	@Test
@@ -169,8 +173,19 @@ public class EventsControllerWebTest extends TestParent {
 		
 	@Test
 	public void testNewEvent() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.post("/events/new").contentType(MediaType.APPLICATION_FORM_URLENCODED).accept(MediaType.TEXT_HTML))
+		when(venue.getId()).thenReturn(1L);
+		ArgumentCaptor<Event> savedCaptor = ArgumentCaptor.forClass(Event.class);
+		mvc.perform(MockMvcRequestBuilders.post("/events/new").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+			.param("name", "A Name")
+			.param("date", "2019-10-10")
+			.param("time", "10:00")
+			.param("venue.id", "1")
+			.param("description", "Desc")			
+			.accept(MediaType.TEXT_HTML))
 			.andExpect(view().name("redirect:/events"));
+		
+		verify(eventService).save(savedCaptor.capture());				
+		assertTrue(savedCaptor.getValue().equals(EventTestHelper.newEvent("A Name", venue, "10/10/2019", "10:00", "Desc")));
 	}
 	
 	@Test

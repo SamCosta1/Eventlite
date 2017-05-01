@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,7 +26,16 @@ public class VenueServiceTest extends TestParent{
 	
 	@Autowired
 	private EventService eventService;
-
+	
+	@Before
+	public void setup() {
+		String address = "Kilburn Building, University of Manchester, Oxford Rd, Manchester";
+		String postcode = "M13 9PL";
+		venueService.save(new Venue("A Venue", 10, address, postcode));	
+		venueService.save(new Venue("Another", 10, address, postcode));
+		venueService.save(new Venue("Zebras", 10, address, postcode));	
+	}
+	
 	@Test
 	public void findAllTest() {
 		String address = "Kilburn Building, University of Manchester, Oxford Rd, Manchester";
@@ -44,13 +54,16 @@ public class VenueServiceTest extends TestParent{
 	
 	@Test
 	public void findAllExceptOne() {
-
 		Venue ignoredEvent = new Venue("name1", 100, "Kilburn Building, University of Manchester, Oxford Rd, Manchester", "M13 9PL");
 		venueService.save(ignoredEvent);
 				
-		Iterable<Venue> venues = venueService.findAllExceptOne(ignoredEvent);
+		List<Venue> venues = (List<Venue>) venueService.findAllExceptOne(ignoredEvent);
 		for (Venue v : venues) 
-			assertFalse(v.equals(ignoredEvent));		
+			assertFalse(v.equals(ignoredEvent));
+		
+		List<Venue> allVenues = (List<Venue>) venueService.findAll();
+		allVenues.remove(ignoredEvent);
+		assertTrue("All other venues present", venues.containsAll(allVenues));		
 	}
 	
 	@Test
