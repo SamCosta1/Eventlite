@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
 
+import java.net.URI;
 import java.util.Collections;
 
 import org.junit.Before;
@@ -59,22 +60,29 @@ public class EventsControllerWebIntegrationTest extends TestParent {
 
 	@Test
 	public void testFilterUserEvents() {
-		post("/events/userevents", HttpStatus.OK);
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
+		body.add("", "");
+		post("/events/userevents", HttpStatus.OK, body);
 	}
 	
 	@Test
 	public void testFilterEvents() {
-		post("/events/", HttpStatus.OK);
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
+		body.add("name", "test");
+		post("/events/", HttpStatus.OK, body);
 	}
 	
 	@Test
 	public void testNewEventPage() {
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
 		get("/events/new");
 	}
 	
 	@Test
 	public void testAddNewEvent() {
-		post("/events/new", HttpStatus.OK);
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
+		body.add("", "");
+		post("/events/new", HttpStatus.OK, body);
 	}
 
 	
@@ -84,11 +92,11 @@ public class EventsControllerWebIntegrationTest extends TestParent {
 		assertThat(response.getHeaders().getContentType().toString(), containsString(MediaType.TEXT_HTML_VALUE));
 	}
 	
-	private void post(String url, HttpStatus status) {
-		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
-		body.add("","");
+	private ResponseEntity<String> post(String url, HttpStatus status, MultiValueMap<String, String> body) {
 		httpEntity = new HttpEntity<Object>(body, headers);
 		ResponseEntity<String> response = template.exchange(url, HttpMethod.POST, httpEntity, String.class);
 		assertThat(response.getStatusCode(), equalTo(status));
+				
+		return response;
 	}
 }
