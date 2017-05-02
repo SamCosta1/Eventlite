@@ -9,6 +9,7 @@ import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
@@ -61,9 +62,6 @@ public class EventsControllerWebTest extends TestParent {
 	private Venue venue;
 	
 	@Mock
-	private Date date;
-	
-	@Mock
 	private Twitter twitter;
 	
 	@Mock
@@ -109,39 +107,40 @@ public class EventsControllerWebTest extends TestParent {
 		verify(connectionRepository).findPrimaryConnection(Twitter.class);
 	}
 	
-	@Test
-	public void testShowUpdateForm() throws Exception {		
-		when(eventService.findById(3)).thenReturn(event);
-		when(event.getVenue()).thenReturn(venue);
-		when(venueService.findAllExceptOne(venue)).thenReturn(Collections.<Venue> emptyList());
-			mvc.perform(get("/events/3/update").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
-				.andExpect(view().name("events/eventform"));
-		verify(eventService, times(1)).findById(3);
-		verify(venueService, times(1)).findAllExceptOne(venue);
-		verify(event, times(1)).getVenue();		
-	}	
-	
+ 	public void testShowUpdateForm() throws Exception {		
+ 		when(eventService.findById(3)).thenReturn(event);
+ 		when(event.getVenue()).thenReturn(venue);
+ 		when(event.getTime()).thenReturn(new Date());
+ 		when(venueService.findAllExceptOne(venue)).thenReturn(Collections.<Venue> emptyList());
+ 			mvc.perform(get("/events/3/update").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
+ 				.andExpect(view().name("events/eventform"));
+ 		verify(eventService, times(1)).findById(3);
+ 		verify(venueService, times(1)).findAllExceptOne(venue);
+ 		verify(event, times(1)).getVenue();		
+ 		verify(event, times(1)).getVenue();	
+ 		verify(event, times(1)).getTime();
+ 	}
+ 	
 	@Test
  	public void testUpdateEvent() throws Exception {
+ 		
+		ArgumentCaptor<Event> savedCaptor = ArgumentCaptor.forClass(Event.class);
+		MultiValueMap<String, String> update = new LinkedMultiValueMap<String, String>();
+		update.add("event", "1");
+		update.add("name", "A name");
+		update.add("description", "Description");
+		update.add("venue.id",  "1");
+		update.add("date", "2019-12-01");
+		update.add("time", "10:00");
 		
- 		when(eventService.findById(3)).thenReturn(event);
- 		when(event.getDescription()).thenReturn("description");
- 		when(event.getVenue()).thenReturn(venue);
- 		when(event.getDate()).thenReturn(date);
-		MultiValueMap<String, String> eventParams = new LinkedMultiValueMap<String, String>();
-		eventParams.add("id", "3");
-		eventParams.add("name", "new name");
-		eventParams.add("description", event.getDescription());
-		eventParams.add("venue", event.getVenue().getName());
-		eventParams.add("date", event.getDate().toString());
-		eventParams.add("time", event.getDate().toString());
- 			mvc.perform(MockMvcRequestBuilders.post("/events/{id}/update", 3L)
- 					.params(eventParams)
- 					.accept(MediaType.TEXT_HTML)
- 					.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE))
- 					.andExpect(status().isFound());
-	
- 		verify(eventService, times(1)).update(event, event);
+		mvc.perform(MockMvcRequestBuilders.post("/events/1/update")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+				.params(update)
+	 			.accept(MediaType.TEXT_HTML))
+				.andExpect(status().isFound())
+	 			.andExpect(view().name("redirect:/events"));
+
+ 		verify(eventService).update(savedCaptor.capture(), savedCaptor.capture());
  	}
 	
 	@Test
