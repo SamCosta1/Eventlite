@@ -37,6 +37,9 @@
  						<div> <a class="icon glyphicon glyphicon-calendar"></a>{{date}}</div> 
  						<div> <a class="icon glyphicon glyphicon-time"></a>{{time}}</div>
 	                </div>
+	                <form action="/events/{{id}}/delete" method="post" style="display: inline">
+ 	  					<button class="btn btn-primary" type="submit">Delete</button>
+	  			 	</form>
 	                <a class="btn btn-primary" id="back-button" role="button" onclick="goBack()">Back</a>
 	              </div>
 	            </div>
