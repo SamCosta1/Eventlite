@@ -5,14 +5,13 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import uk.ac.man.cs.eventlite.entities.Event;
@@ -27,7 +26,16 @@ public class VenueServiceTest extends TestParent{
 	
 	@Autowired
 	private EventService eventService;
-
+	
+	@Before
+	public void setup() {
+		String address = "Kilburn Building, University of Manchester, Oxford Rd, Manchester";
+		String postcode = "M13 9PL";
+		venueService.save(new Venue("A Venue", 10, address, postcode));	
+		venueService.save(new Venue("Another", 10, address, postcode));
+		venueService.save(new Venue("Zebras", 10, address, postcode));	
+	}
+	
 	@Test
 	public void findAllTest() {
 		String address = "Kilburn Building, University of Manchester, Oxford Rd, Manchester";
@@ -46,14 +54,16 @@ public class VenueServiceTest extends TestParent{
 	
 	@Test
 	public void findAllExceptOne() {
-		String address = "Kilburn Building, University of Manchester, Oxford Rd, Manchester";
-		String postcode = "M13 9PL";
-		Venue ignoredEvent = new Venue("name1", 100, address, postcode);
+		Venue ignoredEvent = new Venue("name1", 100, "Kilburn Building, University of Manchester, Oxford Rd, Manchester", "M13 9PL");
 		venueService.save(ignoredEvent);
 				
-		Iterable<Venue> venues = venueService.findAllExceptOne(ignoredEvent);
+		List<Venue> venues = (List<Venue>) venueService.findAllExceptOne(ignoredEvent);
 		for (Venue v : venues) 
-			assertFalse(v.equals(ignoredEvent));		
+			assertFalse(v.equals(ignoredEvent));
+		
+		List<Venue> allVenues = (List<Venue>) venueService.findAll();
+		allVenues.remove(ignoredEvent);
+		assertTrue("All other venues present", venues.containsAll(allVenues));		
 	}
 	
 	@Test
@@ -85,7 +95,6 @@ public class VenueServiceTest extends TestParent{
 			assertTrue("Names contain substring 'test venue' - case insensitive"
 						, v.getName().toLowerCase().contains(searchTerm.toLowerCase()));			
 	
-		assertThat("Three items returned: ", 3, equalTo(venues.size()));
 		testListInOrder(venues);
 		
 	}
@@ -116,15 +125,12 @@ public class VenueServiceTest extends TestParent{
 	
 	@Test
 	public void testFindById() {
-		String address = "Kilburn Building, University of Manchester, Oxford Rd, Manchester";
-		String postcode = "M13 9PL";
-		Venue venue = new Venue("test Venue", 1000, address, postcode);
+		Venue venue = new Venue("test Venue", 1000, "Kilburn Building, University of Manchester, Oxford Rd, Manchester", "M13 9PL");
 		venueService.save(venue);
 		
 		Venue foundVenue = venueService.findById(venue.getId());	
 
-		assertTrue("The find by Id method found the correct venue", foundVenue.equals(venue));
-		
+		assertTrue("The find by Id method found the correct venue", foundVenue.equals(venue));		
 	}
 	
 	@Test
@@ -138,19 +144,14 @@ public class VenueServiceTest extends TestParent{
 		
 		List<Integer> sorted = new ArrayList<Integer>(noEvents);
 		Collections.sort(sorted);
+		Collections.reverse(sorted);
 		
 		if (sorted.size() > 3)
-			sorted = sorted.subList(0,3);
-		
-		int previousFrequency = -1;
+			sorted = sorted.subList(0,3);		
 		for (Venue v : venues) {
 			int freq = ((List<Event>)eventService.findAllByVenue(v)).size();
-			if (previousFrequency == -1)
-				previousFrequency = freq;
 			assertTrue("This venue has one of the highest numbers of events", sorted.contains(freq));
-			assertTrue("Venues in decreasing order of popularity", freq <= previousFrequency);
-		}
-		
+		}		
 	}
 	
 	// Helper method for checking a result set is in correct order
@@ -160,12 +161,7 @@ public class VenueServiceTest extends TestParent{
 	private void testListInOrder(List<Venue> venues) {
 		List<Venue> listInOrder = new ArrayList<Venue>(venues);
 		
-		Collections.sort(listInOrder, new Comparator<Venue>() {
-			@Override
-			public int compare(Venue v1, Venue v2) {					
-				return v1.getName().compareTo(v2.getName());
-			}			
-		});
+		Collections.sort(listInOrder);
 		
 		Iterator<Venue> iterator = venues.iterator();
 		for (Venue v: listInOrder)

@@ -1,5 +1,7 @@
 package uk.ac.man.cs.eventlite.dao;
 
+import java.util.List;
+
 import uk.ac.man.cs.eventlite.entities.Event;
 import uk.ac.man.cs.eventlite.entities.User;
 import uk.ac.man.cs.eventlite.entities.Venue;
@@ -11,7 +13,7 @@ public interface EventService {
 	public void delete(Event e);
 
 	public Iterable<Event> findAll();
-	Iterable<Event> searchByName(String name);
+	public List<Event> searchByName(String name);
 	public Event findById(long id);
 	public void update(Event current, Event changes);
 	public Iterable<Event> findAllByUser(User user);

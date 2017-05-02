@@ -120,7 +120,8 @@ public class EventsControllerWeb {
 		return "redirect:/events";
 	}
 	
-	@RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}/update", method = RequestMethod.GET, 
+											 produces = { MediaType.TEXT_HTML_VALUE })
 	public String showUpdateEventForm(@PathVariable("id") long id, Model model) {
 		
 	   	Event event = eventService.findById(id);
@@ -132,8 +133,9 @@ public class EventsControllerWeb {
 
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE,
-					MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, 
+					produces = { MediaType.TEXT_HTML_VALUE,
+								 MediaType.APPLICATION_JSON_VALUE })
 	public String event(@PathVariable("id") long id, Model model) {
 		
 		if (connectionRepository.findPrimaryConnection(Twitter.class) == null) 
@@ -144,7 +146,8 @@ public class EventsControllerWeb {
 		return "events/show";
 	}
 	
-	@RequestMapping(value = "tweet/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "tweet/{id}", method = RequestMethod.POST, 
+										  produces = { MediaType.TEXT_HTML_VALUE })
 	public String createTweetFromForm(@PathVariable("id") long id, @RequestParam("tweet") String tweet, Model model) {
 	
 		String errors = tweet(tweet);
@@ -173,8 +176,7 @@ public class EventsControllerWeb {
 	public String showUserEvents(Model model) 	{				
 		model.addAttribute("events", eventService.findAllByUser(getCurrentUser(model)));
 		return "events/userevents";
-	}
-	
+	}	
 
 	@RequestMapping(value = "/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 					produces = { MediaType.TEXT_HTML_VALUE })

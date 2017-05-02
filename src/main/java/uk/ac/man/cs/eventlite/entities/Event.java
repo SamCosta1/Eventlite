@@ -127,11 +127,24 @@ public class Event {
 	}
 	
 	public boolean equals(Event other) {
-		return this.id == other.getId();
+		return this.id == other.getId()
+				&& this.name == other.name
+				&& this.venue.equals(other.venue)
+				&& this.date.equals(other.date)
+				&& this.time.equals(other.time)
+				&& ((this.description == null && other.description == null) || this.description.equals(other.description));
+	}
+	
+	public boolean equalsIgnoreId(Event other) {
+		return  this.name == other.name
+				&& this.venue.equals(other.venue)
+				&& this.date.equals(other.date)
+				&& this.time.equals(other.time)
+				&& this.description.equals(other.description);
 	}
 	
 	public String toString() {
-		return "ID: " + id + " Name: " + name + " Date: " + date + " Venue: " + venue.toString();
+		return "ID: " + id + " Name: " + name + " Date: " + date + " Time: " + time + " Description: " + description + " Venue: [" + venue.toString() + "]";
 	}
 	
 	public boolean isPastEvent() {
