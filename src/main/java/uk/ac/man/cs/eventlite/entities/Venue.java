@@ -11,7 +11,7 @@ import com.google.maps.model.GeocodingResult;
 
 @Entity
 @Table(name="venues")
-public class Venue {
+public class Venue implements Comparable<Venue> {
 	
 	private static GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyAYnjIj_qYlWudV2gAnr8PuS_Ix-XZPCQY");
 	
@@ -43,7 +43,6 @@ public class Venue {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(this.longitude + " " + this.latitude);
 	}
 	
 	public Venue() {}
@@ -111,9 +110,7 @@ public class Venue {
 			this.latitude = results[0].geometry.location.lat;
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		System.out.println(this.longitude + " " + this.latitude);
-		
+		}		
 	}
 	
 	public boolean equals(Venue other) {
@@ -123,4 +120,11 @@ public class Venue {
 	public String toString() {
 		return "ID: " + id + " Name: " + name + " Capacity: " + capacity;
 	}
+	
+	@Override
+	public int compareTo(Venue other) {					
+		return this.getName().compareTo(other.getName());
+	}
+
+	
 }

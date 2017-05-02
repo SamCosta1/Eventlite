@@ -34,7 +34,7 @@ public class EventServiceImpl implements EventService {
 	}
 	
 	@Override
-	public Iterable<Event> searchByName(String name) {	
+	public List<Event> searchByName(String name) {	
 		List<Event> pastEvents = eventRepository.findByNameContainingIgnoreCaseAndDateBeforeOrderByDateDescNameAsc(name, new Date());
 		List<Event> futureEvents = eventRepository.findByNameContainingIgnoreCaseAndDateAfterOrderByDateAscNameAsc(name, new Date());
 		sortByWholeWordMatch(pastEvents, name);
@@ -105,6 +105,12 @@ public class EventServiceImpl implements EventService {
 
 			@Override
 			public int compare(Event e1, Event e2) {
+				if (e1.isPastEvent() && !e2.isPastEvent())
+					return 1;
+				
+				if (!e1.isPastEvent() && e2.isPastEvent())
+					return -1;
+				
 				if (wholeWordMatches(e1.getName(), searchTerm) && !wholeWordMatches(e2.getName(), searchTerm)) 
 					return -1;
 				if (!wholeWordMatches(e1.getName(), searchTerm) && wholeWordMatches(e2.getName(), searchTerm)) 
