@@ -16,4 +16,5 @@ public interface VenueService {
 
 	public Venue[] findMostPopularVenues();
 	public void delete(Venue venue);
+	public void update(Venue current, Venue changes);
 }

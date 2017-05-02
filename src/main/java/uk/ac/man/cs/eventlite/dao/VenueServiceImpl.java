@@ -88,4 +88,13 @@ public class VenueServiceImpl implements VenueService {
 		}
 		return the3Venues;
 	}
+	
+ 	@Override
+ 	public void update(Venue current, Venue changes) {
+ 		current.setName(changes.getName());
+ 		current.setCapacity(changes.getCapacity());
+ 		current.setAddress(changes.getAddress());
+ 		save(current);
+ 	}
+
 } 

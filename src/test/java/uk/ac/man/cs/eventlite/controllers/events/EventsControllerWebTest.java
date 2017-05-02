@@ -9,6 +9,7 @@ import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
@@ -30,6 +31,8 @@ import org.springframework.social.twitter.api.UserOperations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import uk.ac.man.cs.eventlite.TestParent;
 import uk.ac.man.cs.eventlite.controllers.EventsControllerWeb;
@@ -104,7 +107,42 @@ public class EventsControllerWebTest extends TestParent {
 		verify(connectionRepository).findPrimaryConnection(Twitter.class);
 	}
 	
+ 	public void testShowUpdateForm() throws Exception {		
+ 		when(eventService.findById(3)).thenReturn(event);
+ 		when(event.getVenue()).thenReturn(venue);
+ 		when(event.getTime()).thenReturn(new Date());
+ 		when(venueService.findAllExceptOne(venue)).thenReturn(Collections.<Venue> emptyList());
+ 			mvc.perform(get("/events/3/update").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
+ 				.andExpect(view().name("events/eventform"));
+ 		verify(eventService, times(1)).findById(3);
+ 		verify(venueService, times(1)).findAllExceptOne(venue);
+ 		verify(event, times(1)).getVenue();		
+ 		verify(event, times(1)).getVenue();	
+ 		verify(event, times(1)).getTime();
+ 	}
+ 	
 	@Test
+ 	public void testUpdateEvent() throws Exception {
+ 		
+		ArgumentCaptor<Event> savedCaptor = ArgumentCaptor.forClass(Event.class);
+		MultiValueMap<String, String> update = new LinkedMultiValueMap<String, String>();
+		update.add("event", "1");
+		update.add("name", "A name");
+		update.add("description", "Description");
+		update.add("venue.id",  "1");
+		update.add("date", "2019-12-01");
+		update.add("time", "10:00");
+		
+		mvc.perform(MockMvcRequestBuilders.post("/events/1/update")
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+				.params(update)
+	 			.accept(MediaType.TEXT_HTML))
+				.andExpect(status().isFound())
+	 			.andExpect(view().name("redirect:/events"));
+
+ 		verify(eventService).update(savedCaptor.capture(), savedCaptor.capture());
+ 	}
+ 	
 	public void testShowUpdateForm() throws Exception {		
 		when(eventService.findById(3)).thenReturn(event);
 		when(event.getVenue()).thenReturn(venue);
