@@ -10,6 +10,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.social.ApiException;
+import org.springframework.social.DuplicateStatusException;
+import org.springframework.social.MissingAuthorizationException;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.Twitter;
@@ -138,7 +140,7 @@ public class EventsControllerWeb {
 	
 	@RequestMapping(value = "tweet/{id}", method = RequestMethod.POST)
 	public String createTweetFromForm(@PathVariable("id") long id, @RequestParam("tweet") String tweet, Model model) {
-	
+		
 		String errors = tweet(tweet);
 		if (errors != null) {			
 			model.addAttribute("status", "error");
@@ -178,7 +180,7 @@ public class EventsControllerWeb {
 	}
 	
 	// Helper to tweet - returns null if there were no errors
-	private String tweet(String message) {
+	public String tweet(String message) {
 		String noWhitespace = message.replaceAll("\\s+","");
 		
 		if (noWhitespace.equals("")) { // Discard whitespace-only tweets
@@ -188,7 +190,7 @@ public class EventsControllerWeb {
 		try   { twitter.timelineOperations().updateStatus(message); }
 		catch (MessageTooLongException e) { return "Your tweet is too long!";	    }
 		catch (ApiException e)			  { return "Could not connect to twitter";  }
-		catch (Exception e)				  { return "Error: " + e.getMessage();		}
+		catch (Exception e)				  { return "Error: " + e;		}
 		
 		return null;	
 	}		

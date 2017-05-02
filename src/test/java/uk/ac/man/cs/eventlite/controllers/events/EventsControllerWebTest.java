@@ -3,8 +3,11 @@ package uk.ac.man.cs.eventlite.controllers.events;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +34,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -62,6 +66,9 @@ public class EventsControllerWebTest extends TestParent {
 	private Venue venue;
 	
 	@Mock
+	private Model model;
+	
+	@Mock
 	private Twitter twitter;
 	
 	@Mock
@@ -79,6 +86,9 @@ public class EventsControllerWebTest extends TestParent {
 	@Mock
 	private TwitterProfile profile;
 		    
+	@Mock
+	private Tweet tweet;
+	
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
@@ -169,12 +179,17 @@ public class EventsControllerWebTest extends TestParent {
 	
 	@Test
 	public void testValidTweet() throws Exception {
-		testTweet("This is a valid tweet");
+		testTweet("This is a valid tweet", "success");
 	}
 	
 	@Test
 	public void testEmptyTweet() throws Exception {
+		testTweet("", "error");
+	}
 	
+	@Test
+	public void testLongTweet() throws Exception {
+		testTweet("This is a very very long long tweet, longer than hundred and forty characters, which is the limit, so it should be recognized as an invalid tweet.", "error");
 	}
 	
 	// Helpers ----	
@@ -183,11 +198,20 @@ public class EventsControllerWebTest extends TestParent {
 			.andExpect(view().name(viewName));
 	}	
 	
-	private void testTweet(String tweet) throws Exception {		
+	private void testTweet(String tweet, String validator) throws Exception {		
+		when(this.tweet.getText()).thenReturn(tweet);
+		when(twitter.timelineOperations()).thenReturn(timelineOperations);
+		when(twitter.timelineOperations().updateStatus(tweet)).thenReturn(this.tweet);
+		List<Tweet> tweetList = new ArrayList<Tweet>();
+		tweetList.add(0, this.tweet);
 		mvc.perform(MockMvcRequestBuilders.post("/events/tweet/1")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 				.param("tweet", tweet)
 				.accept(MediaType.TEXT_HTML_VALUE))
-				.andExpect(view().name("events/show"));
+				.andExpect(view().name("events/show"))
+				.andExpect(model().attribute("status", validator));
+		
+				
+
 	}
 }
