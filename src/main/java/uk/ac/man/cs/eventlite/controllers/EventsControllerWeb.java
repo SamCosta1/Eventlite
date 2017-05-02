@@ -190,7 +190,7 @@ public class EventsControllerWeb {
 		try   { twitter.timelineOperations().updateStatus(message); }
 		catch (MessageTooLongException e) { return "Your tweet is too long!";	    }
 		catch (ApiException e)			  { return "Could not connect to twitter";  }
-		catch (Exception e)				  { return "Error: " + e;		}
+		catch (Exception e)				  { return "Error: " + e.getMessage();		}
 		
 		return null;	
 	}		

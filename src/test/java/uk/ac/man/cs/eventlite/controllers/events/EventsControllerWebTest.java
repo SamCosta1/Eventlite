@@ -24,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionRepository;
+import org.springframework.social.twitter.api.MessageTooLongException;
 import org.springframework.social.twitter.api.TimelineOperations;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.Twitter;
@@ -179,17 +180,21 @@ public class EventsControllerWebTest extends TestParent {
 	
 	@Test
 	public void testValidTweet() throws Exception {
-		testTweet("This is a valid tweet", "success");
+		String tweet_s = "This is a valid tweet";
+		testTweet(tweet_s, "success", "Success! You just tweeted:" + tweet_s);
 	}
 	
 	@Test
 	public void testEmptyTweet() throws Exception {
-		testTweet("", "error");
+		String tweet_s = "";
+		testTweet(tweet_s, "error", "Your tweet is empty!");
 	}
 	
-	@Test
+	@Test(expected=MessageTooLongException.class)
 	public void testLongTweet() throws Exception {
-		testTweet("This is a very very long long tweet, longer than hundred and forty characters, which is the limit, so it should be recognized as an invalid tweet.", "error");
+		String tweet_s = "This is a very very long long tweet, longer than hundred and forty characters, which is the limit, so it should be recognized as an invalid tweet.";
+		when(timelineOperations.updateStatus(tweet_s)).thenThrow(new MessageTooLongException(""));
+		testTweet(tweet_s, "error", "Your tweet is too long!");
 	}
 	
 	// Helpers ----	
@@ -198,20 +203,19 @@ public class EventsControllerWebTest extends TestParent {
 			.andExpect(view().name(viewName));
 	}	
 	
-	private void testTweet(String tweet, String validator) throws Exception {		
-		when(this.tweet.getText()).thenReturn(tweet);
+	private void testTweet(String tweet_s, String validator, String validator_msg) throws Exception {
+		when(tweet.getText()).thenReturn(tweet_s); //needed for the last line of this method
 		when(twitter.timelineOperations()).thenReturn(timelineOperations);
-		when(twitter.timelineOperations().updateStatus(tweet)).thenReturn(this.tweet);
+		when(timelineOperations.updateStatus(tweet_s)).thenReturn(tweet);
 		List<Tweet> tweetList = new ArrayList<Tweet>();
-		tweetList.add(0, this.tweet);
+		tweetList.add(0, tweet);
+		when(timelineOperations.getUserTimeline()).thenReturn(tweetList);
 		mvc.perform(MockMvcRequestBuilders.post("/events/tweet/1")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-				.param("tweet", tweet)
+				.param("tweet", tweet_s)
 				.accept(MediaType.TEXT_HTML_VALUE))
 				.andExpect(view().name("events/show"))
-				.andExpect(model().attribute("status", validator));
-		
-				
-
+				.andExpect(model().attribute("status", validator))
+				.andExpect(model().attribute("status-message", validator_msg));
 	}
 }
