@@ -106,20 +106,6 @@ public class EventsControllerWebTest extends TestParent {
 			mockGet("/events", MediaType.TEXT_HTML, "redirect:/connect/twitter", HttpStatus.FOUND);
 		verify(connectionRepository).findPrimaryConnection(Twitter.class);
 	}
-	
- 	public void testShowUpdateForm() throws Exception {		
- 		when(eventService.findById(3)).thenReturn(event);
- 		when(event.getVenue()).thenReturn(venue);
- 		when(event.getTime()).thenReturn(new Date());
- 		when(venueService.findAllExceptOne(venue)).thenReturn(Collections.<Venue> emptyList());
- 			mvc.perform(get("/events/3/update").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
- 				.andExpect(view().name("events/eventform"));
- 		verify(eventService, times(1)).findById(3);
- 		verify(venueService, times(1)).findAllExceptOne(venue);
- 		verify(event, times(1)).getVenue();		
- 		verify(event, times(1)).getVenue();	
- 		verify(event, times(1)).getTime();
- 	}
  	
 	@Test
  	public void testUpdateEvent() throws Exception {
@@ -143,6 +129,7 @@ public class EventsControllerWebTest extends TestParent {
  		verify(eventService).update(savedCaptor.capture(), savedCaptor.capture());
  	}
  	
+	@Test
 	public void testShowUpdateForm() throws Exception {		
 		when(eventService.findById(3)).thenReturn(event);
 		when(event.getVenue()).thenReturn(venue);
