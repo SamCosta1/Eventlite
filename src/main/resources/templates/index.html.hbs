@@ -43,7 +43,11 @@ home
 	    <div class="venues-container list-container">
 	        <h2>Popular Venues</h2>       	        
 	              {{#venues_top3}}	
-	              		{{> venues/_detail}}
+	                 <span class="link name" onclick="window.document.location='/venues/{{id}}';">
+	    				<a class="icon fa fa-map-marker"></a>{{name}}
+	  				  </span>
+	    			  <span>{{address}}</span>
+	    			  <span>{{postcode}}</span>
 				  {{/venues_top3}}
 	          
 	    	</div>

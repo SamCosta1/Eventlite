@@ -96,7 +96,8 @@ public class EventServiceImpl implements EventService {
 	
 	@Override
 	public Iterable<Event> findThreeSoonestEvents() {
-		return eventRepository.findAllByDateAfterOrderByDateAscNameAsc(new Date()).subList(0, 3);
+		List<Event> events = eventRepository.findAllByDateAfterOrderByDateAscNameAsc(new Date());
+		return events.size() <= 3 ? events : events.subList(0, 3);
 	}
 	
 	// Helper to bring whole word matches to the top of the list	

@@ -1,8 +1,9 @@
-<html>
-	<head>
-		<title>Hello Twitter</title>
-	</head>
-	<body>
+{{#partial "head"}}
+<link rel="stylesheet" href="../css/main.css">
+{{/partial}}
+
+{{#partial "content"}}
+	<div class="main-content-container">
 		<h3>Connect to Twitter</h3>
 		<span th:if="${social_provider_error}">Provider error (maybe you need to configure the app id and secret?)</span>
 		<form action="/connect/twitter" method="POST">
@@ -11,5 +12,8 @@
 			</div>
 			<p><button type="submit">Connect to Twitter</button></p>
 		</form>
-	</body>
-</html>
+	</div>
+	
+{{/partial}}
+
+{{> layouts/base title="EventLite events"}}
