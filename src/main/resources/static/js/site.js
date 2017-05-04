@@ -11,6 +11,7 @@ $(document).ready(function() {
 	       		$("#list").css("display","none");
 	       		$("#map").css("display", "block");
 	       		google.maps.event.trigger(map, 'resize');
+	       		initMap();
 	            break;
 	    }
 	});
