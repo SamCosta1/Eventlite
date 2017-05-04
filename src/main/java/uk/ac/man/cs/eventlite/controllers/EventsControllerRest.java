@@ -40,4 +40,10 @@ public class EventsControllerRest {
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
+	@RequestMapping(value = "/userevents", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+	public String getUserEvents() {
+
+		return "events/userevents";
+	}
+	
 }
