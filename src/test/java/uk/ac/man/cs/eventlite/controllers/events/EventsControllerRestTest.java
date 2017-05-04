@@ -31,6 +31,11 @@ public class EventsControllerRestTest extends TestParent {
 	}
 	
 	@Test
+	public void testGetOneEvent() throws Exception {
+		mvc.perform(get("/events/1").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+	}
+	
+	@Test
 	public void deleteEvent() throws Exception{
 		mvc.perform(MockMvcRequestBuilders.delete("/events/1")).andExpect(status().isNoContent());
 	}
