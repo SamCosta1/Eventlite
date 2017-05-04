@@ -44,17 +44,17 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 				"M13 9PL");
 		venueService.save(kilburnVenue);
 		
-		Venue stopfordVenue = new Venue("Stopford 6", 100, "Stopford Building, University of Manchester, Oxford Rd, Manchester", "M13 9PT");
-		stopfordVenue.setCoords();
+		Venue stopfordVenue = new Venue("Stopford 6", 100, "Stopford Building, University of Manchester, Oxford Rd, Manchester", "M13 9PT");	
 		venueService.save(stopfordVenue);
 		
-		Venue lfVenue = new Venue("LF 31", 10, "Kilburn Building, University of Manchester, Oxford Rd, Manchester", "M13 9PL");
-		lfVenue.setCoords();
+		Venue lfVenue = new Venue("LF 31", 10, "Kilburn Building, University of Manchester, Oxford Rd, Manchester", "M13 9PL");		
 		venueService.save(lfVenue);
 		
-		Venue g23Venue = new Venue("G23", 10, "Kilburn Building, University of Manchester, Oxford Rd, Manchester", "M13 9PL");
-		g23Venue.setCoords();
+		Venue g23Venue = new Venue("G23", 10, "Kilburn Building, University of Manchester, Oxford Rd, Manchester", "M13 9PL");		
 		venueService.save(g23Venue);
+		
+		Venue unplottableVenue = new Venue("12 Grimmauld Place", 10, "An address google won't be able to find", "not a postcode");		
+		venueService.save(unplottableVenue);
 		
 		
 		DateFormat f = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -84,6 +84,8 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 			eventService.save(new Event("Zebra dancing", lfVenue, d5, d5, "This is a description"));
 			
 			eventService.save(new Event("Quidditch World Cup", lfVenue, d6, d6, "This is a description"));
+			
+			eventService.save(new Event("Order of a Pheonix meeting", unplottableVenue, d2, d2, "This is a description"));
 			
 			
 		} catch (ParseException e) {
