@@ -30,7 +30,7 @@
 	            <div class="panel-body">
 	              <h4>Info</h4>
 	              <div id = "info-content">
-	                <div>
+	                <div class="content-container">
 	                	<div class="link" onclick="window.document.location='/venues/{{venue.id}}';">
  				    		<a class="icon fa fa-map-marker"></a>{{venue.name}}
  				  		</div>
@@ -38,7 +38,7 @@
  						<div> <a class="icon glyphicon glyphicon-time"></a>{{time}}</div>
 	                </div>
 	                <form action="/events/{{id}}/delete" method="post" style="display: inline">
- 	  					<button class="btn btn-primary" type="submit">Delete</button>
+ 	  					<button class="btn btn-primary delete" type="submit">Delete</button>
 	  			 	</form>
 	                <a class="btn btn-primary" id="back-button" role="button" onclick="goBack()">Back</a>
 	              </div>
@@ -59,7 +59,11 @@
 	        	</div>
 	      	</div>
 	    </div>      
-        {{> maps/_onemarkermap}}
+	    {{#if has-map}}
+       		{{> maps/_onemarkermap}}
+       	{{else}}
+       		<div class="map-error">We couldn't find your event on the map :(</div>
+       	{{/if}}
 	   
 	   </div>
 	</div>

@@ -15,6 +15,12 @@
 	padding-left: 0px !important;
 }
 
+#info-content {
+	.content-container {
+		padding: 10px 0px;
+	}
+}
+
 .row {
 	margin-top: 20px;
 	.panel {
@@ -22,7 +28,12 @@
 	}	
 }
 
-
+.map-error {
+	background-color: $error;
+	padding: 10px 10px;
+	border-radius: 6px;
+	margin-bottom: 10px;
+}
 
 .tweet-container {
    margin-top: 20px;

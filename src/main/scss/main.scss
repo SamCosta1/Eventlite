@@ -119,6 +119,11 @@ hr:last-child {
 
 button, .btn {
 	background-color: $darken-1;	
+	
+	&.delete {
+		background-color: red;
+		border-color: red;
+	}
 }
 
 .header-container {

@@ -163,7 +163,9 @@ public class EventsControllerWebTest extends TestParent {
 	public void testGetFirstEvent() throws Exception {
 		when(connectionRepository.findPrimaryConnection(Twitter.class)).thenReturn(connection);
 		when(twitter.timelineOperations()).thenReturn(timelineOperations);
-		when(eventService.findById(1)).thenReturn(new Event());
+		when(eventService.findById(1)).thenReturn(event);
+		when(event.getVenue()).thenReturn(venue);
+		when(venue.hasCoordinates()).thenReturn(true);
 			mockGet("/events/1", MediaType.TEXT_HTML, "events/show", HttpStatus.OK);
 		verify(eventService, times(1)).findById(1);
 	}

@@ -30,14 +30,14 @@
 	         <div class="panel-body">
 	           <h4>Info</h4>
 	           <div id = "info-content">
-	             <div>
+	             <div class="content-container">
 	               <p>Capacity: {{capacity}}</p>
 	               <p>Address: {{address}}</p>
 	               <p>Postcode: {{postcode}}</p>
 	             </div>
 	             <div style="display: inline">
 	             <form action="/venues/{{id}}/delete" method="post" style="display: inline">
- 	  				<button class="btn btn-primary" type="submit">Delete</button>
+ 	  				<button class="btn btn-primary delete" type="submit">Delete</button>
 	  			 </form>
 	             <a class="btn btn-primary" id="back-button" role="button" onclick="goBack()">Back</a>
 	  			 </div>
