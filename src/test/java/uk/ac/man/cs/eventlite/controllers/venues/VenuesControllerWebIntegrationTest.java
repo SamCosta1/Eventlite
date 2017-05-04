@@ -2,7 +2,9 @@ package uk.ac.man.cs.eventlite.controllers.venues;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.StringContains.containsString;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
 
@@ -22,6 +24,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import uk.ac.man.cs.eventlite.TestParent;
+import uk.ac.man.cs.eventlite.dao.VenueService;
+import uk.ac.man.cs.eventlite.entities.Event;
+import uk.ac.man.cs.eventlite.entities.Venue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class VenuesControllerWebIntegrationTest extends TestParent {
@@ -31,6 +36,9 @@ public class VenuesControllerWebIntegrationTest extends TestParent {
 
 	@Autowired
 	private TestRestTemplate template;
+	
+	@Autowired
+	private VenueService venueService;
 
 	private HttpEntity<?> httpEntity;
 	private HttpHeaders headers;
@@ -43,26 +51,104 @@ public class VenuesControllerWebIntegrationTest extends TestParent {
 	}
 
 	@Test
+	public void testGetAllVenues() {
+		get("/venues", "");
+	}
+	
+	@Test
+	public void testGetUpdateForm() {
+		get("/venues/1/update", "");
+	}
+	
+	@Test
 	public void testFilterVenues() {
-		post("/venues/");
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
+		body.add("name", "test");
+		post("/venues/", HttpStatus.OK, body);
 	}
 	
 	@Test
 	public void testVenueDetails() {
-		get("/venues/1");
+		get("/venues/1", "");
+	}
+	
+	@Test
+	public void testNewVenuePage() {
+		get("/venues/new", "");
+	}
+	
+	@Test
+	public void testAddValidNewVenue() {
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
+		body.add("name", "A valid venue");
+		body.add("address", "Kilburn Building, University of Manchester, Oxford Rd, Manchester");
+		body.add("postcode", "M13 9PL");
+		body.add("capacity", "100");
+		
+		post("/venues/new", HttpStatus.OK, body);
+		
+		boolean found = false;
+		for (Venue v : venueService.findAll())
+			if (v.getName().equals("A valid venue"))
+				found = true;
+			
+		assertTrue("Venue was created", found);
+	}
+	
+	@Test
+	public void testAddInvalidNewVanue() {
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
+		body.add("name", "An invalid venue");
+		body.add("address", "Kilburn Building, University of Manchester, Oxford Rd, Manchester");
+		body.add("postcode", "M13 9PL");
+		body.add("capacity", "-1");
+		
+		post("/venues/new", HttpStatus.OK, body);
+		
+		boolean found = false;
+		for (Venue v : venueService.findAll())
+			if (v.getName().equals("A valid venue"))
+				found = true;
+			
+		assertFalse("Venue was not created", found);
+	}
+	
+	@Test
+	public void testValidUpdateVenue() {
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
+		body.add("venue", "1");
+		body.add("name", "A valid venue");
+		body.add("address", "Kilburn Building, University of Manchester, Oxford Rd, Manchester");
+		body.add("postcode", "M13 9PL");
+		body.add("capacity", "100");
+		
+		post("/venues/1/update", HttpStatus.OK, body);
+	}
+	
+	@Test
+	public void testInvalidUpdateVenue() {
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
+		body.add("venue", "1");
+		body.add("name", "A valid venue");
+		body.add("address", "Kilburn Building, University of Manchester, Oxford Rd, Manchester");
+		body.add("postcode", "M13 9PL");
+		body.add("capacity", "-1");
+		
+		post("/venues/1/update", HttpStatus.BAD_REQUEST, body);
 	}
 
-	private void get(String url) {
+	private void get(String url, String expectedBody) {
 		ResponseEntity<String> response = template.exchange(url, HttpMethod.GET, httpEntity, String.class);
 		assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
 		assertThat(response.getHeaders().getContentType().toString(), containsString(MediaType.TEXT_HTML_VALUE));
+		assertThat(response.getBody(), containsString(expectedBody));
 	}
 	
-	private void post(String url) {
-		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
-		body.add("","");
-		httpEntity = new HttpEntity<Object>(body, headers);
+	private ResponseEntity<String> post(String url, HttpStatus status, MultiValueMap<String, String> body) {
+		HttpEntity<?> httpEntity = new HttpEntity<MultiValueMap<String, String>>(body, headers);
 		ResponseEntity<String> response = template.exchange(url, HttpMethod.POST, httpEntity, String.class);
-		assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+		assertThat(response.getStatusCode(), equalTo(status));
+		
+		return response;
 	}
 }
