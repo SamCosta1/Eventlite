@@ -38,8 +38,11 @@ public class EventsControllerRest {
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
-	public String getOneEvent(@PathVariable("id") long id) { 
-
+	public String getOneEvent(@PathVariable("id") long id, Model model, UriComponentsBuilder b) { 
+		
+		UriComponents link = b.path("/events/" + id).build();
+		model.addAttribute("self_link", link.toUri());
+		
 		return "events/_detail";
 	}
 	
