@@ -3,9 +3,12 @@ package uk.ac.man.cs.eventlite.controllers.events;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +27,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionRepository;
+import org.springframework.social.twitter.api.MessageTooLongException;
 import org.springframework.social.twitter.api.TimelineOperations;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.Twitter;
@@ -32,8 +36,9 @@ import org.springframework.social.twitter.api.UserOperations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
+import org.springframework.ui.ExtendedModelMap;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 
 import uk.ac.man.cs.eventlite.TestParent;
 import uk.ac.man.cs.eventlite.controllers.EventsControllerWeb;
@@ -64,6 +69,9 @@ public class EventsControllerWebTest extends TestParent {
 	private Venue venue;
 	
 	@Mock
+	private Model model;
+	
+	@Mock
 	private Twitter twitter;
 	
 	@Mock
@@ -81,6 +89,9 @@ public class EventsControllerWebTest extends TestParent {
 	@Mock
 	private TwitterProfile profile;
 		    
+	@Mock
+	private Tweet tweet;
+	
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
@@ -214,12 +225,21 @@ public class EventsControllerWebTest extends TestParent {
 	
 	@Test
 	public void testValidTweet() throws Exception {
-		testTweet("This is a valid tweet");
+		String tweet_s = "This is a valid tweet";
+		testTweet(tweet_s, "success", "Success! You just tweeted:" + tweet_s);
 	}
 	
 	@Test
 	public void testEmptyTweet() throws Exception {
+		String tweet_s = "";
+		testTweet(tweet_s, "error", "Your tweet is empty!");
+	}
 	
+	@Test(expected=MessageTooLongException.class)
+	public void testLongTweet() throws Exception {
+		String tweet_s = "This is a very very long long tweet, longer than hundred and forty characters, which is the limit, so it should be recognized as an invalid tweet.";
+		when(timelineOperations.updateStatus(tweet_s)).thenThrow(new MessageTooLongException(""));
+		testTweet(tweet_s, "error", "Your tweet is too long!");
 	}
 	
 	// Helpers ----	
@@ -228,11 +248,19 @@ public class EventsControllerWebTest extends TestParent {
 			.andExpect(view().name(viewName));
 	}	
 	
-	private void testTweet(String tweet) throws Exception {		
+	private void testTweet(String tweet_s, String validator, String validator_msg) throws Exception {
+		when(tweet.getText()).thenReturn(tweet_s); //needed for the last line of this method
+		when(twitter.timelineOperations()).thenReturn(timelineOperations);
+		when(timelineOperations.updateStatus(tweet_s)).thenReturn(tweet);
+		List<Tweet> tweetList = new ArrayList<Tweet>();
+		tweetList.add(0, tweet);
+		when(timelineOperations.getUserTimeline()).thenReturn(tweetList);
 		mvc.perform(MockMvcRequestBuilders.post("/events/tweet/1")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-				.param("tweet", tweet)
+				.param("tweet", tweet_s)
 				.accept(MediaType.TEXT_HTML_VALUE))
-				.andExpect(view().name("events/show"));
+				.andExpect(view().name("events/show"))
+				.andExpect(model().attribute("status", validator))
+				.andExpect(model().attribute("status-message", validator_msg));
 	}
 }
