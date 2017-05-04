@@ -27,7 +27,7 @@ public class EventsControllerRestTest extends TestParent {
 		mvc.perform(get("/events").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
  		.andExpect(content().contentType(MediaType.APPLICATION_JSON))
  		.andExpect(jsonPath("$.title", equalTo("EventLite Events")))
- 		.andExpect(jsonPath("$._self", equalTo("http://localhost:8080/events")));
+ 		.andExpect(jsonPath("$._self", equalTo("http://localhost/events")));
 	}
 	
 	@Test
