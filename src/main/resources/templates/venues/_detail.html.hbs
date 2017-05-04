@@ -1,11 +1,15 @@
     
    
-<div class="venue-container">			    
-    <span class="link name" onclick="window.document.location='/venues/{{id}}';">
-    	<a class="icon fa fa-map-marker"></a>{{name}}
-    </span>
-    <span>{{address}}</span>
-    <span>{{postcode}}</span>
-    <button class="btn btn-primary" onclick="location.href='/venues/{{id}}/update'">Update</button>
+<div class="venue-container">		
+	<div class="left-side">	    
+	    <span class="link name" onclick="window.document.location='/venues/{{id}}';">
+	    	<a class="icon fa fa-map-marker"></a>{{name}}
+	    </span>
+	    <span>{{address}}</span>
+	    <span>{{postcode}}</span>
+    </div>
+    <div class="right-side">
+    	<button class="btn btn-primary" onclick="location.href='/venues/{{id}}/update'">Update</button>
+    </div>
 </div>
 <hr>
