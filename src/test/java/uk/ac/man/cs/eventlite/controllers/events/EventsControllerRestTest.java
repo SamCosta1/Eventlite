@@ -3,6 +3,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.hamcrest.Matchers.equalTo;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -22,7 +24,9 @@ public class EventsControllerRestTest extends TestParent {
 
 	@Test
 	public void testGetAllEvents() throws Exception {
-		mvc.perform(get("/events").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+		mvc.perform(get("/events").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+ 		.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+ 		.andExpect(jsonPath("$.title", equalTo("EventLite Events")));
 	}
 	
 	@Test
