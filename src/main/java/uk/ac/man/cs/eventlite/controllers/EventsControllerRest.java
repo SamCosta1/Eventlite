@@ -42,6 +42,9 @@ public class EventsControllerRest {
 		
 		UriComponents link = b.path("/events/" + id).build();
 		model.addAttribute("self_link", link.toUri());
+
+		Event e = eventService.findById(id);
+		model.addAttribute("event", e);
 		
 		return "events/_detail";
 	}
