@@ -5,6 +5,7 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -18,7 +19,7 @@ import uk.ac.man.cs.eventlite.TestParent;
 
 @AutoConfigureMockMvc
 public class EventsControllerRestTest extends TestParent {
-
+	
 	@Autowired
 	private MockMvc mvc;
 
@@ -45,9 +46,10 @@ public class EventsControllerRestTest extends TestParent {
 		mvc.perform(get("/events/userevents").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 		.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 		.andExpect(jsonPath("$.title", equalTo("EventLite User Events")))
-		.andExpect(jsonPath("$._self", equalTo("http://localhost/events/userevents")));
+		.andExpect(jsonPath("$._self", equalTo("http://localhost/events/userevents")))
+		.andExpect(jsonPath("$.events", notNullValue()));
 	}
-
+	
 	@Ignore
 	@Test
 	public void testGetFirstEvent() throws Exception {
