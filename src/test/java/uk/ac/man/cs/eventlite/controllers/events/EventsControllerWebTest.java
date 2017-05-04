@@ -36,10 +36,9 @@ import org.springframework.social.twitter.api.UserOperations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import uk.ac.man.cs.eventlite.TestParent;
 import uk.ac.man.cs.eventlite.controllers.EventsControllerWeb;
 import uk.ac.man.cs.eventlite.dao.EventService;
