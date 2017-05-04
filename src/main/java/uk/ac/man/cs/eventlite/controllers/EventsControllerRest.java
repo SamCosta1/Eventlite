@@ -5,6 +5,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +17,7 @@ import uk.ac.man.cs.eventlite.dao.EventService;
 import uk.ac.man.cs.eventlite.dao.SearchEvents;
 import uk.ac.man.cs.eventlite.entities.Event;
 
-@RestController
+@Controller
 @RequestMapping("/events")
 public class EventsControllerRest {
 
@@ -24,9 +25,9 @@ public class EventsControllerRest {
 	private EventService eventService;
 
 	@RequestMapping(method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
-	public HttpEntity<Iterable<Event>> getAllEvents() {
+	public String getAllEvents() {
 
-		return new ResponseEntity<Iterable<Event>>(eventService.findAll(), HttpStatus.OK);
+		return "events/index";
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = { MediaType.APPLICATION_JSON_VALUE })
