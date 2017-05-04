@@ -40,7 +40,8 @@ public class EventsControllerRestTest extends TestParent {
 	
 	@Test
 	public void testGetUserEventsJson() throws Exception {
-		mvc.perform(get("/events/userevents").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+		mvc.perform(get("/events/userevents").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+		.andExpect(content().contentType(MediaType.APPLICATION_JSON));
 	}
 
 	@Ignore
