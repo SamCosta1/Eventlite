@@ -38,6 +38,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 
 import uk.ac.man.cs.eventlite.TestParent;
@@ -161,7 +163,9 @@ public class EventsControllerWebTest extends TestParent {
 	public void testGetFirstEvent() throws Exception {
 		when(connectionRepository.findPrimaryConnection(Twitter.class)).thenReturn(connection);
 		when(twitter.timelineOperations()).thenReturn(timelineOperations);
-		when(eventService.findById(1)).thenReturn(new Event());
+		when(eventService.findById(1)).thenReturn(event);
+		when(event.getVenue()).thenReturn(venue);
+		when(venue.hasCoordinates()).thenReturn(true);
 			mockGet("/events/1", MediaType.TEXT_HTML, "events/show", HttpStatus.OK);
 		verify(eventService, times(1)).findById(1);
 	}

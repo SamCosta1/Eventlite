@@ -36,13 +36,7 @@ public class Venue implements Comparable<Venue> {
 		this.capacity = capacity;
 		this.address = address;
 		this.postcode = postcode;
-		try {
-			GeocodingResult[] results = GeocodingApi.geocode(context, address + ", " + postcode).await();
-			this.longitude = results[0].geometry.location.lng;
-			this.latitude = results[0].geometry.location.lat;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		this.setCoords();
 	}
 	
 	public Venue() {}
@@ -106,6 +100,9 @@ public class Venue implements Comparable<Venue> {
 	public void setCoords() {
 		try {
 			GeocodingResult[] results = GeocodingApi.geocode(context, address + ", " + postcode).await();
+			if (results.length <= 0)
+				return;
+			
 			this.longitude = results[0].geometry.location.lng;
 			this.latitude = results[0].geometry.location.lat;
 		} catch (Exception e) {
@@ -124,6 +121,13 @@ public class Venue implements Comparable<Venue> {
 	@Override
 	public int compareTo(Venue other) {					
 		return this.getName().compareTo(other.getName());
+	}
+
+	/* Returns true if google maps could find the venue 
+	 * (technically (0,0) is valid, but venues are unlikely to be in the middle of the atlantic) 
+	 */
+	public boolean hasCoordinates() {
+		return this.longitude != 0 && this.latitude != 0;
 	}
 
 	

@@ -11,8 +11,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.social.ApiException;
-import org.springframework.social.DuplicateStatusException;
-import org.springframework.social.MissingAuthorizationException;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.Twitter;
@@ -143,8 +141,9 @@ public class EventsControllerWeb {
 		if (connectionRepository.findPrimaryConnection(Twitter.class) == null) 
             return "redirect:/connect/twitter";
         
-		model.addAttribute("event", eventService.findById(id));
-
+		Event e = eventService.findById(id);
+		model.addAttribute("event", e);
+		model.addAttribute("has-map", e.getVenue().hasCoordinates());
 		return "events/show";
 	}
 	
