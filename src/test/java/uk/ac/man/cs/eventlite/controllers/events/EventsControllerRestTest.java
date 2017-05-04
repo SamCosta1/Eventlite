@@ -44,7 +44,8 @@ public class EventsControllerRestTest extends TestParent {
 	public void testGetUserEventsJson() throws Exception {
 		mvc.perform(get("/events/userevents").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 		.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-		.andExpect(jsonPath("$.title", equalTo("EventLite User Events")));
+		.andExpect(jsonPath("$.title", equalTo("EventLite User Events")))
+		.andExpect(jsonPath("$._self", equalTo("http://localhost:8080/events/userevents")));
 	}
 
 	@Ignore
