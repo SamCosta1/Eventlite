@@ -1,19 +1,22 @@
 <div id="map" ></div>
 
 <script>
-  function initMap() {
-    var myLatLng = {lat: {{venue.latitude}}, lng: {{venue.longitude}} };
+function initMap() {
+  var initialCoords = {
+  	 lat: 53.478615,
+  	 lng: -2.240235
+  };
   
   var mapOptions = {
-    zoom: 10,
-    center: myLatLng,
+    zoom: 14,
+    center: initialCoords,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
             
   var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
   var marker = new google.maps.Marker({
-    position: myLatLng,
+    position: { lat: {{venue.latitude}}, lng: {{venue.longitude}} },
     map: map,
     title: '{{venue.name}}' 
   });

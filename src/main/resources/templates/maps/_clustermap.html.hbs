@@ -23,13 +23,15 @@ var labels = [
 	{{/events}}
 ];
 
-
 function initMap() {
-	
-
+  var initialCoords = {
+  	 lat: 53.478615,
+  	 lng: -2.240235
+  };
+    
   var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 13,
-    center: { lat: 53.479411, lng: -2.244006},
+    zoom: 14,
+    center: initialCoords,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   });
 
