@@ -37,6 +37,11 @@ public class EventsControllerRestTest extends TestParent {
 		.andExpect(status().isOk())
 		.andExpect(content().string(containsString("")));		
 	}
+	
+	@Test
+	public void testGetUserEventsJson() throws Exception {
+		mvc.perform(get("/events/userevents").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+	}
 
 	@Ignore
 	@Test

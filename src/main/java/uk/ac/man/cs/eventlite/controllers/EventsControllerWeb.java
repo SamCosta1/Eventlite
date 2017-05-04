@@ -11,8 +11,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.social.ApiException;
-import org.springframework.social.DuplicateStatusException;
-import org.springframework.social.MissingAuthorizationException;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.Twitter;
@@ -174,7 +172,7 @@ public class EventsControllerWeb {
 		return "events/new";
 	}
 	
-	@RequestMapping (value = "/userevents", method = RequestMethod.GET)
+	@RequestMapping (value = "/userevents", method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE })
 	public String showUserEvents(Model model) 	{				
 		model.addAttribute("events", eventService.findAllByUser(getCurrentUser(model)));
 		return "events/userevents";
