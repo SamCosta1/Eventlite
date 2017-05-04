@@ -19,6 +19,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import uk.ac.man.cs.eventlite.dao.EventService;
 import uk.ac.man.cs.eventlite.dao.SearchEvents;
 import uk.ac.man.cs.eventlite.entities.Event;
+import uk.ac.man.cs.eventlite.entities.User;
+import uk.ac.man.cs.eventlite.helpers.CurrentUser;
 
 @Controller
 @RequestMapping("/events")
@@ -47,10 +49,16 @@ public class EventsControllerRest {
 	@RequestMapping(value = "/userevents", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public String getUserEvents(Model model, UriComponentsBuilder b) {
 		
-		UriComponents link = b.path("/events/userevents").build();
+		UriComponents link = b.path("/").build();
 		model.addAttribute("self_link", link.toUri());
+		model.addAttribute("events", eventService.findAllByUser(getCurrentUser(model)));
 
 		return "events/userevents";
 	}
 	
+	// Helper that returns the current user
+	private static User getCurrentUser(Model model) {
+		CurrentUser mapVal = ((CurrentUser)model.asMap().get("currentUser"));
+		return mapVal == null ? null : mapVal.getUser();
+	}
 }
