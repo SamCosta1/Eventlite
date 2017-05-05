@@ -13,6 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.Transient;
 import org.hibernate.validator.constraints.NotBlank;
@@ -42,10 +43,13 @@ public class Event {
 	private Date time;
 
 	@NotBlank
+	@Size(min = 1, max = 256, 
+	      message = "Name must have at least 1 and at most 256 characters")
 	private String name;
 	
 	@Lob
-	@Column( length = 100000 )
+	@Size(max = 500, message = "Description must have at most 500 characters")
+	@Column(length = 100000)
 	private String description;
 
 	@NotNull

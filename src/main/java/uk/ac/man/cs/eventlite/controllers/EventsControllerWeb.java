@@ -3,12 +3,14 @@ package uk.ac.man.cs.eventlite.controllers;
 import static uk.ac.man.cs.eventlite.helpers.ErrorHelpers.*;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.social.ApiException;
 import org.springframework.social.connect.ConnectionRepository;
@@ -96,7 +98,7 @@ public class EventsControllerWeb {
     }
 	
 	
-	@RequestMapping(value="/{id}/update",
+	@RequestMapping(value = "/{id}/update",
 				    method = RequestMethod.POST, 
 					consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 					produces = { MediaType.TEXT_HTML_VALUE })
@@ -168,7 +170,7 @@ public class EventsControllerWeb {
 	
 	
 	@RequestMapping (value = "/new", method = RequestMethod.GET)
-	public String showNew(Model model) 	{
+	public String showNew(Model model) {
 		model.addAttribute("venues", venueService.findAll());
 		return "events/new";
 	}
@@ -179,34 +181,53 @@ public class EventsControllerWeb {
 		return "events/userevents";
 	}	
 
+
 	@RequestMapping(value = "/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 					produces = { MediaType.TEXT_HTML_VALUE })
-	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Event event, BindingResult result,
-			                          Model model, @ModelAttribute("successMessage") String successMessage, final RedirectAttributes redirectAttributes)	{ 
-	  event.setUser(getCurrentUser(model));
-	  eventService.save(event);
-	  successMessage = event.getName() + "has been created successfully!";
-      redirectAttributes.addFlashAttribute("successMessage", successMessage);
-	  return "redirect:/events";
+	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Event event, BindingResult result, Model model, 
+			                          @RequestParam("name") String name, @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, 
+			                          @RequestParam("time") @DateTimeFormat(pattern = "HH:mm") Date time, @RequestParam("description") String description) {
+		if (result.hasErrors()) {
+			model.addAttribute("errors", formErrorHelper(result));
+			model.addAttribute("name", name);
+			
+			if (date != null) {
+				String date_str = new SimpleDateFormat("yyyy-MM-dd").format(date);
+				model.addAttribute("date", date_str);
+			}
+			
+			if (time != null) {
+				String time_str = new SimpleDateFormat("HH:mm").format(time);
+				model.addAttribute("time", time_str);
+			}
+			
+			model.addAttribute("venues", venueService.findAll());
+			model.addAttribute("description", description);
+			return "events/new";
+        }
+
+	    event.setUser(getCurrentUser(model));
+	    eventService.save(event);
+	    return "redirect:/events";
 	}
 	
-	// Helper to tweet - returns null if there were no errors
-	public String tweet(String message) {
-		String noWhitespace = message.replaceAll("\\s+","");
+	// Helper to tweet - returns null if there were no errors.
+	private String tweet(String message) {
+		String noWhitespace = message.replaceAll("\\s+", "");
 		
-		if (noWhitespace.equals("")) { // Discard whitespace-only tweets
+		if (noWhitespace.equals("")) {  // Discard whitespace-only tweets.
 			return "Your tweet is empty!";
 		}
 		
 		try   { twitter.timelineOperations().updateStatus(message); }
-		catch (MessageTooLongException e) { return "Your tweet is too long!";	    }
-		catch (ApiException e)			  { return "Could not connect to twitter";  }
-		catch (Exception e)				  { return "Error: " + e.getMessage();		}
+		catch (MessageTooLongException e) { return "Your tweet is too long!";	   }
+		catch (ApiException e)			  { return "Could not connect to twitter"; }
+		catch (Exception e)				  { return "Error: " + e.getMessage();	   }
 		
 		return null;	
-	}		
+	}
 	
-	// Helper that returns the current user
+	// Helper that returns the current user.
 	private static User getCurrentUser(Model model) {
 		CurrentUser mapVal = ((CurrentUser)model.asMap().get("currentUser"));
 		return mapVal == null ? null : mapVal.getUser();

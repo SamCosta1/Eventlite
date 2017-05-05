@@ -4,41 +4,65 @@
 {{/partial}}
 
 {{#partial "content"}}
-<div class="header-container">
-	<div class="title-container">		
-		<div class="subtitle">New Event</div>
-	</div>	
-</div>	
+<h1>Add a new event</h1>
+<div class="row">
+  <div class = "col-md-3">
+    <form method="post" action="/events/new">
+      <div class="form-group {{#if errors.template}}has-error{{/if}}">
+        <label for="name">Name</label>
+        <input class="form-control" type="text" name="name" id="name" placeholder="Name" autofocus value="{{name}}" />
+        <p class="text-danger">
+          {{#if errors.name}}
+            {{errors.name}}
+          {{/if}}
+        </p>
+          
+        <label for="date">Date</label>
+        <input class="form-control" type="date" name="date" id="date" placeholder="yyyy-MM-dd" value="{{date}}" />
+        <p class="text-danger">
+          {{#if errors.date}}
+            {{errors.date}}
+          {{/if}}
+        </p>
 
-<div class="main-content-container">
-	
-	<form method="post" action="/events/new">
-		<div class="form-group {{#if errors.template}}has-error{{/if}}">
-			<label for="name">Name</label>
-			<input class="form-control" type="text" name="name" id="name" placeholder="Name" autofocus />
-			
-			<label for="date">Date</label>	<input class="form-control" type="date" name="date" id="date" placeholder="yyyy-MM-dd" />
-			<label>Time</label> <input class="form-control" type="time" name="time" id="time" value="HH:mm" /> 
-			
-			<label for="venue">Venue</label>
-			<select type="venue" name="venue" id="venue" class="form-control">
-			  {{#venues}}
-			    <option value={{id}}>{{name}}</option>
-			  {{/venues}}
-			</select>
-			
-			<label for="description">Description</label>
-			<textarea class="form-control" type="text" name="description" id="description" placeholder="Description"></textarea>
-			{{#if errors.template}}
-			  <p class="text-danger">{{errors.template}}</p>
-			{{/if}}
-		</div>
-	
-	  <button class="btn btn-primary" type="submit">Submit</button>
-	</form>
+        <label for="time">Time</label>
+        <input class="form-control" type="time" name="time" id="time" placeholder="HH:mm" value="{{time}}" />
+		<p class="text-danger">
+          {{#if errors.time}}
+            {{errors.time}}
+          {{/if}}
+        </p>
+
+        <label for="venue">Venue</label>
+        <select type="venue" name="venue" id="venue" value="{{venue}}" />
+       	  <option selected value={{venue.id}}>{{venue.name}}</option>
+       	  {{#venues}}
+       	    <option value={{id}}>{{name}}</option>
+       	  {{/venues}}
+       	</select>
+       	<p class="text-danger">
+          {{#if errors.venue}}
+            {{errors.venue}}
+          {{/if}}
+        </p>
+       		
+        <label for="description">Description</label>
+        <input class="form-control" type="text" name="description" id="description" placeholder="Description" value="{{description}}" />
+        <p class="text-danger">
+          {{#if errors.description}}
+            {{errors.description}}
+          {{/if}}
+        </p>
+        
+        {{#if errors.template}}
+          <p class="text-danger">{{errors.template}}</p>
+        {{/if}}
+      </div>
+  
+      <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
+  </div>
 </div>
-
-
 {{/partial}}
 
 {{> layouts/base title="EventLite New Event"}}
