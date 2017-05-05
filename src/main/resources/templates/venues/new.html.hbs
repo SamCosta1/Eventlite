@@ -29,15 +29,29 @@
       <tr>
         <td><label for="name">Capacity</label></td>
         <td><input class="form-control" type="text" name="capacity" id="capacity" placeholder="Capacity" /></td>
-    
+        <td class="text-danger">
+          {{#if errors.capacity}}
+            errors.capacity
+          {{/if}}
+        </td>
       <tr>
         <td><label for="name">Address</label></td>
         <td><input class="form-control" type="text" name="address" id="address" placeholder="Address" /></td>
+        <td class="text-danger">
+          {{#if errors.address}}
+            errors.address
+          {{/if}}
+        </td>
       </tr>
       
       <tr>
         <td><label for="name">Postcode</label></td>
         <td><input class="form-control" type="text" name="postcode" id="postcode" placeholder="Postcode" /></td>
+        <td class="text-danger">
+          {{#if errors.postcode}}
+            errors.postcode
+          {{/if}}
+        </td>
       </tr>
     </table>
       
