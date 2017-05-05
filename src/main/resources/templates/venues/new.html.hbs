@@ -25,9 +25,14 @@
           {{#if errors.capacity}} <p class="text-danger"> {{errors.capacity}} {{/if}}
       
       <label for="name">Address</label>
-      <input class="form-control" type="text" name="address" id="address" placeholder="Address" />
-          {{#if errors.address}} <p class="text-danger">{{errors.address}}</p>  {{/if}}
-     
+      <input class="form-control" type="text" name="addressLine1" id="addressLine1" placeholder="Address Line 1" />
+      <input class="form-control" type="text" name="addressLine2" id="addressLine2" placeholder="Address Line 2" />
+      
+      <input class="form-control" type="text" name="streetName" id="streetName" placeholder="Street Name" />
+      {{#if errors.streetName}} <p class="text-danger">{{errors.streetName}}</p>  {{/if}}
+      
+      <input class="form-control" type="text" name="city" id="city" placeholder="City" />
+        
       <label for="name">Postcode</label>
         <input class="form-control" type="text" name="postcode" id="postcode" placeholder="Postcode" />
           {{#if errors.postcode}} <p class="text-danger"> {{errors.postcode}} </p> {{/if}}

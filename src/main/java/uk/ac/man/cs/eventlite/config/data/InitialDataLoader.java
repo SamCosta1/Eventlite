@@ -39,11 +39,9 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		}
 		
 		// Initial models.
-		Venue newVenue1 = new Venue("Kilburn 1.1", 100, 
-				"Kilburn Building, University of Manchester, Oxford Rd, Manchester",
-				"M13 9PL");
+		Venue newVenue1 = new Venue("Kilburn 1.1", 100, "Kilburn Building", "University of Manchester", "Oxford Rd", "Manchester", "M13 9PL");
 		venueService.save(newVenue1);
-		
+		/*
 		Venue newVenue2 = new Venue();
 		newVenue2.setName("Stopford 6");
 		newVenue2.setCapacity(100);
@@ -68,7 +66,7 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		newVenue4.setCoords();
 		venueService.save(newVenue4);
 		
-		
+		*/
 		DateFormat f = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		Date d1, d2, d3, d4, d5;
 
@@ -85,9 +83,9 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 			
 			eventService.save(newEvent);
 			eventService.save(new Event("Concert", newVenue1, d2, d2, "This is a short description"));
-			eventService.save(new Event("Pokemon", newVenue2, d3, d3, "Slightly longer description but not as long as it could possibly be"));
-			eventService.save(new Event("Go", newVenue2, d5, d5, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras pellentesque tincidunt dui, in viverra ligula luctus in. Quisque aliquet odio elementum ipsum euismod venenatis. Vivamus et tempor metus. Sed vehicula dia"));
-			eventService.save(new Event("Alvaro Lecture1", newVenue3, d4, d4, ""));
+			eventService.save(new Event("Pokemon", newVenue1, d3, d3, "Slightly longer description but not as long as it could possibly be"));
+			eventService.save(new Event("Go", newVenue1, d5, d5, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras pellentesque tincidunt dui, in viverra ligula luctus in. Quisque aliquet odio elementum ipsum euismod venenatis. Vivamus et tempor metus. Sed vehicula dia"));
+			eventService.save(new Event("Alvaro Lecture1", newVenue1, d4, d4, ""));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

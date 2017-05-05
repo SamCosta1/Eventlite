@@ -5,7 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -28,9 +27,14 @@ public class Venue {
 	@Size(max = 256, message="Name too long, must be less than 256 characters") 
 	private String name;
 	
+	private String addressLine1;
+	private String addressLine2;	
+	
 	@NotBlank	
-	@Size(max = 256, message = "Address too long, must be less than 256 characters") 
-	private String address;
+	@Size(max = 300, message = "Address too long, must be less than 300 characters") 
+	private String streetName;
+	
+	private String city;
 	
 	@NotBlank
 	private String postcode;
@@ -42,20 +46,17 @@ public class Venue {
 	
 	private double latitude;
 
-	public Venue(String name, int capacity, String address, String postcode) {
+	public Venue(String name, int capacity, String addressLine1, String addressLine2, String streetName, String city, String postcode) {
 		this.name = name;
 		this.capacity = capacity;
-		this.address = address;
 		this.postcode = postcode;
-		try {
-			GeocodingResult[] results = GeocodingApi.geocode(context, address + ", " + postcode).await();
-			this.longitude = results[0].geometry.location.lng;
-			this.latitude = results[0].geometry.location.lat;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		System.out.println(this.longitude + " " + this.latitude);
+		this.streetName = streetName;
+		this.addressLine1 = addressLine1;
+		this.addressLine2 = addressLine2;
+		this.city = city;				
+		this.setCoords();
 	}
+	
 	
 	public Venue() {}
 
@@ -82,15 +83,7 @@ public class Venue {
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
 	}
-	
-	public String getAddress() {
-		return address;
-	}
-	
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	
+		
 	public String getPostcode() {
 		return postcode;
 	}
@@ -117,7 +110,9 @@ public class Venue {
 
 	public void setCoords() {
 		try {
-			GeocodingResult[] results = GeocodingApi.geocode(context, address + ", " + postcode).await();
+			String address = getParam(addressLine1) + getParam(addressLine2) + 
+						     getParam(streetName) + getParam(city) + postcode;
+			GeocodingResult[] results = GeocodingApi.geocode(context, address).await();
 			this.longitude = results[0].geometry.location.lng;
 			this.latitude = results[0].geometry.location.lat;
 		} catch (Exception e) {
@@ -127,11 +122,47 @@ public class Venue {
 		
 	}
 	
+	private String getParam(String param) {
+		return param + param == null || param.trim() == "" ? "," : "";
+	}
+	
 	public boolean equals(Venue other) {
 		return this.id == other.getId();
 	}
 	
 	public String toString() {
 		return "ID: " + id + " Name: " + name + " Capacity: " + capacity;
+	}
+
+	public String getAddressLine2() {
+		return addressLine2;
+	}
+
+	public void setAddressLine2(String addressLine2) {
+		this.addressLine2 = addressLine2;
+	}
+
+	public String getAddressLine1() {
+		return addressLine1;
+	}
+	
+	public void setStreetName(String street) {
+		this.streetName = street;
+	}
+
+	public String getStreetName() {
+		return this.streetName;
+	}
+
+	public void setAddressLine1(String addressLine1) {
+		this.addressLine1 = addressLine1;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 }
