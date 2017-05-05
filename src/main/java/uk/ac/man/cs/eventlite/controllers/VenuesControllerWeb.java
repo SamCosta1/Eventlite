@@ -88,12 +88,12 @@ public class VenuesControllerWeb {
 					produces = { MediaType.TEXT_HTML_VALUE })
 	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Venue venue, BindingResult result, Model model, 
 			                          @ModelAttribute("successMessage") String successMessage, final RedirectAttributes redirectAttributes) {
-		if (result.hasErrors())
-		{
+		if (result.hasErrors()) {
 			model.addAttribute("errors", formErrorHelper(result));
 			return "venues/new";
 		}
 			
+		venue.setCoords();
 		venueService.save(venue);
 		successMessage = venue.getName() + "has been created successfully!";
 		redirectAttributes.addFlashAttribute("successMessage", successMessage);

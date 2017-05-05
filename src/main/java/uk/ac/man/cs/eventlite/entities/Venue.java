@@ -4,7 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
@@ -20,13 +24,18 @@ public class Venue {
 	@GeneratedValue
 	private long id;
 	
-	@NotNull
+	@NotBlank
+	@Size(max = 256, message="Name too long, must be less than 256 characters") 
 	private String name;
 	
+	@NotBlank	
+	@Size(max = 256, message = "Address too long, must be less than 256 characters") 
 	private String address;
 	
+	@NotBlank
 	private String postcode;
 
+	@Min(value=1)
 	private int capacity;
 	
 	private double longitude;
