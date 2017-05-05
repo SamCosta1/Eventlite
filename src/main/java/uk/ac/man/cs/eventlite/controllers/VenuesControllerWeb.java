@@ -1,5 +1,9 @@
 package uk.ac.man.cs.eventlite.controllers;
 
+import static uk.ac.man.cs.eventlite.helpers.ErrorHelpers.*;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -7,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -69,9 +74,30 @@ public class VenuesControllerWeb {
 	}
 	
 	@RequestMapping (value = "/map", method = RequestMethod.GET)
-	public String showNew(Model model)	{
+	public String showNew(Model model) {
 		model.addAttribute("venues", venueService.findAll());
 	    return "events/new";
+	}
+	
+	@RequestMapping (value = "/new", method = RequestMethod.GET)
+	public String showAddVenuesForm(Model model) {
+		return "venues/new";
+	}
+	
+	@RequestMapping(value = "/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+					produces = { MediaType.TEXT_HTML_VALUE })
+	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Venue venue, BindingResult result, Model model, 
+			                          @ModelAttribute("successMessage") String successMessage, final RedirectAttributes redirectAttributes) {
+		if (result.hasErrors())
+		{
+			model.addAttribute("errors", formErrorHelper(result));
+			return "venues/new";
+		}
+			
+		venueService.save(venue);
+		successMessage = venue.getName() + "has been created successfully!";
+		redirectAttributes.addFlashAttribute("successMessage", successMessage);
+		return "redirect:/venues";
 	}
 	
 }

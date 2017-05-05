@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
@@ -19,6 +20,7 @@ public class Venue {
 	@GeneratedValue
 	private long id;
 	
+	@NotNull
 	private String name;
 	
 	private String address;

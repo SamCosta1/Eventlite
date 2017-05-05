@@ -1,0 +1,51 @@
+{{#partial "head"}}
+<link rel="stylesheet" href="../css/main.css">
+<link rel="stylesheet" href="../css/forms.css">
+{{/partial}}
+
+{{#partial "content"}}
+<div class="header-container">
+  <div class="title-container">   
+    <div class="subtitle">New Venue</div>
+  </div>  
+</div>  
+
+<div class="main-content-container">
+  
+  <form method="post" action="/venues/new">
+    <div class="form-group {{#if errors.template}}has-error{{/if}}">
+    
+    <table>
+      <tr>
+        <td><label for="name">Name</label></td>
+        <td><input class="form-control" type="text" name="name" id="name" placeholder="Name" autofocus /></td>
+        <td class="text-danger">
+          {{#if errors.name}}
+            errors.name
+          {{/if}}
+        </td>
+      </tr>
+      
+      <tr>
+        <td><label for="name">Capacity</label></td>
+        <td><input class="form-control" type="text" name="capacity" id="capacity" placeholder="Capacity" /></td>
+    
+      <tr>
+        <td><label for="name">Address</label></td>
+        <td><input class="form-control" type="text" name="address" id="address" placeholder="Address" /></td>
+      </tr>
+      
+      <tr>
+        <td><label for="name">Postcode</label></td>
+        <td><input class="form-control" type="text" name="postcode" id="postcode" placeholder="Postcode" /></td>
+      </tr>
+    </table>
+      
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </form>
+</div>
+
+
+{{/partial}}
+
+{{> layouts/base title="EventLite New Event"}}
