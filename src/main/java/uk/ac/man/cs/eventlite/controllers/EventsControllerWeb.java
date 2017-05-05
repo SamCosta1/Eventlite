@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.social.ApiException;
 import org.springframework.social.connect.ConnectionRepository;
@@ -77,7 +76,7 @@ public class EventsControllerWeb {
 	@RequestMapping(method = RequestMethod.POST,
 					consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, 
 					produces = { MediaType.TEXT_HTML_VALUE })
-	public String filter(@ModelAttribute("search") SearchEvents searchCriterion, BindingResult result, Model model) {
+	public String filterEvents(@ModelAttribute("search") SearchEvents searchCriterion, BindingResult result, Model model) {
 	
 		if (connectionRepository.findPrimaryConnection(Twitter.class) == null) 
             return "redirect:/connect/twitter";
@@ -144,7 +143,7 @@ public class EventsControllerWeb {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, 
 					produces = { MediaType.TEXT_HTML_VALUE,
 								 MediaType.APPLICATION_JSON_VALUE })
-	public String event(@PathVariable("id") long id, Model model) {
+	public String showEvent(@PathVariable("id") long id, Model model) {
 		
 		if (connectionRepository.findPrimaryConnection(Twitter.class) == null) 
             return "redirect:/connect/twitter";
