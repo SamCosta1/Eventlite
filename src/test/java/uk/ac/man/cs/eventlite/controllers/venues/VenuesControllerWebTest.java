@@ -136,7 +136,7 @@ public class VenuesControllerWebTest extends TestParent {
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 				.params(update)
 	 			.accept(MediaType.TEXT_HTML))
-				.andExpect(status().isFound())
+				.andExpect(status().isOk())
 	 			.andExpect(view().name("redirect:/venues"));
 
  		verify(venueService).update(savedCaptor.capture(), savedCaptor.capture());

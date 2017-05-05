@@ -184,7 +184,7 @@ public class EventServiceTest extends TestParent {
 		Event currentEvent = EventTestHelper.newEvent("Java Lecture", "12/4/2018", "00:00");
 		eventService.save(currentEvent);
 		
-		Venue testVenue = new Venue("Another venue ", 110, null, null);
+		Venue testVenue = new Venue("Another venue ", 110, null, null, null, null, null);
 			
 		Event changedEvent = EventTestHelper.newEvent("Updated name", testVenue, "12/3/2018", "12:00", "new description");
 		

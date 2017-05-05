@@ -49,7 +49,7 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		Venue lfVenue = new Venue("LF 31", 10, "Kilburn Building", "University of Manchester", "Oxford Rd", "Manchester", "M13 9PL");	
 		venueService.save(lfVenue);
 		
-		Venue g23Venue = new Venue("G23", 10, "Kilburn Building, University of Manchester, Oxford Rd, Manchester", "M13 9PL");		
+		Venue g23Venue = new Venue("G23", 10, "Kilburn Building", "University of Manchester", "Oxford Rd", "Manchester", "M13 9PL");		
 		venueService.save(g23Venue);
 		
 		Venue unplottableVenue = new Venue("12 Grimmauld Place", 10, "An address google won't be able to find", "nope", "can't find it", "nowhere", "not a postcode");		

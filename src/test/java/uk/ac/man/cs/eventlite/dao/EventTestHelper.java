@@ -35,7 +35,7 @@ public class EventTestHelper {
 	}
 
 	public static void init(VenueService venueService) {
-		testVenue = new Venue("Test Event Name", 10, null, null);
+		testVenue = new Venue("Test Event Name", 10, null, null, null, null, null);
 	
 		venueService.save(testVenue);		
 		
