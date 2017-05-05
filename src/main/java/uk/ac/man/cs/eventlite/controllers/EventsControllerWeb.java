@@ -173,7 +173,7 @@ public class EventsControllerWeb {
 		return "events/new";
 	}
 	
-	@RequestMapping (value = "/userevents", method = RequestMethod.GET)
+	@RequestMapping (value = "/userevents", method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE })
 	public String showUserEvents(Model model) 	{				
 		model.addAttribute("events", eventService.findAllByUser(getCurrentUser(model)));
 		return "events/userevents";
