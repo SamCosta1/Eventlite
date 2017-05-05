@@ -43,8 +43,7 @@ public class Event {
 	private Date time;
 
 	@NotBlank
-	@Size(min = 1, max = 256, 
-	      message = "Name must have at least 1 and at most 256 characters")
+	@Size(max = 256, message="Name too long, must be less than 256 characters") 
 	private String name;
 	
 	@Lob
