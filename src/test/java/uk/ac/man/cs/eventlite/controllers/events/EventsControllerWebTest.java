@@ -159,6 +159,7 @@ public class EventsControllerWebTest extends TestParent {
 
 	@Test
 	public void testNewEventHasFormErrors() throws Exception {
+		when(venueService.findAll()).thenReturn(Collections.<Venue> emptyList());
 			mvc.perform(MockMvcRequestBuilders.post("/events/new").contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("name", "A Name")
 				.param("date", "2016-10-10")
@@ -167,6 +168,7 @@ public class EventsControllerWebTest extends TestParent {
 				.param("description", "Desc")
 				.accept(MediaType.TEXT_HTML)) 
 				.andExpect(view().name("events/new"));
+			verify(venueService, times(1)).findAll();
 	}
 
 	@Test

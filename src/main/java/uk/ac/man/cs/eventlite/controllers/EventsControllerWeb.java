@@ -32,7 +32,6 @@ import uk.ac.man.cs.eventlite.dao.SearchEvents;
 import uk.ac.man.cs.eventlite.dao.VenueService;
 import uk.ac.man.cs.eventlite.entities.Event;
 import uk.ac.man.cs.eventlite.entities.User;
-import uk.ac.man.cs.eventlite.entities.Venue;
 import uk.ac.man.cs.eventlite.helpers.CurrentUser;
 
 @Controller
@@ -178,8 +177,7 @@ public class EventsControllerWeb {
 					produces = { MediaType.TEXT_HTML_VALUE })
 	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Event event, BindingResult result, Model model, 
 			                          @RequestParam("name") String name, @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, 
-			                          @RequestParam("time") @DateTimeFormat(pattern = "HH:mm") Date time, 
-			                          @RequestParam("venue") Venue venue, @RequestParam("description") String description) {
+			                          @RequestParam("time") @DateTimeFormat(pattern = "HH:mm") Date time, @RequestParam("description") String description) {
 		if (result.hasErrors()) {
 			model.addAttribute("errors", formErrorHelper(result));
 			model.addAttribute("name", name);
@@ -194,8 +192,7 @@ public class EventsControllerWeb {
 				model.addAttribute("time", time_str);
 			}
 			
-			model.addAttribute("venue", venue);
-			model.addAttribute("venues", venueService.findAllExceptOne(venue));
+			model.addAttribute("venues", venueService.findAll());
 			model.addAttribute("description", description);
 			return "events/new";
         }
