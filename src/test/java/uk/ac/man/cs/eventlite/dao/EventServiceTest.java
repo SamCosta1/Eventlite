@@ -224,7 +224,7 @@ public class EventServiceTest extends TestParent {
 
 	@Test
 	public void testFindAllByVenue() {		
-		Venue venue = new Venue("Test event name", 10, null, null);
+		Venue venue = new Venue("Test event name", 10, null, null, null, null, null);
 		venueService.save(venue);
 		
 		eventService.save(EventTestHelper.newEvent("test Event", venue, "25/3/2018", "12:00"));	

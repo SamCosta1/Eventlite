@@ -1,0 +1,50 @@
+{{#partial "head"}}
+<link rel="stylesheet" href="../css/main.css">
+<link rel="stylesheet" href="../css/forms.css">
+{{/partial}}
+
+{{#partial "content"}}
+<div class="header-container">
+  <div class="title-container">   
+    <div class="subtitle">New Venue</div>
+  </div>  
+</div>  
+
+<div class="main-content-container">
+  
+  <form method="post" action="/venues/new">
+    <div class="form-group {{#if errors.template}}has-error{{/if}}">
+    
+    <label for="name">Name</label></td>
+    <input class="form-control" type="text" name="name" id="name" placeholder="Name" autofocus />
+          {{#if errors.name}} <p class="text-danger"> {{errors.name}} {{/if}}</p>
+   
+      
+      <label for="name">Capacity</label></td>
+        <input class="form-control" type="text" name="capacity" id="capacity" value="1" placeholder="Capacity" />        
+          {{#if errors.capacity}} <p class="text-danger"> {{errors.capacity}} {{/if}}
+      
+      <label for="name">Address</label>
+      <input class="form-control" type="text" name="addressLine1" id="addressLine1" placeholder="Address Line 1" />
+      <input class="form-control" type="text" name="addressLine2" id="addressLine2" placeholder="Address Line 2" />
+      
+      <input class="form-control" type="text" name="streetName" id="streetName" placeholder="Street Name" />
+      {{#if errors.streetName}} <p class="text-danger">{{errors.streetName}}</p>  {{/if}}
+      
+      <input class="form-control" type="text" name="city" id="city" placeholder="City" />
+        
+      <label for="name">Postcode</label>
+        <input class="form-control" type="text" name="postcode" id="postcode" placeholder="Postcode" />
+          {{#if errors.postcode}} <p class="text-danger"> {{errors.postcode}} </p> {{/if}}
+   
+     
+
+      
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </form>
+</div>
+
+
+{{/partial}}
+
+{{> layouts/base title="EventLite New Event"}}

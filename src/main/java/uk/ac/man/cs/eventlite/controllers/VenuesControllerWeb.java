@@ -75,7 +75,7 @@ public class VenuesControllerWeb {
 	}
 	
 	@RequestMapping (value = "/map", method = RequestMethod.GET)
-	public String showNew(Model model)	{
+	public String showNew(Model model) {
 		model.addAttribute("venues", venueService.findAll());
 	    return "events/new";
 	}
@@ -109,6 +109,27 @@ public class VenuesControllerWeb {
 
 	return "venues/venueform";
 
+	}
+	
+	@RequestMapping (value = "/new", method = RequestMethod.GET)
+	public String showAddVenuesForm(Model model) {
+		return "venues/new";
+	}
+	
+	@RequestMapping(value = "/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+					produces = { MediaType.TEXT_HTML_VALUE })
+	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Venue venue, BindingResult result, Model model, 
+			                          @ModelAttribute("successMessage") String successMessage, final RedirectAttributes redirectAttributes) {
+		if (result.hasErrors()) {
+			model.addAttribute("errors", formErrorHelper(result));
+			return "venues/new";
+		}
+			
+		venue.setCoords();
+		venueService.save(venue);
+		successMessage = venue.getName() + "has been created successfully!";
+		redirectAttributes.addFlashAttribute("successMessage", successMessage);
+		return "redirect:/venues";
 	}
 	
 }
