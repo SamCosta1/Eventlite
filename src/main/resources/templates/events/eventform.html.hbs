@@ -26,25 +26,28 @@
 	{{/if}}
     <form action="/events/{{id}}/update" method="post">
 		<div class="form-group {{#if errors.template}}has-error{{/if}}">
+    	ererg
+    	<input type="hidden" name="event" id="event" value="{{event.id}}" />
     	
-    	<input type="hidden" name="event" id="event" value="{{id}}" />
+    	<label>Name</label><input class="form-control" type="text" name="name" id="name" value="{{event.name}}" />
+    	{{#if errors.name}}<p class="text-danger"> {{errors.name}} </p>{{/if}} 
     	
-    	<label>Name</label><input class="form-control" type="text" name="name" id="name" value="{{name}}" />
-    	
-    	<label>Description</label><textarea class="form-control" name="description" id="description">{{description}}</textarea>
+       	<label>Date</label> <input class="form-control" type="date" name="date" id="date" value="{{eventDate}}" />
+        {{#if errors.date}} <p class="text-danger">  {{errors.date}} </p>{{/if}}
+        <label>Time</label> <input class="form-control" type="time" name="time" id="time" value="{{eventTime}}" /> 
+        
     	
        	<label>Venue</label>
        		
   		<select class="form-control" type="venue" name="venue" id="venue">
-  				<option selected value={{venue.id}}>{{venue.name}}</option>
+  				<option selected value={{event.venue.id}}>{{event.venue.name}}</option>
   				{{#venues}}
   				<option value={{id}}>{{name}}</option>
   				{{/venues}}
   		</select> 
+  		{{#if errors.venue}} <p class="text-danger"> {{errors.venue}}</p>{{/if}} 
+    	<label>Description</label><textarea class="form-control" name="description" id="description">{{event.description}}</textarea>
        		
-       	<label>Date</label> <input class="form-control" type="date" name="date" id="date" value="{{date}}" />
-        <label>Time</label> <input class="form-control" type="time" name="time" id="time" value="{{eventTime}}" /> 
-        
  {{/event}}
 	
 		{{#if errors.template}}

@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-
+import static org.mockito.Matchers.isA;
 import uk.ac.man.cs.eventlite.TestParent;
 import uk.ac.man.cs.eventlite.controllers.VenuesControllerWeb;
 import uk.ac.man.cs.eventlite.dao.EventService;
@@ -175,9 +175,14 @@ public class VenuesControllerWebTest extends TestParent {
 		params.add("capacity", "50");
 		
 		updateVenue(params, "redirect:/venues", HttpStatus.FOUND); 
-		addVenue(params, "redirect:/venues", HttpStatus.FOUND);		
+		verify(venueService).update(isA(Venue.class), isA(Venue.class));
+		
+		addVenue(params, "redirect:/venues", HttpStatus.FOUND);
+		verify(venueService).save(isA(Venue.class));	
+		
 	}
 	
+	// Helper to test adding venues
 	private void addVenue(MultiValueMap<String, String> params, String view, HttpStatus status) throws Exception {
 		mvc.perform(MockMvcRequestBuilders.post("/venues/new")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)

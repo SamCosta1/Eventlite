@@ -11,23 +11,27 @@
 </div>  
 
 <div class="main-content-container">
+
+{{#if errors}}
+		<p class="h2 text-danger"> There were errors in your event information!</p>
+	{{/if}}
     <form method="post" action="/events/new">
       <div class="form-group {{#if errors.template}}has-error{{/if}}">
         <label for="name">Name</label>
-        <input class="form-control" type="text" name="name" id="name" placeholder="Name" autofocus value="{{name}}" />
+        <input class="form-control" type="text" name="name" id="name" placeholder="Name" autofocus value="{{event.name}}" />
          {{#if errors.name}}<p class="text-danger"> {{errors.name}} </p>{{/if}} 
           
         <label for="date">Date</label>
-        <input class="form-control" type="date" name="date" id="date" placeholder="yyyy-MM-dd" value="{{date}}" />
+        <input class="form-control" type="date" name="date" id="date" placeholder="yyyy-MM-dd" value="{{eventDate}}" />
         {{#if errors.date}} <p class="text-danger">  {{errors.date}} </p>{{/if}}
 
         <label for="time">Time</label>
-        <input class="form-control" type="time" name="time" id="time" placeholder="HH:mm" value="{{time}}" />
-		{{#if errors.time}} <p class="text-danger"> {{errors.time}} </p>{{/if}}
+        <input class="form-control" type="time" name="time" id="time" placeholder="HH:mm" value="{{eventTime}}" />
+		 {{#if errors.time}} <p class="text-danger">  {{errors.time}} </p>{{/if}}
 
         <label for="venue">Venue</label>
-        <select class="form-control" type="venue" name="venue" id="venue" value="{{venue}}" />
-       	  <option selected value={{venue.id}}>{{venue.name}}</option>
+        <select class="form-control" type="venue" name="venue" id="venue" />
+       	  <option selected value={{event.venue.id}}>{{event.venue.name}}</option>
        	  {{#venues}}
        	    <option value={{id}}>{{name}}</option>
        	  {{/venues}}
@@ -35,7 +39,7 @@
         {{#if errors.venue}} <p class="text-danger"> {{errors.venue}}</p>{{/if}} 
        		
         <label for="description">Description</label>
-        <input class="form-control" type="text" name="description" id="description" placeholder="Description" value="{{description}}" />
+        <input class="form-control" type="text" name="description" id="description" placeholder="Description" value="{{event.description}}" />
         <p class="text-danger">{{#if errors.description}} <p class="text-danger"> {{errors.description}} </p>{{/if}}
         
         {{#if errors.template}}

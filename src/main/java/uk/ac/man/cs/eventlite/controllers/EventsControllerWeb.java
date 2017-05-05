@@ -102,14 +102,15 @@ public class EventsControllerWeb {
 				    method = RequestMethod.POST, 
 					consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 					produces = { MediaType.TEXT_HTML_VALUE })
-	public String updateEvent(@RequestBody @Valid @ModelAttribute("eventForm") Event event, 
+	public String updateEvent(@RequestBody @Valid @ModelAttribute Event event, 
 								BindingResult errors, @ModelAttribute("successMessage") String successMessage,
 								@RequestParam(value="event") long eventID, Model model, final RedirectAttributes redirectAttributes) {
 		
 		if (errors.hasErrors()) {
 			model.addAttribute("errors", formErrorHelper(errors));
-			model.addAttribute("id", eventID);
-			model.addAttribute("event", eventService.findById(eventID));
+			model.addAttribute("event", event);
+			model.addAttribute("eventDate", new SimpleDateFormat("yyyy-MM-dd").format(event.getDate()));
+			model.addAttribute("eventTime", new SimpleDateFormat("HH:mm").format(event.getTime()));
 			model.addAttribute("venues", venueService.findAllExceptOne(event.getVenue()));
 			
 			return "events/eventform";
@@ -128,6 +129,7 @@ public class EventsControllerWeb {
 		
 	   	Event event = eventService.findById(id);
 		model.addAttribute("event", event);
+		model.addAttribute("eventDate", new SimpleDateFormat("yyyy-MM-dd").format(event.getDate()));
 		model.addAttribute("eventTime", new SimpleDateFormat("HH:mm").format(event.getTime()));
 		model.addAttribute("venues", venueService.findAllExceptOne(event.getVenue()));
 		
@@ -184,25 +186,13 @@ public class EventsControllerWeb {
 
 	@RequestMapping(value = "/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 					produces = { MediaType.TEXT_HTML_VALUE })
-	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Event event, BindingResult result, Model model, 
-			                          @RequestParam("name") String name, @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, 
-			                          @RequestParam("time") @DateTimeFormat(pattern = "HH:mm") Date time, @RequestParam("description") String description) {
+	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Event event, BindingResult result, Model model) {
 		if (result.hasErrors()) {
 			model.addAttribute("errors", formErrorHelper(result));
-			model.addAttribute("name", name);
-			
-			if (date != null) {
-				String date_str = new SimpleDateFormat("yyyy-MM-dd").format(date);
-				model.addAttribute("date", date_str);
-			}
-			
-			if (time != null) {
-				String time_str = new SimpleDateFormat("HH:mm").format(time);
-				model.addAttribute("time", time_str);
-			}
-			
-			model.addAttribute("venues", venueService.findAll());
-			model.addAttribute("description", description);
+			model.addAttribute("event", event);		
+			model.addAttribute("eventTime", new SimpleDateFormat("HH:mm").format(event.getTime()));
+			model.addAttribute("eventDate", new SimpleDateFormat("yyyy-MM-dd").format(event.getDate()));
+			model.addAttribute("venues", venueService.findAllExceptOne(event.getVenue()));
 			return "events/new";
         }
 
