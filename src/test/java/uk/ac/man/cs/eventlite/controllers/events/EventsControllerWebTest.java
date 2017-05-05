@@ -219,19 +219,24 @@ public class EventsControllerWebTest extends TestParent {
 				.param("description", "Desc")
 				.accept(MediaType.TEXT_HTML)) 
 				.andExpect(view().name("events/new"));
-			verify(venueService, times(1)).findAll();
+		verify(venueService, times(1)).findAll();
 	}
 
 	@Test
 	public void testNewEventNoFormErrors() throws Exception {
-			mvc.perform(MockMvcRequestBuilders.post("/events/new").contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("name", "A Name")
-				.param("date", "2019-10-10")
-				.param("time", "10:00")
-				.param("venue.id", "1")
-				.param("description", "Desc")
-				.accept(MediaType.TEXT_HTML))
-				.andExpect(view().name("redirect:/events"));
+		 when(venue.getId()).thenReturn(1L); 
+		 ArgumentCaptor<Event> savedCaptor = ArgumentCaptor.forClass(Event.class); 
+		 mvc.perform(MockMvcRequestBuilders.post("/events/new").contentType(MediaType.APPLICATION_FORM_URLENCODED) 
+		      .param("name", "A Name") 
+		      .param("date", "2019-10-10") 
+		      .param("time", "10:00") 
+		      .param("venue.id", "1") 
+		      .param("description", "Desc")       
+		      .accept(MediaType.TEXT_HTML)) 
+		      .andExpect(view().name("redirect:/events")); 
+		     
+		 verify(eventService).save(savedCaptor.capture());         
+		 assertTrue(savedCaptor.getValue().equals(EventTestHelper.newEvent("A Name", venue, "10/10/2019", "10:00", "Desc")));
 	}
 	
 	@Test
