@@ -109,8 +109,12 @@ public class EventsControllerWeb {
 		if (errors.hasErrors()) {
 			model.addAttribute("errors", formErrorHelper(errors));
 			model.addAttribute("event", event);
-			model.addAttribute("eventDate", new SimpleDateFormat("yyyy-MM-dd").format(event.getDate()));
-			model.addAttribute("eventTime", new SimpleDateFormat("HH:mm").format(event.getTime()));
+			
+			if (event.getTime() != null)
+				model.addAttribute("eventTime", new SimpleDateFormat("HH:mm").format(event.getTime()));
+			
+			if (event.getDate() != null)
+				model.addAttribute("eventDate", new SimpleDateFormat("yyyy-MM-dd").format(event.getDate()));
 			model.addAttribute("venues", venueService.findAllExceptOne(event.getVenue()));
 			
 			return "events/eventform";
@@ -189,9 +193,13 @@ public class EventsControllerWeb {
 	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Event event, BindingResult result, Model model) {
 		if (result.hasErrors()) {
 			model.addAttribute("errors", formErrorHelper(result));
-			model.addAttribute("event", event);		
-			model.addAttribute("eventTime", new SimpleDateFormat("HH:mm").format(event.getTime()));
-			model.addAttribute("eventDate", new SimpleDateFormat("yyyy-MM-dd").format(event.getDate()));
+			model.addAttribute("event", event);
+			
+			if (event.getTime() != null)
+				model.addAttribute("eventTime", new SimpleDateFormat("HH:mm").format(event.getTime()));
+			
+			if (event.getDate() != null)
+				model.addAttribute("eventDate", new SimpleDateFormat("yyyy-MM-dd").format(event.getDate()));
 			model.addAttribute("venues", venueService.findAllExceptOne(event.getVenue()));
 			return "events/new";
         }

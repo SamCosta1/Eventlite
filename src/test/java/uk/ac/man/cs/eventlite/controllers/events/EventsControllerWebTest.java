@@ -1,6 +1,7 @@
 package uk.ac.man.cs.eventlite.controllers.events;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.Matchers.isA;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -125,6 +126,7 @@ public class EventsControllerWebTest extends TestParent {
 		when(eventService.findById(3)).thenReturn(event);
 		when(event.getVenue()).thenReturn(venue);
 		when(event.getTime()).thenReturn(new Date());
+		when(event.getDate()).thenReturn(new Date());
 		when(venueService.findAllExceptOne(venue)).thenReturn(Collections.<Venue> emptyList());
 			mvc.perform(get("/events/3/update").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
 				.andExpect(view().name("events/eventform"));
@@ -186,8 +188,7 @@ public class EventsControllerWebTest extends TestParent {
 	}
 
 	@Test
-	public void testAddAndUpdateInvalid() throws Exception {
-		// Missing name
+	public void testAddAndUpdateMissingName() throws Exception {		
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
 		params.add("name", "");
 		params.add("venue.id", "1");
@@ -195,38 +196,46 @@ public class EventsControllerWebTest extends TestParent {
 		params.add("date", "2018-10-10");
 		params.add("time", "10:00");
 		
-		addEvent(params, "events/new", HttpStatus.OK);
+		addInvalidEvent(params, "events/new", HttpStatus.OK);
 		
 		params.add("event", "1");
-		updateEvent(params, "events/eventform", HttpStatus.OK); 
-		
-		// Missing date
-		params.clear();
+		updateInvalidEvent(params, "events/eventform", HttpStatus.OK); 
+	}
+	
+	@Test
+	public void testAddAndUpdateMissingDate() throws Exception {
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();		
 		params.add("name", "A name");
 		params.add("venue.id", "1");
 		params.add("description", "description");
 		params.add("date", "");
 		params.add("time", "10:00");
 		
-		addEvent(params, "events/new", HttpStatus.OK);
+		addInvalidEvent(params, "events/new", HttpStatus.OK);
 		
 		params.add("event", "1");
-		updateEvent(params, "events/eventform", HttpStatus.OK); 
-		
-		// Missing venue
-		params.clear();
+		updateInvalidEvent(params, "events/eventform", HttpStatus.OK); 
+	}
+	
+	@Test 
+	public void testAddAndUpdateMissingVenue() throws Exception {
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();	
 		params.add("name", "A name");
 		params.add("venue.id", "");
 		params.add("description", "description");
 		params.add("date", "2018-10-10");
 		params.add("time", "10:00");
 		
-		addEvent(params, "events/new", HttpStatus.OK);
+		addInvalidEvent(params, "events/new", HttpStatus.OK);
 		
 		params.add("event", "1");
-		updateEvent(params, "events/eventform", HttpStatus.OK); 
+		updateInvalidEvent(params, "events/eventform", HttpStatus.OK); 
+	}
 		
-		// Invalid date
+	@Test
+	public void testAddAndUpdateInvalidDate() throws Exception {
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();	
+	
 		params.clear();
 		params.add("name", "A name");
 		params.add("venue.id", "1");
@@ -234,16 +243,16 @@ public class EventsControllerWebTest extends TestParent {
 		params.add("date", "2011-10-10");
 		params.add("time", "10:00");
 		
-		addEvent(params, "events/new", HttpStatus.OK);
+		addInvalidEvent(params, "events/new", HttpStatus.OK);
 		
 		params.add("event", "1");
-		updateEvent(params, "events/eventform", HttpStatus.OK); 		
+		updateInvalidEvent(params, "events/eventform", HttpStatus.OK); 	
 	}
 
 	@Test
 	public void testAddValidEvent() throws Exception {
   		 ArgumentCaptor<Event> savedCaptor = ArgumentCaptor.forClass(Event.class); 
-		 when(venue.getId()).thenReturn(1L); 
+		 when(venue.getId()).thenReturn(1L); 		 
 		 mvc.perform(MockMvcRequestBuilders.post("/events/new").contentType(MediaType.APPLICATION_FORM_URLENCODED) 
 		      .param("name", "A Name") 
 		      .param("date", "2019-10-10") 
@@ -258,17 +267,20 @@ public class EventsControllerWebTest extends TestParent {
 	}
 	
 	// Helper to test adding events
-	private void addEvent(MultiValueMap<String, String> params, String view, HttpStatus status) throws Exception {
+	private void addInvalidEvent(MultiValueMap<String, String> params, String view, HttpStatus status) throws Exception {
+		when(venueService.findAll()).thenReturn(Collections.<Venue> emptyList());		
+		when(event.getVenue()).thenReturn(venue);
 		mvc.perform(MockMvcRequestBuilders.post("/events/new")
 			.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 			.params(params)
 			.accept(MediaType.TEXT_HTML))
 			.andExpect(status().is(status.value()))
 			.andExpect(view().name(view));				
+		verify(venueService, times(1)).findAllExceptOne(isA(Venue.class));
 	}
 
 	// Helper to test updating events
-	private void updateEvent(MultiValueMap<String, String> params, String view, HttpStatus status) throws Exception {
+	private void updateInvalidEvent(MultiValueMap<String, String> params, String view, HttpStatus status) throws Exception {
 		when(event.getVenue()).thenReturn(venue);
 		when(venueService.findAllExceptOne(venue)).thenReturn(Collections.<Venue> emptyList());
 		when(eventService.findById(1L)).thenReturn(event);
