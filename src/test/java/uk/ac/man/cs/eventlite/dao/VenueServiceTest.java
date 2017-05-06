@@ -125,7 +125,6 @@ public class VenueServiceTest extends TestParent{
 		assertTrue("The find by Id method found the correct venue", foundVenue.equals(venue));		
 	}
 	
-	@Ignore
 	@Test
 	public void testFindMostPopularVenues() {
 		Venue[] venues = venueService.findMostPopularVenues();

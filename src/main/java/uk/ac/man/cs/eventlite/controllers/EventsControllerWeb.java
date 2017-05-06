@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.social.ApiException;
 import org.springframework.social.connect.ConnectionRepository;
@@ -77,7 +76,7 @@ public class EventsControllerWeb {
 	@RequestMapping(method = RequestMethod.POST,
 					consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, 
 					produces = { MediaType.TEXT_HTML_VALUE })
-	public String filter(@ModelAttribute("search") SearchEvents searchCriterion, BindingResult result, Model model) {
+	public String filterEvents(@ModelAttribute("search") SearchEvents searchCriterion, BindingResult result, Model model) {
 	
 		if (connectionRepository.findPrimaryConnection(Twitter.class) == null) 
             return "redirect:/connect/twitter";
@@ -102,14 +101,19 @@ public class EventsControllerWeb {
 				    method = RequestMethod.POST, 
 					consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 					produces = { MediaType.TEXT_HTML_VALUE })
-	public String updateEvent(@RequestBody @Valid @ModelAttribute("eventForm") Event event, 
+	public String updateEvent(@RequestBody @Valid @ModelAttribute Event event, 
 								BindingResult errors, @ModelAttribute("successMessage") String successMessage,
 								@RequestParam(value="event") long eventID, Model model, final RedirectAttributes redirectAttributes) {
 		
 		if (errors.hasErrors()) {
 			model.addAttribute("errors", formErrorHelper(errors));
-			model.addAttribute("id", eventID);
-			model.addAttribute("event", eventService.findById(eventID));
+			model.addAttribute("event", event);
+			
+			if (event.getTime() != null)
+				model.addAttribute("eventTime", new SimpleDateFormat("HH:mm").format(event.getTime()));
+			
+			if (event.getDate() != null)
+				model.addAttribute("eventDate", new SimpleDateFormat("yyyy-MM-dd").format(event.getDate()));
 			model.addAttribute("venues", venueService.findAllExceptOne(event.getVenue()));
 			
 			return "events/eventform";
@@ -128,6 +132,7 @@ public class EventsControllerWeb {
 		
 	   	Event event = eventService.findById(id);
 		model.addAttribute("event", event);
+		model.addAttribute("eventDate", new SimpleDateFormat("yyyy-MM-dd").format(event.getDate()));
 		model.addAttribute("eventTime", new SimpleDateFormat("HH:mm").format(event.getTime()));
 		model.addAttribute("venues", venueService.findAllExceptOne(event.getVenue()));
 		
@@ -138,7 +143,7 @@ public class EventsControllerWeb {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, 
 					produces = { MediaType.TEXT_HTML_VALUE,
 								 MediaType.APPLICATION_JSON_VALUE })
-	public String event(@PathVariable("id") long id, Model model) {
+	public String showEvent(@PathVariable("id") long id, Model model) {
 		
 		if (connectionRepository.findPrimaryConnection(Twitter.class) == null) 
             return "redirect:/connect/twitter";
@@ -184,25 +189,17 @@ public class EventsControllerWeb {
 
 	@RequestMapping(value = "/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 					produces = { MediaType.TEXT_HTML_VALUE })
-	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Event event, BindingResult result, Model model, 
-			                          @RequestParam("name") String name, @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date, 
-			                          @RequestParam("time") @DateTimeFormat(pattern = "HH:mm") Date time, @RequestParam("description") String description) {
+	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Event event, BindingResult result, Model model) {
 		if (result.hasErrors()) {
 			model.addAttribute("errors", formErrorHelper(result));
-			model.addAttribute("name", name);
+			model.addAttribute("event", event);
 			
-			if (date != null) {
-				String date_str = new SimpleDateFormat("yyyy-MM-dd").format(date);
-				model.addAttribute("date", date_str);
-			}
+			if (event.getTime() != null)
+				model.addAttribute("eventTime", new SimpleDateFormat("HH:mm").format(event.getTime()));
 			
-			if (time != null) {
-				String time_str = new SimpleDateFormat("HH:mm").format(time);
-				model.addAttribute("time", time_str);
-			}
-			
-			model.addAttribute("venues", venueService.findAll());
-			model.addAttribute("description", description);
+			if (event.getDate() != null)
+				model.addAttribute("eventDate", new SimpleDateFormat("yyyy-MM-dd").format(event.getDate()));
+			model.addAttribute("venues", venueService.findAllExceptOne(event.getVenue()));
 			return "events/new";
         }
 

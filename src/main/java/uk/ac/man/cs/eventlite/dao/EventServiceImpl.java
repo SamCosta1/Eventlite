@@ -24,7 +24,7 @@ public class EventServiceImpl implements EventService {
 		return eventRepository.count();
 	}
 	@Override
-	public Iterable<Event> findAll() {		
+	public List<Event> findAll() {		
 		List<Event> pastEvents = eventRepository.findAllByDateBeforeOrderByDateDescNameAsc(new Date());
 		List<Event> futureEvents = eventRepository.findAllByDateAfterOrderByDateAscNameAsc(new Date());
 		futureEvents.addAll(pastEvents);

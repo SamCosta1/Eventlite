@@ -50,9 +50,8 @@ public class EventsControllerRestTest extends TestParent {
 		.andExpect(jsonPath("$.events", notNullValue()));
 	}
 	
-	@Ignore
 	@Test
 	public void testGetFirstEvent() throws Exception {
-		mvc.perform(get("/events/1").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+		mvc.perform(get("/events/1").accept(MediaType.APPLICATION_JSON)).andExpect(status().isFound());
 	}
 }

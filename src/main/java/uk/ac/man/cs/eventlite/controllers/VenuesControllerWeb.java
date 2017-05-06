@@ -107,7 +107,7 @@ public class VenuesControllerWeb {
 		Venue venue = venueService.findById(id);
 		model.addAttribute("venueForm", venue);
 
-	return "venues/venueform";
+	    return "venues/venueform";
 
 	}
 	

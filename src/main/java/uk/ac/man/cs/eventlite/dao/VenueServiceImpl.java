@@ -97,6 +97,7 @@ public class VenueServiceImpl implements VenueService {
  		current.setAddressLine2(changes.getAddressLine2());
  		current.setCity(changes.getCity());
  		current.setStreetName(changes.getStreetName());
+ 		current.setPostcode(changes.getPostcode());
  		save(current);
  	}
 

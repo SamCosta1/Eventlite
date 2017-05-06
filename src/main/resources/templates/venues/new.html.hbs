@@ -15,14 +15,14 @@
   <form method="post" action="/venues/new">
     <div class="form-group {{#if errors.template}}has-error{{/if}}">
     
-    <label for="name">Name</label></td>
-    <input class="form-control" type="text" name="name" id="name" placeholder="Name" autofocus />
-          {{#if errors.name}} <p class="text-danger"> {{errors.name}} {{/if}}</p>
+      <label for="name">Name</label></td>
+      <input class="form-control" type="text" name="name" id="name" placeholder="Name" autofocus />
+          {{#if errors.name}} <p class="text-danger"> {{errors.name}} </p> {{/if}}
    
       
       <label for="name">Capacity</label></td>
         <input class="form-control" type="text" name="capacity" id="capacity" value="1" placeholder="Capacity" />        
-          {{#if errors.capacity}} <p class="text-danger"> {{errors.capacity}} {{/if}}
+          {{#if errors.capacity}} <p class="text-danger"> {{errors.capacity}} </p>{{/if}}
       
       <label for="name">Address</label>
       <input class="form-control" type="text" name="addressLine1" id="addressLine1" placeholder="Address Line 1" />
@@ -38,7 +38,7 @@
           {{#if errors.postcode}} <p class="text-danger"> {{errors.postcode}} </p> {{/if}}
    
      
-
+	</div>
       
     <button class="btn btn-primary" type="submit">Submit</button>
   </form>

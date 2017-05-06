@@ -90,6 +90,7 @@ public class Venue implements Comparable<Venue> {
 	
 	public void setPostcode(String postcode) {
 		this.postcode = postcode;
+		this.setCoords();
 	}
 	
 	public double getLongitude() {
@@ -125,7 +126,10 @@ public class Venue implements Comparable<Venue> {
 	}
 	
 	private String getParam(String param) {
-		return param + param == null || param.trim() == "" ? "," : "";
+		if (param == null || param.trim().equals(""))
+			return "";
+		else
+			return param + ",";
 	}
 	
 	public boolean equals(Venue other) {
@@ -154,6 +158,7 @@ public class Venue implements Comparable<Venue> {
 
 	public void setAddressLine2(String addressLine2) {
 		this.addressLine2 = addressLine2;
+		this.setCoords();
 	}
 
 	public String getAddressLine1() {
@@ -162,6 +167,7 @@ public class Venue implements Comparable<Venue> {
 	
 	public void setStreetName(String street) {
 		this.streetName = street;
+		this.setCoords();
 	}
 
 	public String getStreetName() {
@@ -178,5 +184,6 @@ public class Venue implements Comparable<Venue> {
 
 	public void setCity(String city) {
 		this.city = city;
+		this.setCoords();
 	}
 }
