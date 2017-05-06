@@ -31,7 +31,7 @@ public class EventsControllerRest {
 	@RequestMapping(method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public String getAllEvents(Model model, UriComponentsBuilder b) {
 		
-		UriComponents link = b.path("/events").build();
+		UriComponents link = b.path("/").build();
 		model.addAttribute("self_link", link.toUri());
 		
 		return "events/index";
@@ -40,7 +40,7 @@ public class EventsControllerRest {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public String getOneEvent(@PathVariable("id") long id, Model model, UriComponentsBuilder b) { 
 		
-		UriComponents link = b.path("/events/" + id).build();
+		UriComponents link = b.path("/").build();
 		model.addAttribute("self_link", link.toUri());
 
 		Event e = eventService.findById(id);
