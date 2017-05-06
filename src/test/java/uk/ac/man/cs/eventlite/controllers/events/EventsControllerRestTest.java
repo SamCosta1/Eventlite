@@ -59,6 +59,7 @@ public class EventsControllerRestTest extends TestParent {
 		.andExpect(jsonPath("$.title", equalTo("EventLite event view")))
 		.andExpect(jsonPath("$._self", equalTo("http://localhost/events/" + event.getId())))
 		.andExpect(jsonPath("$.id", equalTo("" + event.getId())))
+		.andExpect(jsonPath("$.date", equalTo("" + event.getDate())))
 		.andExpect(jsonPath("$.name", equalTo(event.getName())));
 	}
 	
