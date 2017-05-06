@@ -19,6 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import uk.ac.man.cs.eventlite.dao.EventService;
 import uk.ac.man.cs.eventlite.dao.SearchEvents;
+import uk.ac.man.cs.eventlite.dao.VenueService;
 import uk.ac.man.cs.eventlite.entities.Event;
 
 @Controller
@@ -33,6 +34,7 @@ public class EventsControllerRest {
 		
 		UriComponents link = b.path("/").build();
 		model.addAttribute("self_link", link.toUri());
+		model.addAttribute("events", eventService.findAll());
 		
 		return "events/index";
 	}
@@ -45,6 +47,7 @@ public class EventsControllerRest {
 
 		Event e = eventService.findById(id);
 		model.addAttribute("event", e);
+		model.addAttribute("venue", e.getVenue());
 		
 		return "events/_detail";
 	}

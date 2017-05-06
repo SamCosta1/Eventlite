@@ -5,6 +5,7 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -60,7 +61,8 @@ public class EventsControllerRestTest extends TestParent {
 		.andExpect(jsonPath("$._self", equalTo("http://localhost/events/" + event.getId())))
 		.andExpect(jsonPath("$.id", equalTo("" + event.getId())))
 		.andExpect(jsonPath("$.date", equalTo("" + event.getDate())))
-		.andExpect(jsonPath("$.name", equalTo(event.getName())));
+		.andExpect(jsonPath("$.name", equalTo(event.getName())))
+		.andExpect(jsonPath("$.venue", notNullValue()));
 	}
 	
 	@Test
