@@ -39,6 +39,9 @@ public class EventsControllerRestTest extends TestParent {
 	@Autowired
 	private WebApplicationContext ctx;
 	
+	@InjectMocks
+	private EventsControllerWeb eventsController;
+	
 	@Mock
 	private Event event;
 	
@@ -51,7 +54,8 @@ public class EventsControllerRestTest extends TestParent {
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		mvc = MockMvcBuilders.webAppContextSetup(ctx).build();		
+		mvc = MockMvcBuilders.webAppContextSetup(ctx).build();	
+//		mvc = MockMvcBuilders.standaloneSetup(eventsController).build();
 		EventTestHelper.init(venueService);
 	}
 	
@@ -66,12 +70,14 @@ public class EventsControllerRestTest extends TestParent {
 	@Test
 	public void testGetOneEvent() throws Exception {
 		when(eventService.findById(1)).thenReturn(event);
-		when(event.getId()).thenReturn(Long.valueOf("1"));
+		when(event.getId()).thenReturn((1L));
+		when(event.getName()).thenReturn("EventLite event 1");
 		mvc.perform(MockMvcRequestBuilders.get("/events/1").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("$.title", equalTo("EventLite event view")))
 			.andExpect(jsonPath("$._self", equalTo("http://localhost/events/1")))
-			.andExpect(jsonPath("$.id", equalTo("1")));
+			.andExpect(jsonPath("$.id", equalTo("1")))
+			.andExpect(jsonPath("$.name", equalTo("EventLite event 1")));
 	}
 	
 	
