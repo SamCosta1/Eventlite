@@ -89,7 +89,6 @@ a:focus, a:hover {
 	flex-direction: row;
 	
 	justify-content: space-between;	
-	align-items: center;
 	margin-bottom: 15px;
 	
 	span {
@@ -100,6 +99,11 @@ a:focus, a:hover {
 		display: flex;
 		flex-direction: column;
 	}
+ 
+    .right-side {
+    	display: flex;
+    	align-items: center;	
+    }
 }	
 hr:last-child {
 	display: none;		
