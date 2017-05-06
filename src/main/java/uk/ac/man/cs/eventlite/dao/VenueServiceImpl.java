@@ -93,7 +93,11 @@ public class VenueServiceImpl implements VenueService {
  	public void update(Venue current, Venue changes) {
  		current.setName(changes.getName());
  		current.setCapacity(changes.getCapacity());
- 		current.setAddress(changes.getAddress());
+ 		current.setAddressLine1(changes.getAddressLine1());
+ 		current.setAddressLine2(changes.getAddressLine2());
+ 		current.setCity(changes.getCity());
+ 		current.setStreetName(changes.getStreetName());
+ 		current.setPostcode(changes.getPostcode());
  		save(current);
  	}
 

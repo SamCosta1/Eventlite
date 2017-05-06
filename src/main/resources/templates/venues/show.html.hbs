@@ -31,9 +31,8 @@
 	           <h4>Info</h4>
 	           <div id = "info-content">
 	             <div class="content-container">
-	               <p>Capacity: {{capacity}}</p>
-	               <p>Address: {{address}}</p>
-	               <p>Postcode: {{postcode}}</p>
+	               <p>Capacity: {{capacity}}</p><br>
+	               <p>{{addressLine1}}</p><p>{{addressLine2}}</p><p>{{streetName}}</p><p>{{city}}</p><p>{{postcode}}</p>
 	             </div>
 	             <div style="display: inline">
 	             <form action="/venues/{{id}}/delete" method="post" style="display: inline">

@@ -1,6 +1,7 @@
 package uk.ac.man.cs.eventlite.controllers.events;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.Matchers.isA;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -39,7 +40,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.validation.BindingResult;
 import uk.ac.man.cs.eventlite.TestParent;
 import uk.ac.man.cs.eventlite.controllers.EventsControllerWeb;
 import uk.ac.man.cs.eventlite.dao.EventService;
@@ -121,33 +121,12 @@ public class EventsControllerWebTest extends TestParent {
 		verify(connectionRepository).findPrimaryConnection(Twitter.class);
 	}
  	
-	@Test
- 	public void testUpdateEvent() throws Exception {
- 		
-		ArgumentCaptor<Event> savedCaptor = ArgumentCaptor.forClass(Event.class);
-		MultiValueMap<String, String> update = new LinkedMultiValueMap<String, String>();
-		update.add("event", "1");
-		update.add("name", "A name");
-		update.add("description", "Description");
-		update.add("venue.id",  "1");
-		update.add("date", "2019-12-01");
-		update.add("time", "10:00");
-		
-		mvc.perform(MockMvcRequestBuilders.post("/events/1/update")
-				.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-				.params(update)
-	 			.accept(MediaType.TEXT_HTML))
-				.andExpect(status().isFound())
-	 			.andExpect(view().name("redirect:/events"));
-
- 		verify(eventService).update(savedCaptor.capture(), savedCaptor.capture());
- 	}
- 	
-	@Test
+ 	@Test
 	public void testShowUpdateForm() throws Exception {		
 		when(eventService.findById(3)).thenReturn(event);
 		when(event.getVenue()).thenReturn(venue);
 		when(event.getTime()).thenReturn(new Date());
+		when(event.getDate()).thenReturn(new Date());
 		when(venueService.findAllExceptOne(venue)).thenReturn(Collections.<Venue> emptyList());
 			mvc.perform(get("/events/3/update").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
 				.andExpect(view().name("events/eventform"));
@@ -176,10 +155,10 @@ public class EventsControllerWebTest extends TestParent {
 		when(userOperations.getUserProfile()).thenReturn(profile);
 		when(eventService.searchByName("")).thenReturn(Collections.<Event> emptyList());
 			mvc.perform(MockMvcRequestBuilders.post("/events/")
-					.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-					.param("name", "testString")
-					.accept(MediaType.TEXT_HTML_VALUE))
-					.andExpect(view().name("events/index"));
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+				.param("name", "testString")
+				.accept(MediaType.TEXT_HTML_VALUE))
+				.andExpect(view().name("events/index"));
 		verify(eventService, times(1)).searchByName("testString");
 		verify(connectionRepository, times(1)).findPrimaryConnection(Twitter.class);
 		verify(twitter, times(1)).timelineOperations();
@@ -207,22 +186,110 @@ public class EventsControllerWebTest extends TestParent {
 				.andExpect(view().name("events/new"));
 		verify(venueService, times(1)).findAll();
 	}
+
+	@Test
+	public void testAddAndUpdateMissingName() throws Exception {		
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+		params.add("name", "");
+		params.add("venue.id", "1");
+		params.add("description", "description");
+		params.add("date", "2018-10-10");
+		params.add("time", "10:00");
+		
+		addInvalidEvent(params, "events/new", HttpStatus.OK);
+		
+		params.add("event", "1");
+		updateInvalidEvent(params, "events/eventform", HttpStatus.OK); 
+	}
+	
+	@Test
+	public void testAddAndUpdateMissingDate() throws Exception {
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();		
+		params.add("name", "A name");
+		params.add("venue.id", "1");
+		params.add("description", "description");
+		params.add("date", "");
+		params.add("time", "10:00");
+		
+		addInvalidEvent(params, "events/new", HttpStatus.OK);
+		
+		params.add("event", "1");
+		updateInvalidEvent(params, "events/eventform", HttpStatus.OK); 
+	}
+	
+	@Test 
+	public void testAddAndUpdateMissingVenue() throws Exception {
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();	
+		params.add("name", "A name");
+		params.add("venue.id", "");
+		params.add("description", "description");
+		params.add("date", "2018-10-10");
+		params.add("time", "10:00");
+		
+		addInvalidEvent(params, "events/new", HttpStatus.OK);
+		
+		params.add("event", "1");
+		updateInvalidEvent(params, "events/eventform", HttpStatus.OK); 
+	}
 		
 	@Test
-	public void testNewEvent() throws Exception {
-		when(venue.getId()).thenReturn(1L);
-		ArgumentCaptor<Event> savedCaptor = ArgumentCaptor.forClass(Event.class);
-		mvc.perform(MockMvcRequestBuilders.post("/events/new").contentType(MediaType.APPLICATION_FORM_URLENCODED)
-			.param("name", "A Name")
-			.param("date", "2019-10-10")
-			.param("time", "10:00")
-			.param("venue.id", "1")
-			.param("description", "Desc")			
-			.accept(MediaType.TEXT_HTML))
-			.andExpect(view().name("redirect:/events"));
+	public void testAddAndUpdateInvalidDate() throws Exception {
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();	
+	
+		params.clear();
+		params.add("name", "A name");
+		params.add("venue.id", "1");
+		params.add("description", "description");
+		params.add("date", "2011-10-10");
+		params.add("time", "10:00");
 		
-		verify(eventService).save(savedCaptor.capture());				
-		assertTrue(savedCaptor.getValue().equals(EventTestHelper.newEvent("A Name", venue, "10/10/2019", "10:00", "Desc")));
+		addInvalidEvent(params, "events/new", HttpStatus.OK);
+		
+		params.add("event", "1");
+		updateInvalidEvent(params, "events/eventform", HttpStatus.OK); 	
+	}
+
+	@Test
+	public void testAddValidEvent() throws Exception {
+  		 ArgumentCaptor<Event> savedCaptor = ArgumentCaptor.forClass(Event.class); 
+		 when(venue.getId()).thenReturn(1L); 		 
+		 mvc.perform(MockMvcRequestBuilders.post("/events/new").contentType(MediaType.APPLICATION_FORM_URLENCODED) 
+		      .param("name", "A Name") 
+		      .param("date", "2019-10-10") 
+		      .param("time", "10:00") 
+		      .param("venue.id", "1") 
+		      .param("description", "Desc")       
+		      .accept(MediaType.TEXT_HTML)) 
+		      .andExpect(view().name("redirect:/events")); 
+		     
+		 verify(eventService).save(savedCaptor.capture());         
+		 assertTrue(savedCaptor.getValue().equals(EventTestHelper.newEvent("A Name", venue, "10/10/2019", "10:00", "Desc")));
+	}
+	
+	// Helper to test adding events
+	private void addInvalidEvent(MultiValueMap<String, String> params, String view, HttpStatus status) throws Exception {
+		when(venueService.findAll()).thenReturn(Collections.<Venue> emptyList());		
+		when(event.getVenue()).thenReturn(venue);
+		mvc.perform(MockMvcRequestBuilders.post("/events/new")
+			.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+			.params(params)
+			.accept(MediaType.TEXT_HTML))
+			.andExpect(status().is(status.value()))
+			.andExpect(view().name(view));				
+		verify(venueService, times(1)).findAllExceptOne(isA(Venue.class));
+	}
+
+	// Helper to test updating events
+	private void updateInvalidEvent(MultiValueMap<String, String> params, String view, HttpStatus status) throws Exception {
+		when(event.getVenue()).thenReturn(venue);
+		when(venueService.findAllExceptOne(venue)).thenReturn(Collections.<Venue> emptyList());
+		when(eventService.findById(1L)).thenReturn(event);
+		mvc.perform(MockMvcRequestBuilders.post("/events/1/update")
+			.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+			.params(params)
+			.accept(MediaType.TEXT_HTML))
+			.andExpect(status().is(status.value()))
+			.andExpect(view().name(view));		
 	}
 	
 	@Test
@@ -258,11 +325,11 @@ public class EventsControllerWebTest extends TestParent {
 		tweetList.add(0, tweet);
 		when(timelineOperations.getUserTimeline()).thenReturn(tweetList);
 		mvc.perform(MockMvcRequestBuilders.post("/events/tweet/1")
-				.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-				.param("tweet", tweet_s)
-				.accept(MediaType.TEXT_HTML_VALUE))
-				.andExpect(view().name("events/show"))
-				.andExpect(model().attribute("status", validator))
-				.andExpect(model().attribute("status-message", validator_msg));
+			.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+			.param("tweet", tweet_s)
+			.accept(MediaType.TEXT_HTML_VALUE))
+			.andExpect(view().name("events/show"))
+			.andExpect(model().attribute("status", validator))
+			.andExpect(model().attribute("status-message", validator_msg));
 	}
 }

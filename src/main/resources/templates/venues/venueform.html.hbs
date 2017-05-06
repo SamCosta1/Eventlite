@@ -1,35 +1,55 @@
  {{#partial "head"}}
- <link rel="stylesheet" href="../../css/updateform.css">
+ <link rel="stylesheet" href="../../css/main.css">
+<link rel="stylesheet" href="../../css/forms.css">
  {{/partial}}
  
  {{#partial "content"}}
  {{#venueForm}}
- 	<h1>Updating <b>{{name}}</b></h1>
- 	
- 	{{#if errors}}
- 		<p class="h2 text-danger"> There were errors in your updated event information!</p>
- 	{{/if}}
+<div class="header-container">
+  <div class="title-container">   
+    <div class="subtitle">Update {{name}}</div>
+  </div>  
+</div>  
+ 
+ <div class="main-content-container">
      <form action="/venues/{{id}}/update" method="post">
  		<div class="form-group {{#if errors.template}}has-error{{/if}}">
      	
-     	<input type="hidden" name="venue" id="venue" value="{{id}}" />
-     	
-     	<p class="title">Name</p><p class="value"> <input type="text" name="name" id="name" value="{{name}}" />
-     	
-     	<p class="title">Address</p><p class="value"> <textarea name="address" id="address">{{address}}</textarea></p>
-     	<p class="title">Postcode</p><p class="value"> <input type="text" name="postcode" id="postcode" value="{{postcode}}" />
-        	<p class="title">Capacity</p><p class="value"><input type="number" name="capacity" id="capacity" value="{{capacity}}" />
- 
-         {{/venueForm}}
- 		{{#if errors.template}}
-       	<p class="text-danger">{{errors.template}}</p>
-       	{{/if}}
-         </div>
-         	<button type="submit">Submit</button>
-            	<button type="reset">Reset</button>
-            	<a href="/venues" role="button"><button>Cancel</button></a>
-         </p>
-     </form>
+	     	<input class="form-control" type="hidden" name="venue" id="venue" value="{{id}}" />
+	     	
+	     	<label class="title">Name</label>
+	     	<input class="form-control" type="text" name="name" id="name" value="{{name}}" />
+	     	 {{#if errors.name}} <p class="text-danger"> {{errors.name}} </p> {{/if}}
+	     	
+	       	<label class="title">Capacity</label>
+	       	<input class="form-control" type="number" name="capacity" id="capacity" value="{{capacity}}" />
+	       	{{#if errors.capacity}} <p class="text-danger"> {{errors.capacity}} </p>{{/if}}
+	       	
+	     	<label for="name">Address</label>
+	    	<input class="form-control" type="text" name="addressLine1" id="addressLine1" placeholder="Address Line 1" value="{{addressLine1}}"/>
+	        <input class="form-control" type="text" name="addressLine2" id="addressLine2" placeholder="Address Line 2" value="{{addressLine2}}"/>
+	       
+	        <input class="form-control" type="text" name="streetName" id="streetName" placeholder="Street Name" value="{{streetName}}"/>
+	        {{#if errors.streetName}} <p class="text-danger">{{errors.streetName}}</p>  {{/if}}
+	      
+	        <input class="form-control" type="text" name="city" id="city" placeholder="City" value="{{city}}"/>
+	        
+	        <label for="name">Postcode</label>
+	        <input class="form-control" type="text" name="postcode" id="postcode" placeholder="Postcode" value="{{postcode}}"/>
+	          {{#if errors.postcode}} <p class="text-danger"> {{errors.postcode}} </p> {{/if}}
+	 
+	         {{/venueForm}}
+	 		{{#if errors.template}}
+	       	<p class="text-danger">{{errors.template}}</p>
+	       	{{/if}}
+	         </div>
+	         
+	         	<button class="btn btn-primary" type="submit">Submit</button>
+	            	<button class="btn btn-primary" type="reset">Reset</button>
+	            	<a href="/venues" role="button"><button class="btn btn-primary">Cancel</button></a>
+	         
+	  </form>
+ </div>
  
  {{/partial}}
  {{> layouts/base title="EventLite - Update a venue"}}

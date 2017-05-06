@@ -25,7 +25,7 @@ import uk.ac.man.cs.eventlite.entities.Event;
 
 @AutoConfigureMockMvc
 public class EventsControllerRestTest extends TestParent {
-
+	
 	@Autowired
 	private MockMvc mvc;
 	
@@ -78,5 +78,18 @@ public class EventsControllerRestTest extends TestParent {
 		.andExpect(status().isOk())
 		.andExpect(content().string(containsString("")));		
 	}
-
+	
+	@Test
+	public void testGetUserEventsJson() throws Exception {
+		mvc.perform(get("/events/userevents").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+		.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+		.andExpect(jsonPath("$.title", equalTo("EventLite User Events")))
+		.andExpect(jsonPath("$._self", equalTo("http://localhost/events/userevents")))
+		.andExpect(jsonPath("$.events", notNullValue()));
+	}
+	
+	@Test
+	public void testGetFirstEvent() throws Exception {
+		mvc.perform(get("/events/1").accept(MediaType.APPLICATION_JSON)).andExpect(status().isFound());
+	}
 }

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,23 +28,19 @@ public class VenueServiceTest extends TestParent{
 	@Autowired
 	private EventService eventService;
 	
-	@Before
-	public void setup() {
-		String address = "Kilburn Building, University of Manchester, Oxford Rd, Manchester";
-		String postcode = "M13 9PL";
-		venueService.save(new Venue("A Venue", 10, address, postcode));	
-		venueService.save(new Venue("Another", 10, address, postcode));
-		venueService.save(new Venue("Zebras", 10, address, postcode));	
-	}
-	
+	private int capacity = 100;
+	private String addressLine1 = "Kilburn Building";
+	private String addressLine2 = "University of Manchester";
+	private String streetName = "Oxford Rd";
+	private String city = "Manchester";
+	private String postcode = "M13 9PL";
+
 	@Test
-	public void findAllTest() {
-		String address = "Kilburn Building, University of Manchester, Oxford Rd, Manchester";
-		String postcode = "M13 9PL";
-		venueService.save(new Venue("z", 10, address, postcode));	
-		venueService.save(new Venue("x", 10, address, postcode));
-		venueService.save(new Venue("a", 10, address, postcode));	
-		venueService.save(new Venue("b", 10, address, postcode));	
+	public void findAllTest() {		
+		venueService.save(new Venue("z", capacity, addressLine1, addressLine2, streetName, city, postcode));	
+		venueService.save(new Venue("x", capacity, addressLine1, addressLine2, streetName, city, postcode));
+		venueService.save(new Venue("a", capacity, addressLine1, addressLine2, streetName, city, postcode));	
+		venueService.save(new Venue("b", capacity, addressLine1, addressLine2, streetName, city, postcode));
 		
 		List<Venue> venues = (List<Venue>) venueService.findAll();
 		long count = venueService.count();
@@ -54,7 +51,7 @@ public class VenueServiceTest extends TestParent{
 	
 	@Test
 	public void findAllExceptOne() {
-		Venue ignoredEvent = new Venue("name1", 100, "Kilburn Building, University of Manchester, Oxford Rd, Manchester", "M13 9PL");
+		Venue ignoredEvent = new Venue("name1", capacity, addressLine1, addressLine2, streetName, city, postcode);
 		venueService.save(ignoredEvent);
 				
 		List<Venue> venues = (List<Venue>) venueService.findAllExceptOne(ignoredEvent);
@@ -68,9 +65,7 @@ public class VenueServiceTest extends TestParent{
 	
 	@Test
 	public void testCount() {
-		String address = "Kilburn Building, University of Manchester, Oxford Rd, Manchester";
-		String postcode = "M13 9PL";
-		Venue newVenue = new Venue("name1", 100, address, postcode);
+		Venue newVenue = new Venue("name1", capacity, addressLine1, addressLine2, streetName, city, postcode);
 		
 		long initialCount = venueService.count();
 		venueService.save(newVenue);
@@ -81,12 +76,10 @@ public class VenueServiceTest extends TestParent{
 	
 	@Test
 	public void testSearchByName() {
-		String address = "Kilburn Building, University of Manchester, Oxford Rd, Manchester";
-		String postcode = "M13 9PL";
-		venueService.save(new Venue("d Test Venue 1", 10, address, postcode));	
-		venueService.save(new Venue("b test venue 2", 10, address, postcode));
-		venueService.save(new Venue("a test Venue", 10, address, postcode));	
-		venueService.save(new Venue("f Another random string", 10, address, postcode));	
+		venueService.save(new Venue("d Test Venue 1", capacity, addressLine1, addressLine2, streetName, city, postcode));
+		venueService.save(new Venue("b test venue 2", capacity, addressLine1, addressLine2, streetName, city, postcode));
+		venueService.save(new Venue("a test Venue", capacity, addressLine1, addressLine2, streetName, city, postcode));	
+		venueService.save(new Venue("f Another random string", capacity, addressLine1, addressLine2, streetName, city, postcode));
 		
 		String searchTerm = "test Venue";		
 		List<Venue> venues = (List<Venue>) venueService.searchByName(searchTerm);	
@@ -102,11 +95,10 @@ public class VenueServiceTest extends TestParent{
 	@Test
 	public void testSave() {
 
-		String address = "Kilburn Building, University of Manchester, Oxford Rd, Manchester";
 		String postcode = "M13 9PL";
 		long previousCount = venueService.count();
 		
-		Venue newVenue = new Venue("name1", 100, address, postcode);
+		Venue newVenue = new Venue("name1", capacity, addressLine1, addressLine2, streetName, city, postcode);
 		venueService.save(newVenue);
 		
 		long newCount = venueService.count();
@@ -125,7 +117,7 @@ public class VenueServiceTest extends TestParent{
 	
 	@Test
 	public void testFindById() {
-		Venue venue = new Venue("test Venue", 1000, "Kilburn Building, University of Manchester, Oxford Rd, Manchester", "M13 9PL");
+		Venue venue = new Venue("test Venue", capacity, addressLine1, addressLine2, streetName, city, postcode);
 		venueService.save(venue);
 		
 		Venue foundVenue = venueService.findById(venue.getId());	
@@ -164,7 +156,7 @@ public class VenueServiceTest extends TestParent{
 		Collections.sort(listInOrder);
 		
 		Iterator<Venue> iterator = venues.iterator();
-		for (Venue v: listInOrder)
+		for (Venue v : listInOrder)
 			assertTrue(v.equals(iterator.next()));
 	}
 	
