@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -25,6 +26,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+
 import static org.mockito.Matchers.isA;
 import uk.ac.man.cs.eventlite.TestParent;
 import uk.ac.man.cs.eventlite.controllers.VenuesControllerWeb;
@@ -37,31 +39,31 @@ import uk.ac.man.cs.eventlite.entities.Venue;
 public class VenuesControllerWebTest extends TestParent {
 
 	private MockMvc mvc;
-	
+
 	@InjectMocks
 	private VenuesControllerWeb venuesController;
-	
+
 	@Mock
 	private VenueService venueService;
-	
+
 	@Mock
 	private EventService eventService;
-	
+
 	@Mock
 	private Venue venue;
-	
+
 	@Mock
 	private Event event;
 
 	private List<Event> events;
-	
+
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
 		mvc = MockMvcBuilders.standaloneSetup(venuesController).build();
 		events = Arrays.asList(event, event, event);
 	}
-	
+
 	@Test
 	public void testGetAllVenues() throws Exception {
 		when(venueService.findAll()).thenReturn(Collections.<Venue> emptyList());
@@ -69,7 +71,7 @@ public class VenuesControllerWebTest extends TestParent {
 		verify(venueService, times(1)).findAll();
 	}
 
-	
+
 	@Test
 	public void testFilterVenues() throws Exception {
 		when(venueService.searchByName("")).thenReturn(Collections.<Venue> emptyList());
@@ -80,16 +82,16 @@ public class VenuesControllerWebTest extends TestParent {
 					.andExpect(view().name("venues/index"));
 		verify(venueService, times(1)).searchByName("testString");
 	}
-	
+
 	@Test
-	public void testVenueDetails() throws Exception {		
+	public void testVenueDetails() throws Exception {
 		when(venueService.findById(1)).thenReturn(venue);
 		when(eventService.findAllByVenue(venue)).thenReturn(Collections.<Event> emptyList());
 			mockGet("/venues/1", MediaType.TEXT_HTML, "venues/show", HttpStatus.OK);
 		verify(venueService, times(1)).findById(1);
 		verify(eventService, times(1)).findAllByVenue(venue);
 	}
-	
+
 	@Test
 	public void testDeleteVenueWithNoEvents() throws Exception {
 		when(venueService.findById(1)).thenReturn(venue);
@@ -100,7 +102,7 @@ public class VenuesControllerWebTest extends TestParent {
 		verify(venueService, times(1)).findById(1);
 		verify(eventService, times(1)).findAllByVenue(venue);
 	}
-	
+
 	@Test
 	public void testDeleteVenueWithEvents() throws Exception {
 		when(venueService.findById(1)).thenReturn(venue);
@@ -111,103 +113,168 @@ public class VenuesControllerWebTest extends TestParent {
 		verify(venueService, times(1)).findById(1);
 		verify(eventService, times(1)).findAllByVenue(venue);
 	}
-	
+
 	@Test
-	public void showUpdateVenueForm() throws Exception {		
+	public void showUpdateVenueForm() throws Exception {
  		when(venueService.findById(3)).thenReturn(venue);
 		mvc.perform(get("/venues/3/update").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
 			.andExpect(view().name("venues/venueform"));
  		verify(venueService, times(1)).findById(3);
 	}
-	
+
 	@Test
-	public void testUpdateAndAddInvalidVenue() throws Exception { 
-		// Missing street name
+	public void testAddAndUpdateValidVenue() throws Exception {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+
 		params.add("venue", "1");
-		params.add("name", "A name");
-		params.add("postcode",  "M13 9PL");
-		params.add("capacity", "50");
-		
-		updateVenue(params, "venues/venueform", HttpStatus.OK); 
-		addVenue(params, "venues/new", HttpStatus.OK); 
-		
-		// Missing postcode
-		params.clear();
-		params.add("venue", "1");
-		params.add("name", "A name");
-		params.add("streetName", "street name");
-		params.add("capacity", "50");
-		
-		updateVenue(params, "venues/venueform", HttpStatus.OK); 
-		addVenue(params, "venues/new", HttpStatus.OK); 
-		
-		// Invalid capacity
-		params.clear();
-		params.add("venue", "1");
-		params.add("name", "A name");
-		params.add("streetName", "street name");
-		params.add("capacity", "0");
-		params.add("postcode",  "M13 9PL");
-		
-		updateVenue(params, "venues/venueform", HttpStatus.OK); 
-		addVenue(params, "venues/new", HttpStatus.OK); 
-		
-		// Missing name
-		params.clear();
-		params.add("venue", "1");
-		params.add("name", "");
-		params.add("streetName", "street name");
-		params.add("capacity", "50");
-		params.add("postcode",  "M13 9PL");
-		
-		updateVenue(params, "venues/venueform", HttpStatus.OK); 
-		addVenue(params, "venues/new", HttpStatus.OK); 
-	}
-	
-	@Test
-	public void testUpdateAndAddValidVenue() throws Exception {
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-		params.add("venue", "1");
-		params.add("name", "A name");
+		params.add("name", "Lecture Theatre");
 		params.add("streetName", "street name");
 		params.add("postcode",  "M13 9PL");
 		params.add("capacity", "50");
-		
-		updateVenue(params, "redirect:/venues", HttpStatus.FOUND); 
-		verify(venueService).update(isA(Venue.class), isA(Venue.class));
-		
+		params.add("redirected", "");
+
 		addVenue(params, "redirect:/venues", HttpStatus.FOUND);
-		verify(venueService).save(isA(Venue.class));	
+		verify(venueService).save(isA(Venue.class));
 		
+		updateVenue(params, "redirect:/venues", HttpStatus.FOUND);
+		verify(venueService).update(isA(Venue.class), isA(Venue.class));
 	}
-	
-	// Helper to test adding venues
+
+	@Test
+	public void testAddAndUpdateInvalidVenue() throws Exception {
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+
+		// Missing Name.
+		params.add("venue", "1");
+		params.add("capacity", "100");
+		params.add("streetName", "Oxford Road");
+		params.add("postcode",  "M13 9PL");
+		params.add("redirected", "");
+
+		addVenue(params, "venues/new", HttpStatus.OK);
+		updateVenue(params, "venues/venueform", HttpStatus.OK);
+
+		// Invalid Capacity.
+		params.clear();
+		params.add("venue", "1");
+		params.add("name", "Lecture Theatre");
+		params.add("capacity", "0");
+		params.add("streetName", "Oxford Road");
+		params.add("postcode",  "M13 9PL");
+		params.add("redirected", "");
+
+		addVenue(params, "venues/new", HttpStatus.OK);
+		updateVenue(params, "venues/venueform", HttpStatus.OK);
+
+		// Missing Street Name.
+		params.clear();
+		params.add("venue", "1");
+		params.add("name", "Lecture Theatre");
+		params.add("capacity", "100");
+		params.add("postcode",  "M13 9PL");
+		params.add("redirected", "");
+
+		addVenue(params, "venues/new", HttpStatus.OK);
+		updateVenue(params, "venues/venueform", HttpStatus.OK);
+
+		// Missing Postcode.
+		params.clear();
+		params.add("venue", "1");
+		params.add("name", "Lecture Theatre");
+		params.add("capacity", "100");
+		params.add("streetName", "Oxford Road");
+		params.add("redirected", "");
+
+		addVenue(params, "venues/new", HttpStatus.OK);
+		updateVenue(params, "venues/venueform", HttpStatus.OK);
+	}
+
+	@Test
+	public void testAddValidVenueAfterRedirectFromAddEvent() throws Exception {
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+
+		params.add("venue", "1");
+		params.add("name", "Lecture Theatre");
+		params.add("capacity", "100");
+		params.add("streetName", "Oxford Road");
+		params.add("postcode",  "M13 9PL");
+		params.add("redirected", "There are no venues on record! Please add a venue first and continue.");
+
+		addVenue(params, "redirect:/events/new", HttpStatus.FOUND);
+		verify(venueService).save(isA(Venue.class));
+	}
+
+	@Test
+	public void testAddInvalidVenueAfterRedirectFromAddEvent() throws Exception {
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+
+		// Missing Name.
+		params.add("venue", "1");
+		params.add("capacity", "100");
+		params.add("streetName", "Oxford Road");
+		params.add("postcode",  "M13 9PL");
+		params.add("redirected", "There are no venues on record! Please add a venue first and continue.");
+
+		addVenue(params, "venues/new", HttpStatus.OK);
+
+		// Invalid Capacity.
+		params.clear();
+		params.add("venue", "1");
+		params.add("name", "Lecture Theatre");
+		params.add("capacity", "0");
+		params.add("streetName", "Oxford Road");
+		params.add("postcode",  "M13 9PL");
+		params.add("redirected", "There are no venues on record! Please add a venue first and continue.");
+
+		addVenue(params, "venues/new", HttpStatus.OK);
+
+		// Missing Street Name.
+		params.clear();
+		params.add("venue", "1");
+		params.add("name", "Lecture Theatre");
+		params.add("capacity", "100");
+		params.add("postcode",  "M13 9PL");
+		params.add("redirected", "There are no venues on record! Please add a venue first and continue.");
+
+		addVenue(params, "venues/new", HttpStatus.OK);
+
+		// Missing Postcode.
+		params.clear();
+		params.add("venue", "1");
+		params.add("name", "Lecture Theatre");
+		params.add("capacity", "100");
+		params.add("streetName", "Oxford Road");
+		params.add("redirected", "There are no venues on record! Please add a venue first and continue.");
+
+		addVenue(params, "venues/new", HttpStatus.OK);
+	}
+
+	// Helper to test adding venues.
 	private void addVenue(MultiValueMap<String, String> params, String view, HttpStatus status) throws Exception {
 		mvc.perform(MockMvcRequestBuilders.post("/venues/new")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 				.params(params)
 				.accept(MediaType.TEXT_HTML))
 		.andExpect(status().is(status.value()))
-		.andExpect(view().name(view));				
+		.andExpect(view().name(view));
 	}
 
-	// Helper to test updating venues
+	// Helper to test updating venues.
 	private void updateVenue(MultiValueMap<String, String> params, String view, HttpStatus status) throws Exception {
 		when(venueService.findById(1L)).thenReturn(venue);
-		
+
 		mvc.perform(MockMvcRequestBuilders.post("/venues/1/update")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 				.params(params)
 				.accept(MediaType.TEXT_HTML))
 		.andExpect(status().is(status.value()))
-		.andExpect(view().name(view));		
+		.andExpect(view().name(view));
 	}
-	
-		
-	// Helpers ----	
+
+	// Helpers ----
 	private void mockGet(String url, MediaType mediaType, String viewName, HttpStatus status) throws Exception {
 		mvc.perform(get(url).accept(mediaType)).andExpect(status().is(status.value()))
 			.andExpect(view().name(viewName));
 	}
+
 }

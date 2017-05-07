@@ -3,7 +3,6 @@ package uk.ac.man.cs.eventlite.controllers;
 import static uk.ac.man.cs.eventlite.helpers.ErrorHelpers.*;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -95,97 +94,96 @@ public class EventsControllerWeb {
 		model.addAttribute("events", searchCriterion.search(eventService));
 		return "events/userevents";
     }
-	
-	
+
 	@RequestMapping(value = "/{id}/update",
 				    method = RequestMethod.POST, 
 					consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 					produces = { MediaType.TEXT_HTML_VALUE })
-	public String updateEvent(@RequestBody @Valid @ModelAttribute Event event, 
-								BindingResult errors, @ModelAttribute("successMessage") String successMessage,
-								@RequestParam(value="event") long eventID, Model model, final RedirectAttributes redirectAttributes) {
-		
+	public String updateEvent(@RequestBody @Valid @ModelAttribute Event event, BindingResult errors, 
+							  @ModelAttribute("successMessage") String successMessage, @RequestParam(value = "event") long eventID, 
+							  Model model, final RedirectAttributes redirectAttributes) {
 		if (errors.hasErrors()) {
 			model.addAttribute("errors", formErrorHelper(errors));
 			model.addAttribute("event", event);
-			
+
 			if (event.getTime() != null)
 				model.addAttribute("eventTime", new SimpleDateFormat("HH:mm").format(event.getTime()));
-			
+
 			if (event.getDate() != null)
 				model.addAttribute("eventDate", new SimpleDateFormat("yyyy-MM-dd").format(event.getDate()));
 			model.addAttribute("venues", venueService.findAllExceptOne(event.getVenue()));
-			
+
 			return "events/eventform";
 		}
-		
+
 		eventService.update(eventService.findById(eventID), event);
 		successMessage = event.getName() + " has been updated successfully!";
 		redirectAttributes.addFlashAttribute("successMessage", successMessage);
-		
+
 		return "redirect:/events";
 	}
-	
-	@RequestMapping(value = "/{id}/update", method = RequestMethod.GET, 
-											 produces = { MediaType.TEXT_HTML_VALUE })
+
+	@RequestMapping(value = "/{id}/update", method = RequestMethod.GET,
+					produces = { MediaType.TEXT_HTML_VALUE })
 	public String showUpdateEventForm(@PathVariable("id") long id, Model model) {
-		
 	   	Event event = eventService.findById(id);
 		model.addAttribute("event", event);
 		model.addAttribute("eventDate", new SimpleDateFormat("yyyy-MM-dd").format(event.getDate()));
 		model.addAttribute("eventTime", new SimpleDateFormat("HH:mm").format(event.getTime()));
 		model.addAttribute("venues", venueService.findAllExceptOne(event.getVenue()));
-		
+
 		return "events/eventform";
 
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET, 
-					produces = { MediaType.TEXT_HTML_VALUE,
-								 MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE,
+					MediaType.APPLICATION_JSON_VALUE })
 	public String showEvent(@PathVariable("id") long id, Model model) {
-		
-		if (connectionRepository.findPrimaryConnection(Twitter.class) == null) 
+		if (connectionRepository.findPrimaryConnection(Twitter.class) == null)
             return "redirect:/connect/twitter";
-        
+
 		Event e = eventService.findById(id);
 		model.addAttribute("event", e);
 		model.addAttribute("has-map", e.getVenue().hasCoordinates());
 		return "events/show";
 	}
-	
-	@RequestMapping(value = "tweet/{id}", method = RequestMethod.POST, 
-										  produces = { MediaType.TEXT_HTML_VALUE })
+
+	@RequestMapping(value = "tweet/{id}", method = RequestMethod.POST,
+					produces = { MediaType.TEXT_HTML_VALUE })
 	public String createTweetFromForm(@PathVariable("id") long id, @RequestParam("tweet") String tweet, Model model) {
-		
 		String errors = tweet(tweet);
-		if (errors != null) {			
+		if (errors != null) {
 			model.addAttribute("status", "error");
 			model.addAttribute("status-message", errors);
 		}
 		else {
 			model.addAttribute("status", "success");
 			model.addAttribute("status-message", "Success! You just tweeted:" +
-												 twitter.timelineOperations().getUserTimeline().get(0).getText());			
+							   twitter.timelineOperations().getUserTimeline().get(0).getText());
 		}
 
 		model.addAttribute("event", eventService.findById(id));
 		return "events/show";
 	}
-	
-	
+
 	@RequestMapping (value = "/new", method = RequestMethod.GET)
-	public String showNew(Model model) {
-		model.addAttribute("venues", venueService.findAll());
-		return "events/new";
+	public String showNew(Model model, RedirectAttributes redirectAttributes) {
+		if (venueService.count() > 0) {
+			model.addAttribute("venues", venueService.findAll());
+			return "events/new";
+		}
+		else {
+			String redirectMessage = "There are no venues on record! Please add a venue first and continue.";
+			redirectAttributes.addFlashAttribute("redirected", redirectMessage);
+			return "redirect:/venues/new";
+		}
 	}
-	
+
 	@RequestMapping (value = "/userevents", method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE })
-	public String showUserEvents(Model model) 	{				
+	public String showUserEvents(Model model) {
 		model.addAttribute("events", eventService.findAllByUser(getCurrentUser(model)));
 		return "events/userevents";
-	}	
-
+	}
 
 	@RequestMapping(value = "/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 					produces = { MediaType.TEXT_HTML_VALUE })
@@ -193,12 +191,13 @@ public class EventsControllerWeb {
 		if (result.hasErrors()) {
 			model.addAttribute("errors", formErrorHelper(result));
 			model.addAttribute("event", event);
-			
-			if (event.getTime() != null)
-				model.addAttribute("eventTime", new SimpleDateFormat("HH:mm").format(event.getTime()));
-			
+
 			if (event.getDate() != null)
 				model.addAttribute("eventDate", new SimpleDateFormat("yyyy-MM-dd").format(event.getDate()));
+
+			if (event.getTime() != null)
+				model.addAttribute("eventTime", new SimpleDateFormat("HH:mm").format(event.getTime()));
+
 			model.addAttribute("venues", venueService.findAllExceptOne(event.getVenue()));
 			return "events/new";
         }
@@ -207,40 +206,39 @@ public class EventsControllerWeb {
 	    eventService.save(event);
 	    return "redirect:/events";
 	}
-	
+
 	// Helper to tweet - returns null if there were no errors.
 	private String tweet(String message) {
 		String noWhitespace = message.replaceAll("\\s+", "");
-		
+
 		if (noWhitespace.equals("")) {  // Discard whitespace-only tweets.
 			return "Your tweet is empty!";
 		}
-		
+
 		try   { twitter.timelineOperations().updateStatus(message); }
 		catch (MessageTooLongException e) { return "Your tweet is too long!";	   }
 		catch (ApiException e)			  { return "Could not connect to twitter"; }
 		catch (Exception e)				  { return "Error: " + e.getMessage();	   }
-		
-		return null;	
+
+		return null;
 	}
-	
+
 	// Helper that returns the current user.
 	private static User getCurrentUser(Model model) {
 		CurrentUser mapVal = ((CurrentUser)model.asMap().get("currentUser"));
 		return mapVal == null ? null : mapVal.getUser();
 	}
-	
-	
-	// Helper to add tweets and user info to model
+
+
+	// Helper to add tweets and user info to model.
 	private void addTweets(Model model) {
 		List<Tweet> tweets = twitter.timelineOperations().getUserTimeline();
-		
-		if (tweets.size() > 5) 
-			tweets = tweets.subList(0,5);
-		
-		
-		model.addAttribute("tweets",tweets);
+
+		if (tweets.size() > 5)
+			tweets = tweets.subList(0, 5);
+
+		model.addAttribute("tweets", tweets);
 		model.addAttribute("user", twitter.userOperations().getUserProfile());
 	}
-	
+
 }

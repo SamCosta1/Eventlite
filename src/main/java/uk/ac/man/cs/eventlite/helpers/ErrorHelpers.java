@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 public class ErrorHelpers {
+
 	public static Map<String, String> formErrorHelper(BindingResult errors) {
 		Map<String, String> fieldErrors = new HashMap<String, String>();
 
@@ -16,4 +17,5 @@ public class ErrorHelpers {
 
 		return fieldErrors;
 	}
+
 }

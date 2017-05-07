@@ -1,4 +1,5 @@
 package uk.ac.man.cs.eventlite.controllers.events;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.core.StringContains.containsString;
@@ -7,8 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -50,7 +49,7 @@ public class EventsControllerRestTest extends TestParent {
 	
 	@Test
 	public void testGetOneEvent() throws Exception {
-		venue = new Venue("Test Event Name", 10, null, null);
+		venue = new Venue("Test Event Name", 10, null, null, null, null, null);
 		venueService.save(venue);
 		
 		event = EventTestHelper.newEvent("EventLite Event 1", venue, "25/3/2018", "12:00", "some description");

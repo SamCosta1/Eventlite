@@ -14,7 +14,7 @@ import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 
 @Entity
-@Table(name="venues")
+@Table(name = "venues")
 public class Venue implements Comparable<Venue> {
 	
 	private static GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyAYnjIj_qYlWudV2gAnr8PuS_Ix-XZPCQY");
@@ -24,9 +24,12 @@ public class Venue implements Comparable<Venue> {
 	private long id;
 	
 	@NotBlank
-	@Size(max = 256, message="Name too long, must be less than 256 characters") 
+	@Size(max = 256, message = "Name too long, must be less than 256 characters") 
 	private String name;
-	
+
+	@Min(1)
+	private int capacity;
+
 	private String addressLine1;
 	private String addressLine2;	
 	
@@ -38,15 +41,13 @@ public class Venue implements Comparable<Venue> {
 	
 	@NotBlank
 	private String postcode;
-
-	@Min(value=1)
-	private int capacity;
 	
 	private double longitude;
 	
 	private double latitude;
 
-	public Venue(String name, int capacity, String addressLine1, String addressLine2, String streetName, String city, String postcode) {
+	public Venue(String name, int capacity, String addressLine1, String addressLine2, 
+			     String streetName, String city, String postcode) {
 		this.name = name;
 		this.capacity = capacity;
 		this.postcode = postcode;
@@ -56,9 +57,10 @@ public class Venue implements Comparable<Venue> {
 		this.city = city;				
 		this.setCoords();
 	}
-	
-	
-	public Venue() {}
+
+	public Venue() {
+
+	}
 
 	public long getId() {
 		return id;
@@ -83,16 +85,16 @@ public class Venue implements Comparable<Venue> {
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
 	}
-		
+
 	public String getPostcode() {
 		return postcode;
 	}
-	
+
 	public void setPostcode(String postcode) {
 		this.postcode = postcode;
 		this.setCoords();
 	}
-	
+
 	public double getLongitude() {
 		return longitude;
 	}
@@ -145,7 +147,7 @@ public class Venue implements Comparable<Venue> {
 		return this.getName().compareTo(other.getName());
 	}
 
-	/* Returns true if google maps could find the venue 
+	/* Returns true if google maps could find the venue.
 	 * (technically (0,0) is valid, but venues are unlikely to be in the middle of the atlantic) 
 	 */
 	public boolean hasCoordinates() {
@@ -186,4 +188,5 @@ public class Venue implements Comparable<Venue> {
 		this.city = city;
 		this.setCoords();
 	}
+
 }

@@ -19,10 +19,8 @@
 </div>
 
 <div class="main-content-container events-container">
-	
-	
 	{{#if errors}}
-		<p class="h2 text-danger"> There were errors in your updated event information!</p>
+		<p class="h3 text-danger">There were errors in your updated event information!</p>
 	{{/if}}
     <form action="/events/{{id}}/update" method="post">
 		<div class="form-group {{#if errors.template}}has-error{{/if}}">

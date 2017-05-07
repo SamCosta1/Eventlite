@@ -26,10 +26,10 @@ import uk.ac.man.cs.eventlite.entities.Venue;
 @Controller
 @RequestMapping("/venues")
 public class VenuesControllerWeb {
-	
+
 	@Autowired
 	private VenueService venueService;
-	
+
 	@Autowired
 	private EventService eventService;
 
@@ -37,13 +37,13 @@ public class VenuesControllerWeb {
 	public String getAllVenues(Model model) {
 		model.addAttribute("venues", venueService.findAll());
 		return "venues/index";
-	}	
-	
-	@RequestMapping(value = "/{id}/delete",consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,  method = RequestMethod.POST)
+	}
+
+	@RequestMapping(value = "/{id}/delete", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, method = RequestMethod.POST)
  	public String deleteVenue(@PathVariable("id") long id, final RedirectAttributes redirectAttributes) {
 		Venue venue = venueService.findById(id);
 		Iterable<Event> events = eventService.findAllByVenue(venue);
-		
+
 		if (events.iterator().hasNext()) {
 			redirectAttributes.addFlashAttribute("status-message", "You cannot delete this venue since some event is linked to it.");
 			return "redirect:/venues/{id}";
@@ -55,14 +55,13 @@ public class VenuesControllerWeb {
 		}
  	}
 
-	@RequestMapping(method = RequestMethod.POST, 
-					consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,  
+	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 					produces = { MediaType.TEXT_HTML_VALUE })
 	public String filter(@ModelAttribute("search") SearchVenues searchCriterion, BindingResult result, Model model) {
-		model.addAttribute("venues", searchCriterion.search(venueService)); 
+		model.addAttribute("venues", searchCriterion.search(venueService));
 		return "venues/index";
 	}
- 
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE,
 					MediaType.APPLICATION_JSON_VALUE })
 	public String venue(@PathVariable("id") long id, Model model) {
@@ -70,66 +69,65 @@ public class VenuesControllerWeb {
 		Venue venue = venueService.findById(id);
 		model.addAttribute("venue", venue);
 		model.addAttribute("events", eventService.findAllByVenue(venue));
-
 		return "venues/show";
 	}
-	
+
 	@RequestMapping (value = "/map", method = RequestMethod.GET)
 	public String showNew(Model model) {
 		model.addAttribute("venues", venueService.findAll());
 	    return "events/new";
 	}
-	
-	@RequestMapping(value="/{id}/update",
-	    		method = RequestMethod.POST, 
-	    		consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
-	    		produces = { MediaType.TEXT_HTML_VALUE })
+
+	@RequestMapping(value="/{id}/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+	    		    produces = { MediaType.TEXT_HTML_VALUE })
 	public String updateVenue(@RequestBody @Valid @ModelAttribute("venueForm") Venue venue, BindingResult errors,
-							@RequestParam(value="venue") long venueID, Model model) {
-	
+							  @RequestParam(value = "venue") long venueID, Model model) {
 		if (errors.hasErrors()) {
 			model.addAttribute("errors", formErrorHelper(errors));
 			model.addAttribute("id", venueID);
 			model.addAttribute("venueForm", venueService.findById(venueID));
-			
 			return "venues/venueform";
 		}
-		
+
 		venueService.update(venueService.findById(venueID), venue);
-		
 		return "redirect:/venues";
 	}
-	
-	
+
 	@RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
 	public String showUpdateVenueForm(@PathVariable("id") long id, Model model) {
-		
 		Venue venue = venueService.findById(id);
 		model.addAttribute("venueForm", venue);
-
 	    return "venues/venueform";
-
 	}
-	
+
 	@RequestMapping (value = "/new", method = RequestMethod.GET)
 	public String showAddVenuesForm(Model model) {
+		model.addAttribute("capacity", 1);
 		return "venues/new";
 	}
-	
+
 	@RequestMapping(value = "/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 					produces = { MediaType.TEXT_HTML_VALUE })
-	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Venue venue, BindingResult result, Model model, 
-			                          @ModelAttribute("successMessage") String successMessage, final RedirectAttributes redirectAttributes) {
+	public String createVenueFromForm(@RequestBody @Valid @ModelAttribute Venue venue, BindingResult result, Model model,
+			                          @ModelAttribute("successMessage") String successMessage, final RedirectAttributes redirectAttributes,
+			                          @RequestParam("redirected") String redirected) {
+		model.addAttribute("redirected", redirected);
 		if (result.hasErrors()) {
+			model.addAttribute("capacity", venue.getCapacity());
+			model.addAttribute("venue", venue);
 			model.addAttribute("errors", formErrorHelper(result));
 			return "venues/new";
 		}
-			
+
 		venue.setCoords();
 		venueService.save(venue);
 		successMessage = venue.getName() + "has been created successfully!";
 		redirectAttributes.addFlashAttribute("successMessage", successMessage);
-		return "redirect:/venues";
+
+		if (redirected == "")
+			return "redirect:/venues";
+		else
+			return "redirect:/events/new";
 	}
-	
+
 }
