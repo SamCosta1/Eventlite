@@ -65,20 +65,7 @@ public class EventsControllerRestTest extends TestParent {
 		.andExpect(jsonPath("$.name", equalTo(event.getName())))
 		.andExpect(jsonPath("$.venue", notNullValue()));
 	}
-	
-	@Test
-	public void deleteEvent() throws Exception{
-		mvc.perform(MockMvcRequestBuilders.delete("/events/1")).andExpect(status().isNoContent());
-	}
-	
-	@Test
-	public void filterEvents() throws Exception{
-		mvc.perform(MockMvcRequestBuilders.post("/events/").contentType(MediaType.APPLICATION_JSON)
-				.content("{\"name\": \"\"}").accept(MediaType.APPLICATION_JSON))
-		.andExpect(status().isOk())
-		.andExpect(content().string(containsString("")));		
-	}
-	
+		
 	@Test
 	public void testGetUserEventsJson() throws Exception {
 		mvc.perform(get("/events/userevents").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
@@ -86,10 +73,5 @@ public class EventsControllerRestTest extends TestParent {
 		.andExpect(jsonPath("$.title", equalTo("EventLite User Events")))
 		.andExpect(jsonPath("$._self", equalTo("http://localhost/events/userevents")))
 		.andExpect(jsonPath("$.events", notNullValue()));
-	}
-	
-	@Test
-	public void testGetFirstEvent() throws Exception {
-		mvc.perform(get("/events/1").accept(MediaType.APPLICATION_JSON)).andExpect(status().isFound());
 	}
 }
