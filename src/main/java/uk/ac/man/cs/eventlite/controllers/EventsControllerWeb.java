@@ -141,7 +141,6 @@ public class EventsControllerWeb {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, 
-					consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 					produces = { MediaType.TEXT_HTML_VALUE })
 	public String showEvent(@PathVariable("id") long id, Model model) {
 		
