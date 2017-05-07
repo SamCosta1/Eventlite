@@ -5,6 +5,7 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.*;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 
 import org.junit.Before;
@@ -148,30 +149,47 @@ public class EventsControllerWebIntegrationTest extends TestParent {
 	
 	@Test
 	public void testUpdateEventValid() throws ParseException {
-		Event e = eventService.findAll().get(0);		
 		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
-		body.add("event", e.getId() + "");
+		body.add("event", "7");
 		body.add("name", "New Name for amazing event");
-		body.add("date", "2019-12-04"); 
-		body.add("time", "13:00");
-		body.add("venue.id", "2");
+		body.add("date", "2040-12-04"); 
+		body.add("time", "13:12");
+		body.add("venue.id", "1");
 		body.add("description", "Desc2")	;
 		
-		post("/events/" + e.getId() + "/update", HttpStatus.OK, body);
+		post("/events/7/update", HttpStatus.OK, body);
+		
+		boolean found = false;
+		Event e = null;
+		for (Event ev : eventService.findAll())
+			if (ev.getName().equals("New Name for amazing event")) {
+				found = true;
+				e = ev;
+			}
+		
+		assertTrue(found);
+		assertTrue("Event name updated", e.getName().equals("New Name for amazing event"));
+		assertTrue("Event description updated", e.getDescription().equals("Desc2"));
+		assertTrue("Event date updated", e.getDate().equals(new SimpleDateFormat("yyyy-MM-dd").parse("2040-12-04")));
+		assertTrue("Event date updated", e.getTime().equals(new SimpleDateFormat("HH:mm").parse("13:12")));
+		assertTrue("Event venue updated", e.getVenue().getId() == 1);
 	}
 	
 	@Test
 	public void testUpdateEventInvalid() {
-		Event e = eventService.findAll().get(0);		
+		Event event = eventService.findAll().get(0);		
 		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
-		body.add("event", e.getId() + "");
-		body.add("name", "");
+		body.add("event", event.getId() + "");
+		body.add("name", "New Name $%hfghjtrhf");
 		body.add("date", ""); 
 		body.add("time", "13:00");
-		body.add("venue.id", "2");
+		body.add("venue.id", "1");
 		body.add("description", "Desc2")	;
 		
-		post("/events/" + e.getId() + "/update", HttpStatus.OK, body);
+		post("/events/" + event.getId() + "/update", HttpStatus.OK, body);
+		
+		for (Event e : eventService.findAll())
+			assertFalse("Event doesn't exist", e.getName().equals("New Name $%hfghjtrhf"));
 	}
 	
 	private void get(String url, String expectedBody) {

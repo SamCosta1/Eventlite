@@ -141,13 +141,12 @@ public class EventsControllerWeb {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, 
-					produces = { MediaType.TEXT_HTML_VALUE,
-								 MediaType.APPLICATION_JSON_VALUE })
+					produces = { MediaType.TEXT_HTML_VALUE })
 	public String showEvent(@PathVariable("id") long id, Model model) {
 		
 		if (connectionRepository.findPrimaryConnection(Twitter.class) == null) 
             return "redirect:/connect/twitter";
-        
+        		
 		Event e = eventService.findById(id);
 		model.addAttribute("event", e);
 		model.addAttribute("has-map", e.getVenue().hasCoordinates());

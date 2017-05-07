@@ -54,18 +54,8 @@ public class EventsControllerRest {
 			model.addAttribute("venue", e.getVenue());
 		} catch (Exception e) {}
 		
+		
 		return "events/_detail";
-	}
-	
-	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = { MediaType.APPLICATION_JSON_VALUE })
-	public HttpEntity<Iterable<Event>> filterEvents(@RequestBody SearchEvents searchCriterion) {
-		return new ResponseEntity<Iterable<Event>>(searchCriterion.search(eventService), HttpStatus.OK);
-	}
-	
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public @ResponseStatus ResponseEntity<?> delete(@ModelAttribute Event event) {
-		eventService.delete(event);
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
 	@RequestMapping(value = "/userevents", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
