@@ -50,7 +50,7 @@ public class EventsControllerRestTest extends TestParent {
 	
 	@Test
 	public void testGetOneEvent() throws Exception {
-		venue = new Venue("Test Event Name", 10, null, null);
+		venue = new Venue("Test Event Name", 10, null, null, null, null, null);
 		venueService.save(venue);
 		
 		event = EventTestHelper.newEvent("EventLite Event 1", venue, "25/3/2018", "12:00", "some description");

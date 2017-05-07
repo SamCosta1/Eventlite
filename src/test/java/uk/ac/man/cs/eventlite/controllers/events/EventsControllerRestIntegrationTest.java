@@ -43,29 +43,23 @@ public class EventsControllerRestIntegrationTest extends TestParent {
 
 	@Test
 	public void testGetAllEvents() {
-		get("/events");
+		get("/events", "\"events\": [");
 	}
 	
 	@Test
 	public void testGetFirstEvent() {
-		get("/events/1");
+		get("/events/7", "\"id\": \"7\"");
 	}
 	
 	@Test
-	public void testFilterEvents() {
-		HttpHeaders postHeaders = new HttpHeaders();
-		postHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-		postHeaders.setContentType(MediaType.APPLICATION_JSON);
-		HttpEntity<String> postEntity = new HttpEntity<String>("{ \"name\": \"\" }", postHeaders);
-
-		ResponseEntity<String> response = template.exchange("/events/", HttpMethod.POST, postEntity, String.class);
-		assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
-		assertThat(response.getBody(), is(not(equalTo(null))));
+	public void testGetAllUserEvents() {
+		get("/events/userevents", "\"events\": [");
 	}
 
-	private void get(String url) {
+	private void get(String url, String expectedBody) {
 		ResponseEntity<String> response = template.exchange(url, HttpMethod.GET, httpEntity, String.class);
 		assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
 		assertThat(response.getHeaders().getContentType().toString(), containsString(MediaType.APPLICATION_JSON_VALUE));
+		assertThat(response.getBody(), containsString(expectedBody));
 	}
 }
