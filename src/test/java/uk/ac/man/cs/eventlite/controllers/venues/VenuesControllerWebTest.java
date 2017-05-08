@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -96,7 +97,9 @@ public class VenuesControllerWebTest extends TestParent {
 		when(eventService.findAllByVenue(venue)).thenReturn(Collections.<Event> emptyList());
 		mvc.perform(MockMvcRequestBuilders.post("/venues/1/delete")
 			.contentType(MediaType.APPLICATION_FORM_URLENCODED).accept(MediaType.TEXT_HTML)).andExpect(status().isFound())
-			.andExpect(view().name("redirect:/venues"));
+			.andExpect(view().name("redirect:/venues"))
+		    .andExpect(MockMvcResultMatchers.flash().attribute("successMessage", null + " has been deleted successfully."))
+		    .andExpect(MockMvcResultMatchers.flash().attributeCount(1));
 		verify(venueService, times(1)).findById(1);
 		verify(eventService, times(1)).findAllByVenue(venue);
 	}
@@ -107,7 +110,9 @@ public class VenuesControllerWebTest extends TestParent {
 		when(eventService.findAllByVenue(venue)).thenReturn(events);
 		mvc.perform(MockMvcRequestBuilders.post("/venues/1/delete")
 			.contentType(MediaType.APPLICATION_FORM_URLENCODED).accept(MediaType.TEXT_HTML)).andExpect(status().isFound())
-			.andExpect(view().name("redirect:/venues/{id}"));
+			.andExpect(view().name("redirect:/venues/{id}"))
+		    .andExpect(MockMvcResultMatchers.flash().attribute("alertMessage", "You cannot delete this venue since some event is linked to it."))
+	        .andExpect(MockMvcResultMatchers.flash().attributeCount(1));
 		verify(venueService, times(1)).findById(1);
 		verify(eventService, times(1)).findAllByVenue(venue);
 	}
@@ -129,8 +134,8 @@ public class VenuesControllerWebTest extends TestParent {
 		params.add("postcode",  "M13 9PL");
 		params.add("capacity", "50");
 		
-		updateVenue(params, "venues/venueform", HttpStatus.OK); 
-		addVenue(params, "venues/new", HttpStatus.OK); 
+		updateVenue(params, "venues/venueform", HttpStatus.OK, 0); 
+		addVenue(params, "venues/new", HttpStatus.OK, 0); 
 		
 		// Missing postcode
 		params.clear();
@@ -139,8 +144,8 @@ public class VenuesControllerWebTest extends TestParent {
 		params.add("streetName", "street name");
 		params.add("capacity", "50");
 		
-		updateVenue(params, "venues/venueform", HttpStatus.OK); 
-		addVenue(params, "venues/new", HttpStatus.OK); 
+		updateVenue(params, "venues/venueform", HttpStatus.OK, 0); 
+		addVenue(params, "venues/new", HttpStatus.OK, 0); 
 		
 		// Invalid capacity
 		params.clear();
@@ -150,8 +155,8 @@ public class VenuesControllerWebTest extends TestParent {
 		params.add("capacity", "0");
 		params.add("postcode",  "M13 9PL");
 		
-		updateVenue(params, "venues/venueform", HttpStatus.OK); 
-		addVenue(params, "venues/new", HttpStatus.OK); 
+		updateVenue(params, "venues/venueform", HttpStatus.OK, 0); 
+		addVenue(params, "venues/new", HttpStatus.OK, 0); 
 		
 		// Missing name
 		params.clear();
@@ -161,8 +166,8 @@ public class VenuesControllerWebTest extends TestParent {
 		params.add("capacity", "50");
 		params.add("postcode",  "M13 9PL");
 		
-		updateVenue(params, "venues/venueform", HttpStatus.OK); 
-		addVenue(params, "venues/new", HttpStatus.OK); 
+		updateVenue(params, "venues/venueform", HttpStatus.OK, 0); 
+		addVenue(params, "venues/new", HttpStatus.OK, 0); 
 	}
 	
 	@Test
@@ -174,26 +179,27 @@ public class VenuesControllerWebTest extends TestParent {
 		params.add("postcode",  "M13 9PL");
 		params.add("capacity", "50");
 		
-		updateVenue(params, "redirect:/venues", HttpStatus.FOUND); 
+		updateVenue(params, "redirect:/venues", HttpStatus.FOUND, 1); 
 		verify(venueService).update(isA(Venue.class), isA(Venue.class));
 		
-		addVenue(params, "redirect:/venues", HttpStatus.FOUND);
+		addVenue(params, "redirect:/venues", HttpStatus.FOUND, 1);
 		verify(venueService).save(isA(Venue.class));	
 		
 	}
 	
 	// Helper to test adding venues
-	private void addVenue(MultiValueMap<String, String> params, String view, HttpStatus status) throws Exception {
+	private void addVenue(MultiValueMap<String, String> params, String view, HttpStatus status, int count) throws Exception {
 		mvc.perform(MockMvcRequestBuilders.post("/venues/new")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 				.params(params)
 				.accept(MediaType.TEXT_HTML))
 		.andExpect(status().is(status.value()))
-		.andExpect(view().name(view));				
+		.andExpect(view().name(view))
+		.andExpect(MockMvcResultMatchers.flash().attributeCount(count));
 	}
 
 	// Helper to test updating venues
-	private void updateVenue(MultiValueMap<String, String> params, String view, HttpStatus status) throws Exception {
+	private void updateVenue(MultiValueMap<String, String> params, String view, HttpStatus status, int count) throws Exception {
 		when(venueService.findById(1L)).thenReturn(venue);
 		
 		mvc.perform(MockMvcRequestBuilders.post("/venues/1/update")
@@ -201,7 +207,8 @@ public class VenuesControllerWebTest extends TestParent {
 				.params(params)
 				.accept(MediaType.TEXT_HTML))
 		.andExpect(status().is(status.value()))
-		.andExpect(view().name(view));		
+		.andExpect(view().name(view))
+		.andExpect(MockMvcResultMatchers.flash().attributeCount(count));
 	}
 	
 		
