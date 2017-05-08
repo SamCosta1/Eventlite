@@ -66,8 +66,9 @@ public class EventsControllerWeb {
 	}
 	
 	@RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
- 	public String deleteEvent(@ModelAttribute Event event, Model model, @ModelAttribute("successMessage") String successMessage, final RedirectAttributes redirectAttributes) {		
- 		eventService.delete(event);
+ 	public String deleteEvent(@PathVariable("id") int eventId, Model model, @ModelAttribute("successMessage") String successMessage, final RedirectAttributes redirectAttributes) {		
+		Event event = eventService.findById(eventId);
+		eventService.delete(event);
  		successMessage = event.getName() + " has been deleted successfully!";
 		redirectAttributes.addFlashAttribute("successMessage", successMessage);
  		return "redirect:/events";
@@ -189,7 +190,8 @@ public class EventsControllerWeb {
 
 	@RequestMapping(value = "/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 					produces = { MediaType.TEXT_HTML_VALUE })
-	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Event event, BindingResult result, Model model) {
+	public String createEventFromForm(@RequestBody @Valid @ModelAttribute Event event, BindingResult result, Model model, 
+									  @ModelAttribute("successMessage") String successMessage, final RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
 			model.addAttribute("errors", formErrorHelper(result));
 			model.addAttribute("event", event);
@@ -202,7 +204,10 @@ public class EventsControllerWeb {
 			model.addAttribute("venues", venueService.findAllExceptOne(event.getVenue()));
 			return "events/new";
         }
-
+		
+		successMessage = event.getName() + " has been created successfully!";
+		redirectAttributes.addFlashAttribute("successMessage", successMessage);
+		
 	    event.setUser(getCurrentUser(model));
 	    eventService.save(event);
 	    return "redirect:/events";

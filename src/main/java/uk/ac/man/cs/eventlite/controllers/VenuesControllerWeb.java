@@ -34,23 +34,27 @@ public class VenuesControllerWeb {
 	private EventService eventService;
 
 	@RequestMapping(method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE })
-	public String getAllVenues(Model model) {
+	public String getAllVenues(Model model, @ModelAttribute("successMessage") String successMessage) {
 		model.addAttribute("venues", venueService.findAll());
+		model.addAttribute("success", successMessage);
 		return "venues/index";
 	}	
 	
 	@RequestMapping(value = "/{id}/delete",consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,  method = RequestMethod.POST)
- 	public String deleteVenue(@PathVariable("id") long id, final RedirectAttributes redirectAttributes) {
+ 	public String deleteVenue(@PathVariable("id") long id, @ModelAttribute("successMessage") String successMessage,
+ 							  @ModelAttribute("alertMessage") String alertMessage, final RedirectAttributes redirectAttributes) {
 		Venue venue = venueService.findById(id);
 		Iterable<Event> events = eventService.findAllByVenue(venue);
 		
 		if (events.iterator().hasNext()) {
-			redirectAttributes.addFlashAttribute("status-message", "You cannot delete this venue since some event is linked to it.");
+			alertMessage = "You cannot delete this venue since some event is linked to it.";
+			redirectAttributes.addFlashAttribute("alertMessage", alertMessage);
 			return "redirect:/venues/{id}";
 		}
 		else {
+			successMessage = venue.getName() + " has been deleted successfully.";
+			redirectAttributes.addFlashAttribute("successMessage", successMessage);
 			venueService.delete(venue);
-			redirectAttributes.addFlashAttribute("status-message", venue.getName() + " has been deleted successfully.");
 			return "redirect:/venues";
 		}
  	}
@@ -65,11 +69,13 @@ public class VenuesControllerWeb {
  
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE,
 					MediaType.APPLICATION_JSON_VALUE })
-	public String venue(@PathVariable("id") long id, Model model) {
+	public String venue(@PathVariable("id") long id, Model model, @ModelAttribute("alertMessage") String alertMessage) {
 
 		Venue venue = venueService.findById(id);
 		model.addAttribute("venue", venue);
 		model.addAttribute("events", eventService.findAllByVenue(venue));
+		
+		model.addAttribute("alert", alertMessage);
 
 		return "venues/show";
 	}
@@ -85,7 +91,8 @@ public class VenuesControllerWeb {
 	    		consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 	    		produces = { MediaType.TEXT_HTML_VALUE })
 	public String updateVenue(@RequestBody @Valid @ModelAttribute("venueForm") Venue venue, BindingResult errors,
-							@RequestParam(value="venue") long venueID, Model model) {
+							  @RequestParam(value="venue") long venueID, Model model,
+							  @ModelAttribute("successMessage") String successMessage, final RedirectAttributes redirectAttributes) {
 	
 		if (errors.hasErrors()) {
 			model.addAttribute("errors", formErrorHelper(errors));
@@ -94,6 +101,9 @@ public class VenuesControllerWeb {
 			
 			return "venues/venueform";
 		}
+		
+		successMessage = venue.getName() + " has been updated successfully!";
+		redirectAttributes.addFlashAttribute("successMessage", successMessage);
 		
 		venueService.update(venueService.findById(venueID), venue);
 		
@@ -127,7 +137,7 @@ public class VenuesControllerWeb {
 			
 		venue.setCoords();
 		venueService.save(venue);
-		successMessage = venue.getName() + "has been created successfully!";
+		successMessage = venue.getName() + " has been created successfully!";
 		redirectAttributes.addFlashAttribute("successMessage", successMessage);
 		return "redirect:/venues";
 	}

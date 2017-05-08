@@ -173,10 +173,12 @@ public class EventsControllerWebTest extends TestParent {
 	}
 	
 	@Test
-	public void testDeleteEvent() throws Exception {		
+	public void testDeleteEvent() throws Exception {	
+		when(eventService.findById(1)).thenReturn(event);
 		mvc.perform(MockMvcRequestBuilders.post("/events/1/delete")
 			.contentType(MediaType.APPLICATION_FORM_URLENCODED).accept(MediaType.TEXT_HTML)).andExpect(status().isFound())
-			.andExpect(view().name("redirect:/events"));		
+			.andExpect(view().name("redirect:/events"));	
+		verify(eventService, times(1)).findById(1);
 	}
 	
 	@Test
