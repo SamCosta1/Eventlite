@@ -65,12 +65,13 @@ public class EventsControllerWeb {
 		return "events/index";
 	}
 	
-	@RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
- 	public String deleteEvent(@PathVariable("id") int eventId, Model model, @ModelAttribute("successMessage") String successMessage, final RedirectAttributes redirectAttributes) {		
-		Event event = eventService.findById(eventId);
-		eventService.delete(event);
- 		successMessage = event.getName() + " has been deleted successfully!";
+	@RequestMapping(value = "/{id}/delete",consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,  method = RequestMethod.POST)
+ 	public String deleteEvent(@PathVariable("id") long id, Model model, final RedirectAttributes redirectAttributes) {		
+ 		
+ 		Event e = eventService.findById(id);
+ 		String successMessage = e.getName() + " has been deleted successfully!";
 		redirectAttributes.addFlashAttribute("successMessage", successMessage);
+		eventService.delete(e);
  		return "redirect:/events";
  	}
 	

@@ -99,12 +99,10 @@ public class EventsControllerWebIntegrationTest extends TestParent {
 	
 	@Test
 	public void testDelete() {
-		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
-		Event e = EventTestHelper.newEvent("My Event", "10/10/2019", "10:30");		
-		body.add("event", e.getId() + "");
-		post("/events/" + e.getId() + "/delete", HttpStatus.OK, body);
-		
-		assertTrue("Saved venue deleted", eventService.findById(e.getId()) == null);
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();		
+		body.add("", "");
+		post("/events/8/delete", HttpStatus.OK, body);
+		assertTrue("Saved venue deleted", eventService.findById(8) == null);
 	}
 	
 	@Test
