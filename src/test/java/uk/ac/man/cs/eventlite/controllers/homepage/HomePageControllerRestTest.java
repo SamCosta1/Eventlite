@@ -1,4 +1,4 @@
-package uk.ac.man.cs.eventlite;
+package uk.ac.man.cs.eventlite.controllers.homepage;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -28,7 +28,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import uk.ac.man.cs.eventlite.TestParent;
 
 @AutoConfigureMockMvc
-public class HomePageTest extends TestParent {
+public class HomePageControllerRestTest extends TestParent {
 
 	@Autowired
 	private MockMvc mvc;
