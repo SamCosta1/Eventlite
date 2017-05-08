@@ -148,6 +148,8 @@ public class VenuesControllerWebIntegrationTest extends TestParent {
 		body.add("postcode", "M13 9PL");
 		body.add("capacity", "-1");
 		
+		post("/venues/1/update", HttpStatus.OK, body);
+		
 		boolean updated = false;
 		for (Venue v : venueService.findAll())
 			if (v.getName().equals("A valid venue"))
@@ -157,9 +159,26 @@ public class VenuesControllerWebIntegrationTest extends TestParent {
 				
 			}
 		
-		post("/venues/1/update", HttpStatus.OK, body);
-		
 		assertFalse("Venue was not updated", updated);
+	}
+	
+	@Test
+	public void testDeleteVenue() {
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
+		body.add("", "");
+		post("/venues/4/delete", HttpStatus.OK, body);
+		
+		assertTrue("Saved venue deleted", venueService.findById(4) == null);
+		
+	}
+	
+	@Test
+	public void testDeleteVenueWithEvents() {
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
+		body.add("", "");
+		post("/venues/3/delete", HttpStatus.OK, body);
+		
+		assertFalse("Venue was not deleted", venueService.findById(3) == null);
 	}
 
 	private void get(String url, String expectedBody) {
