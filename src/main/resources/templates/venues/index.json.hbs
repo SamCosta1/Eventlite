@@ -5,12 +5,8 @@
   "venues": [ {{#venues}} {
     "id": "{{id}}",
     "name": "{{name}}",
-    "capacity": "{{capacity}}",
-    "adressLine1": "{{adressLine1}}",
-    "adressLine2": "{{adressLine2}}",
-    "streetName": "{{streetName}}",
-    "city": "{{city}}",
-    "postcode": "{{postcode}}",
-    "_self": "{{self_link}}venues/{{id}}"
+    "capacity": {{capacity}},    
+    "_self": "{{self_link}}venues/{{id}}",
+    "events": "{{self_link}}venues/{{id}}/events",
   } {{#unless @last}},{{/unless}} {{/venues}} ]
 }

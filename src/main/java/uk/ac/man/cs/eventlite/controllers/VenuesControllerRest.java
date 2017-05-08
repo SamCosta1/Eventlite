@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import uk.ac.man.cs.eventlite.dao.EventService;
 import uk.ac.man.cs.eventlite.dao.VenueService;
 import uk.ac.man.cs.eventlite.entities.Venue;
 
@@ -19,6 +20,9 @@ public class VenuesControllerRest {
 
 	@Autowired
 	private VenueService venueService;
+	
+	@Autowired
+	private EventService eventService;
 
 	@RequestMapping(method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public String getAllVenues(Model model, UriComponentsBuilder b) {
@@ -34,12 +38,9 @@ public class VenuesControllerRest {
 		UriComponents link = b.path("/").build();
 		model.addAttribute("self_link", link.toUri());
 
-		try{
-			Venue venue = venueService.findById(id);
-			model.addAttribute("venue", venue);
-		} catch (Exception e) {
-
-		}
+		Venue venue = venueService.findById(id);
+		model.addAttribute("venue", venue);
+		model.addAttribute("events", eventService.findAllByVenue(venue));	
 
 		return "venues/_detail";
 	}

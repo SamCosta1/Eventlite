@@ -1,19 +1,23 @@
 {
-  "title": "EventLite venue view",
+  "title": "EventLite Venue View",
   "_self": "{{self_link}}venues/{{venue.id}}",
 
   "id": "{{venue.id}}",
   "name": "{{venue.name}}",
-  "capacity": "{{venue.capacity}}",
+  "capacity": {{venue.capacity}},
+  "adressLine1": "{{venue.addressLine1}}",
+  "adressLine2": "{{venue.addressLine2}}",
   "streetName": "{{venue.streetName}}",
-  "postcode": "{{venue.postcode}}"
+  "city": "{{venue.city}}",
+  "postcode": "{{venue.postcode}}",
 
-  "events": {
-    {{#venue}}
-      "id": "{{id}}",
-      "name": "{{name}}",
-      "capacity": "{{capacity}}",
-      "_self": "{{self_link}}venues/{{id}}"
-    {{/venue}}
-  }
+  "events": [ {{#events}}
+	  {
+		"id": "{{id}}",
+		"name": "{{name}}",
+		"date": "{{date}}",
+		"time": "{{time}}"
+		"_self":"{{self_link}}events/{{id}}"
+	  }{{#unless @last}},{{/unless}}{{/events}}
+  ]
 }
