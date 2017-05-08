@@ -1,0 +1,19 @@
+{
+  "title": "EventLite venue view",
+  "_self": "{{self_link}}venues/{{venue.id}}",
+
+  "id": "{{venue.id}}",
+  "name": "{{venue.name}}",
+  "capacity": "{{venue.capacity}}",
+  "streetName": "{{venue.streetName}}",
+  "postcode": "{{venue.postcode}}"
+
+  "events": {
+    {{#venue}}
+      "id": "{{id}}",
+      "name": "{{name}}",
+      "capacity": "{{capacity}}",
+      "_self": "{{self_link}}venues/{{id}}"
+    {{/venue}}
+  }
+}
