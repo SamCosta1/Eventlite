@@ -1,8 +1,6 @@
 package uk.ac.man.cs.eventlite.controllers.events;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
 
@@ -62,4 +60,5 @@ public class EventsControllerRestIntegrationTest extends TestParent {
 		assertThat(response.getHeaders().getContentType().toString(), containsString(MediaType.APPLICATION_JSON_VALUE));
 		assertThat(response.getBody(), containsString(expectedBody));
 	}
+
 }
