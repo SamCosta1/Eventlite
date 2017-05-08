@@ -49,6 +49,7 @@ public class EventServiceTest extends TestParent {
 		
 		eventService.save(EventTestHelper.newEvent("Football game", "25/03/2018", "12:00"));	
 		eventService.save(EventTestHelper.newEvent("Rugby game", "12/04/2018", "00:00"));	
+		eventService.save(EventTestHelper.newEvent("Past Rugby game", "12/04/2011", "00:00"));	
 	}
 
 	@Test
@@ -84,6 +85,7 @@ public class EventServiceTest extends TestParent {
 
 	@Test
 	public void testSearchByName() {	
+		EventTestHelper.setUser(testUser);
 		String searchTerm = "test Event";
 		
 		// Past Events
@@ -94,18 +96,33 @@ public class EventServiceTest extends TestParent {
 		
 		// different names, same date
 		eventService.save(EventTestHelper.newEvent("Test Event in a name", "12/04/2012", "00:00"));
-		eventService.save(EventTestHelper.newEvent("test event    ", "12/04/2012", "00:00"));
+		eventService.save(EventTestHelper.newEvent("test event", "12/04/2012", "00:00"));
 		
 		// Future Events
 		
 		// same name, different dates
+		eventService.save(EventTestHelper.newEvent("TEST EVENT IS GREAT", "11/04/2018", "00:00"));
 		eventService.save(EventTestHelper.newEvent("TEST EVENT IS GREAT", "12/04/2018", "00:00"));
 		
 		// different names, same date
 		eventService.save(EventTestHelper.newEvent("TeSt event", "12/04/2018", "00:00"));
+		eventService.save(EventTestHelper.newEvent("TeSt event yeey", "12/04/2018", "00:00"));
 		
-		List<Event> events = (List<Event>) eventService.searchByName(searchTerm);
+		List<Event> events = (List<Event>)eventService.searchByName(searchTerm);
+		List<Event> userevents = (List<Event>) eventService.searchByNameByUser(searchTerm, testUser);
 
+		testWholeWordMatchesComeFirst(searchTerm, events);	
+    	testWholeWordMatchesComeFirst(searchTerm, userevents);	
+		
+		// The list without the whole word matches should be in the same order
+		testListInOrder(events);
+		testListInOrder(userevents);
+		
+		EventTestHelper.setUser(null);
+		
+	}
+
+	private void testWholeWordMatchesComeFirst(String searchTerm, List<Event> events) {
 		boolean isWholeWordFuture = true;
 		boolean isWholeWordPast = true;
 		for (Iterator<Event> iterator = events.iterator(); iterator.hasNext();) {
@@ -129,11 +146,7 @@ public class EventServiceTest extends TestParent {
 			
 			assertTrue("Names contain substring 'test event' - case insensitive"
 						, e.getName().toLowerCase().contains(searchTerm.toLowerCase()));	
-		}			
-		
-		// The list without the whole word matches should be in the same order
-		testListInOrder(events);
-		
+		}
 	}
 	
 	@Test

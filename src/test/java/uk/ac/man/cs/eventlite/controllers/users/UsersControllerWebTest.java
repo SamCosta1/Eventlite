@@ -62,9 +62,23 @@ public class UsersControllerWebTest extends TestParent{
 	}
 	
 	@Test
-	public void postNewUserRequest() throws Exception {
-		mvc.perform(MockMvcRequestBuilders.post("/users/new").contentType(MediaType.APPLICATION_FORM_URLENCODED).accept(MediaType.TEXT_HTML))
-		.andExpect(view().name("users/new"));
+	public void postValidNewUserRequest() throws Exception {
+		mvc.perform(MockMvcRequestBuilders.post("/users/new").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+			.param("username", "user")
+			.param("password", "pass")
+			.param("passwordRepeated", "pass")
+			.accept(MediaType.TEXT_HTML))
+			.andExpect(view().name("redirect:login"));
+	}
+	
+	@Test
+	public void postInValidNewUserRequest() throws Exception {
+		mvc.perform(MockMvcRequestBuilders.post("/users/new").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+			.param("username", "")
+			.param("password", "pass")
+			.param("passwordRepeated", "pass")
+			.accept(MediaType.TEXT_HTML))
+			.andExpect(view().name("users/new"));
 	}
 	
 	private void mockGet(String url, MediaType mediaType, String viewName, HttpStatus status) throws Exception {
