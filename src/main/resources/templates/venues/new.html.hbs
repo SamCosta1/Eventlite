@@ -5,47 +5,50 @@
 
 {{#partial "content"}}
 <div class="header-container">
-  <div class="title-container">   
+  <div class="title-container">
     <div class="subtitle">New Venue</div>
-  </div>  
-</div>  
+  </div>
+</div>
 
 <div class="main-content-container">
-  
+  {{#if redirected}} <p class="h2 text-warning">{{redirected}}</p> {{/if}}
+  {{#if errors}} <p class="h3 text-danger">There were errors in your venue information!</p> {{/if}}
+
   <form method="post" action="/venues/new">
-    <div class="form-group {{#if errors.template}}has-error{{/if}}">
-    
-      <label for="name">Name</label></td>
-      <input class="form-control" type="text" name="name" id="name" placeholder="Name" autofocus />
-          {{#if errors.name}} <p class="text-danger"> {{errors.name}} </p> {{/if}}
-   
-      
-      <label for="name">Capacity</label></td>
-        <input class="form-control" type="text" name="capacity" id="capacity" value="1" placeholder="Capacity" />        
-          {{#if errors.capacity}} <p class="text-danger"> {{errors.capacity}} </p>{{/if}}
-      
-      <label for="name">Address</label>
-      <input class="form-control" type="text" name="addressLine1" id="addressLine1" placeholder="Address Line 1" />
-      <input class="form-control" type="text" name="addressLine2" id="addressLine2" placeholder="Address Line 2" />
-      
-      <input class="form-control" type="text" name="streetName" id="streetName" placeholder="Street Name" />
-      {{#if errors.streetName}} <p class="text-danger">{{errors.streetName}}</p>  {{/if}}
-      
-      <input class="form-control" type="text" name="city" id="city" placeholder="City" />
-        
-      <label for="name">Postcode</label>
-        <input class="form-control" type="text" name="postcode" id="postcode" placeholder="Postcode" />
-          {{#if errors.postcode}} <p class="text-danger"> {{errors.postcode}} </p> {{/if}}
-   
-     
-	</div>
-      
+    <div class="form-group {{#if errors.template}} has-error {{/if}}">
+      <input type="hidden" name="redirected" id="redirected" value="{{redirected}}" />
+
+      <label for="name">Name</label>
+      <input class="form-control" type="text" name="name" id="name" placeholder="Name" autofocus value="{{venue.name}}" />
+      {{#if errors.name}} <p class="text-danger">{{errors.name}}</p> {{/if}}
+
+      <label for="capacity">Capacity</label>
+      <input class="form-control" type="number" name="capacity" id="capacity" placeholder="Capacity" value="{{capacity}}" />
+      {{#if errors.capacity}} <p class="text-danger">{{errors.capacity}}</p> {{/if}}
+
+      <label for="address">Address</label>
+      <input class="form-control" type="text" name="addressLine1" id="addressLine1" placeholder="Address Line 1" value="{{venue.addressLine1}}" />
+      <input class="form-control" type="text" name="addressLine2" id="addressLine2" placeholder="Address Line 2" value="{{venue.addressLine2}}" />
+
+      <label for="streetName">Street Name</label>
+      <input class="form-control" type="text" name="streetName" id="streetName" placeholder="Street Name" value="{{venue.streetName}}" />
+      {{#if errors.streetName}} <p class="text-danger">{{errors.streetName}}</p> {{/if}}
+
+      <label for="city">City</label>
+      <input class="form-control" type="text" name="city" id="city" placeholder="City" value="{{venue.city}}" />
+      {{#if errors.city}} <p class="text-danger">{{errors.city}}</p> {{/if}}
+
+      <label for="postcode">Postcode</label>
+      <input class="form-control" type="text" name="postcode" id="postcode" placeholder="Postcode" value="{{venue.postcode}}" />
+      {{#if errors.postcode}} <p class="text-danger">{{errors.postcode}}</p> {{/if}}
+
+	    {{#if errors.template}} <p class="text-danger">{{errors.template}}</p> {{/if}}
+	  </div>
+
     <button class="btn btn-primary" type="submit">Submit</button>
     <button class="btn btn-primary" id="back-button" role="button" onclick="goBack()">Cancel</button>
   </form>
 </div>
-
-
 {{/partial}}
 
-{{> layouts/base title="EventLite New Event"}}
+{{> layouts/base title="EventLite New Venue"}}

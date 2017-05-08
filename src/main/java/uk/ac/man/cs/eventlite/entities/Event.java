@@ -21,7 +21,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-
 @Entity
 @Table(name = "events")
 public class Event {
@@ -29,23 +28,23 @@ public class Event {
 	@Id
 	@GeneratedValue
 	private long id;
-	
+
 	@Future
 	@NotNull
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date date;
-	
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
 	@Temporal(TemporalType.TIME)
 	@DateTimeFormat(pattern = "HH:mm")
 	private Date time;
 
 	@NotBlank
-	@Size(max = 256, message="Name too long, must be less than 256 characters") 
+	@Size(max = 256, message = "Name too long, must be less than 256 characters")
 	private String name;
-	
+
 	@Lob
 	@Size(max = 500, message = "Description must have at most 500 characters")
 	@Column(length = 100000)
@@ -54,10 +53,10 @@ public class Event {
 	@NotNull
 	@ManyToOne
 	private Venue venue;
-	
+
 	@ManyToOne
 	private User user;
-	
+
 	@Transient
 	private boolean pastEvent;
 
@@ -68,9 +67,9 @@ public class Event {
 		this.time = time;
 		this.description = description;
 	}
-	
+
 	public Event() {
-		
+
 	}
 
 	public long getId() {
@@ -88,11 +87,11 @@ public class Event {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
+
 	public Date getTime() {
 		return time;
 	}
-	
+
 	public void setTime(Date time) {
 		this.time = time;
 	}
@@ -108,19 +107,19 @@ public class Event {
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public User getUser() {
 		return user;
 	}
-	
+
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
 	public Venue getVenue() {
 		return venue;
 	}
@@ -128,16 +127,17 @@ public class Event {
 	public void setVenue(Venue venue) {
 		this.venue = venue;
 	}
-	
+
 	public boolean equals(Event other) {
 		return this.id == other.getId()
 				&& this.name == other.name
 				&& this.venue.equals(other.venue)
 				&& this.date.equals(other.date)
 				&& this.time.equals(other.time)
-				&& ((this.description == null && other.description == null) || this.description.equals(other.description));
+				&& ((this.description == null && other.description == null) 
+				   || this.description.equals(other.description));
 	}
-	
+
 	public boolean equalsIgnoreId(Event other) {
 		return  this.name == other.name
 				&& this.venue.equals(other.venue)
@@ -145,13 +145,15 @@ public class Event {
 				&& this.time.equals(other.time)
 				&& this.description.equals(other.description);
 	}
-	
+
 	public String toString() {
-		return "ID: " + id + " Name: " + name + " Date: " + date + " Time: " + time + " Description: " + description + " Venue: [" + venue.toString() + "]";
+		return "ID: " + id + " Name: " + name + " Date: " + date 
+			   + " Time: " + time + " Description: " + description 
+			   + " Venue: [" + venue.toString() + "]";
 	}
-	
+
 	public boolean isPastEvent() {
 		return date.before(new Date());
 	}
-	
+
 }

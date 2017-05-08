@@ -5,7 +5,7 @@ import uk.ac.man.cs.eventlite.entities.Venue;
 public interface VenueService {
 
 	public Iterable<Venue> findAll();
-	
+
 	public void save(Venue venue);
 	public long count();
 
@@ -17,4 +17,5 @@ public interface VenueService {
 	public Venue[] findMostPopularVenues();
 	public void delete(Venue venue);
 	public void update(Venue current, Venue changes);
+
 }
