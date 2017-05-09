@@ -19,14 +19,17 @@ events
 	
 <div class="subsection-title-container" data-toggle="collapse" href="#tweets-container">
 	<div class="main-content-container">
-		<img class="twitter-logo twitter-image" src="../images/twitter-logo.png"/>
-		<div class="subsubtitle">Twitter Feed</div>
+		<div class="leftSide">
+			<img class="twitter-logo twitter-image" src="../images/twitter-logo.png"/>
+			<div class="subsubtitle">Twitter Feed</div>
+		</div>
+		<span class="glyphicon glyphicon-menu-down link"></span>
 	</div>
 </div>
 <div class="main-content-container">
 	<div class="twitter-container"> 	  
 	     
-	   <div id="tweets-container" class="tweets-container collapse in">
+	   <div id="tweets-container" class="tweets-container collapse">
 		   {{#each tweets}}  
 		   	  <div class="tweet-container">
 			      <div class="tweet-content">{{text}}</div>
