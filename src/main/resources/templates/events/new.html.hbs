@@ -37,7 +37,7 @@
       {{#if errors.venue}} <p class="text-danger">{{errors.venue}}</p> {{/if}}
 
       <label for="description">Description</label>
-      <input class="form-control" type="text" name="description" id="description" placeholder="Description" value="{{event.description}}" />
+      <textarea class="form-control" name="description" id="description">{{event.description}}</textarea>
       {{#if errors.description}} <p class="text-danger">{{errors.description}}</p> {{/if}}
 
       {{#if errors.template}} <p class="text-danger">{{errors.template}}</p> {{/if}}
