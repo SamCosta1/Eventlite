@@ -80,6 +80,7 @@ public class VenuesControllerWebIntegrationTest extends TestParent {
 	public void testAddValidNewVenue() {
 		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
 		body.add("name", "A valid venue");
+		body.add("redirected", "");
 		body.add("addressLine1", "Kilburn Building Manchester");
 		body.add("addressLine2", "University of Manchester");
 		body.add("streetName", "Oxford Rd");
@@ -100,6 +101,7 @@ public class VenuesControllerWebIntegrationTest extends TestParent {
 	public void testAddInvalidNewVenue() {
 		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
 		body.add("name", "An invalid venue");
+		body.add("redirected", "");
 		body.add("addressLine1", "Kilburn Building Manchester");
 		body.add("addressLine2", "University of Manchester");
 		body.add("streetName", "Oxford Rd");
