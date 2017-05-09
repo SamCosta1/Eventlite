@@ -55,13 +55,16 @@ public class EventsControllerRestTest extends TestParent {
 		eventService.save(event);
 
 		mvc.perform(get("/events/" + event.getId()).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-		.andExpect(jsonPath("$.title", equalTo("EventLite event view")))
-		.andExpect(jsonPath("$._self", equalTo("http://localhost/events/" + event.getId())))
-		.andExpect(jsonPath("$.id", equalTo("" + event.getId())))
-		.andExpect(jsonPath("$.date", equalTo("" + event.getDate())))
-		.andExpect(jsonPath("$.name", equalTo(event.getName())))
-		.andExpect(jsonPath("$.venue", notNullValue()));
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(jsonPath("$.title", equalTo("EventLite event view")))
+			.andExpect(jsonPath("$._self", equalTo("http://localhost/events/" + event.getId())))
+			.andExpect(jsonPath("$.id", equalTo("" + event.getId())))
+			.andExpect(jsonPath("$.date", equalTo("" + event.getDate())))
+			.andExpect(jsonPath("$.name", equalTo(event.getName())))
+			.andExpect(jsonPath("$.venue.id", equalTo("" + venue.getId())))
+			.andExpect(jsonPath("$.venue.name", equalTo("Test Event Name")))
+			.andExpect(jsonPath("$.venue.capacity", equalTo("10")))
+			.andExpect(jsonPath("$.venue._self", equalTo("http://localhost/venues/" + venue.getId())));
 	}
 
 	@Test

@@ -69,8 +69,7 @@ public class VenuesControllerWeb {
 		model.addAttribute("venue", venue);
 		model.addAttribute("events", eventService.findAllFutureEventsByVenue(venue));
 		
-		model.addAttribute("alert", alertMessage);
-		
+				
 		return "venues/show";
 	}
 
