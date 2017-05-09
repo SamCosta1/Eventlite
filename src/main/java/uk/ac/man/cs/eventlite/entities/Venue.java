@@ -23,23 +23,23 @@ public class Venue implements Comparable<Venue> {
 	@GeneratedValue
 	private long id;
 	
-	@NotBlank
+	@NotBlank (message = "May not be empty")
 	@Size(max = 256, message = "Name too long, must be less than 256 characters") 
 	private String name;
-
-	@Min(1)
+	
+	@Min(value=1, message = "Must have a positive non zero capacity")
 	private int capacity;
 
 	private String addressLine1;
 	private String addressLine2;	
 	
-	@NotBlank	
+	@NotBlank (message = "May not be empty")
 	@Size(max = 300, message = "Address too long, must be less than 300 characters") 
 	private String streetName;
 	
 	private String city;
 	
-	@NotBlank
+	@NotBlank (message = "May not be empty")
 	private String postcode;
 	
 	private double longitude;

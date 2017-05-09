@@ -72,6 +72,8 @@ public class VenuesControllerWeb {
 		Venue venue = venueService.findById(id);
 		model.addAttribute("venue", venue);
 		model.addAttribute("events", eventService.findAllFutureEventsByVenue(venue));
+		
+		model.addAttribute("alert", alertMessage); 
 		return "venues/show";
 	}
 

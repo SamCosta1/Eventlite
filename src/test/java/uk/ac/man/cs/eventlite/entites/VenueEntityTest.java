@@ -1,4 +1,4 @@
-package uk.ac.man.cs.eventlite.controllers.venues;
+package uk.ac.man.cs.eventlite.entites;
 
 import static org.junit.Assert.*;
 

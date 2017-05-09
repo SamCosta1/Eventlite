@@ -6,6 +6,15 @@
     height: 40px;
 }
 
+
+.main-content-container {
+	justify-content: space-between !important;
+	.leftSide {
+		display: flex;
+		align-items: center;
+	}
+}
+
 .twitter-container {
     padding: 10px;
     margin: 10px 0px;
