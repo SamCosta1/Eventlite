@@ -5,12 +5,19 @@
  
  {{#partial "content"}}
  {{#venueForm}}
+
 <div class="header-container">
-  <div class="title-container">   
-    <div class="subtitle">Update {{name}}</div>
-  </div>  
-</div>  
- 
+	<div class="title-container">		
+		<div class="subtitle">Update a Venue</div>
+	</div>	
+</div>	
+	
+<div class="subsection-title-container">
+	<div class="main-content-container">
+		<div class="subsubtitle">Updating: <span  onclick="window.document.location='/venues/{{id}}';" class="link">{{name}}</span></div>
+	</div>
+</div>
+
  <div class="main-content-container">
      <form action="/venues/{{id}}/update" method="post">
  		<div class="form-group {{#if errors.template}}has-error{{/if}}">
