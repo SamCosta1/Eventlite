@@ -12,6 +12,6 @@
         "_self":"{{self_link}}venues/{{id}}"
       },{{/venue}}
       "_self":"{{self_link}}events/{{id}}"
-    },{{/events}}
+    }{{#unless @last}},{{/unless}}{{/events}}
   ]
 }
