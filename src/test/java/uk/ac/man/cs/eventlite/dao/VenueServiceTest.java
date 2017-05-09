@@ -66,8 +66,8 @@ public class VenueServiceTest extends TestParent{
 
 		long initialCount = venueService.count();
 		venueService.save(newVenue);
-
-		assertThat("Count should increase by one on save", initialCount + 1, equalTo(venueService.count()));
+				
+		assertThat("Count should increase by one on save", initialCount + 1, equalTo(venueService.count()));		
 	}
 
 	@Test
