@@ -45,7 +45,7 @@
   		</select> 
   		{{#if errors.venue}} <p class="text-danger"> {{errors.venue}}</p>{{/if}} 
     	<label>Description</label><textarea class="form-control" name="description" id="description">{{event.description}}</textarea>
-       		
+       	{{#if errors.description}} <p class="text-danger">  {{errors.description}} </p>{{/if}}	
  {{/event}}
 	
 		{{#if errors.template}}

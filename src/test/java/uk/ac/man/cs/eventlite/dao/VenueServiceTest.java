@@ -127,7 +127,7 @@ public class VenueServiceTest extends TestParent{
 		
 		Set<Integer> noEvents = new HashSet<Integer>();
 		for (Venue v : allVenues)
-			noEvents.add(((List<Event>)eventService.findAllByVenue(v)).size());
+			noEvents.add(((List<Event>)eventService.findAllFutureEventsByVenue(v)).size());
 		
 		List<Integer> sorted = new ArrayList<Integer>(noEvents);
 		Collections.sort(sorted);
@@ -136,7 +136,7 @@ public class VenueServiceTest extends TestParent{
 		if (sorted.size() > 3)
 			sorted = sorted.subList(0, 3);		
 		for (Venue v : venues) {
-			int freq = ((List<Event>)eventService.findAllByVenue(v)).size();
+			int freq = ((List<Event>)eventService.findAllFutureEventsByVenue(v)).size();
 			assertTrue("This venue has one of the highest numbers of events", sorted.contains(freq));
 		}		
 	}

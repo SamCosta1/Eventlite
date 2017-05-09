@@ -26,4 +26,5 @@ public interface EventRepository extends CrudRepository<Event, Long> {
 	
 	List<Event> findByNameContainingIgnoreCaseAndDateAfterOrderByDateAscNameAsc(String name, Date date);
 	List<Event> findByNameContainingIgnoreCaseAndDateBeforeOrderByDateDescNameAsc(String name, Date date);
+	Iterable<Event> findAllByVenue(Venue venue);
 }

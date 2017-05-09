@@ -30,11 +30,9 @@
       <input class="form-control" type="text" name="addressLine1" id="addressLine1" placeholder="Address Line 1" value="{{venue.addressLine1}}" />
       <input class="form-control" type="text" name="addressLine2" id="addressLine2" placeholder="Address Line 2" value="{{venue.addressLine2}}" />
 
-      <label for="streetName">Street Name</label>
       <input class="form-control" type="text" name="streetName" id="streetName" placeholder="Street Name" value="{{venue.streetName}}" />
       {{#if errors.streetName}} <p class="text-danger">{{errors.streetName}}</p> {{/if}}
 
-      <label for="city">City</label>
       <input class="form-control" type="text" name="city" id="city" placeholder="City" value="{{venue.city}}" />
       {{#if errors.city}} <p class="text-danger">{{errors.city}}</p> {{/if}}
 

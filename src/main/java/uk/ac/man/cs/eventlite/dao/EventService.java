@@ -18,7 +18,8 @@ public interface EventService {
 	public void update(Event current, Event changes);
 	public Iterable<Event> findAllByUser(User user);
 	
-	public Iterable<Event> findAllByVenue(Venue venue);
+	public Iterable<Event> findAllFutureEventsByVenue(Venue venue);
 	public Iterable<Event> searchByNameByUser(String name, User user);
 	public Iterable<Event>  findThreeSoonestEvents();
+	public Iterable<Event> findAllByVenue(Venue venue);
 }
