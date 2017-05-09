@@ -40,7 +40,7 @@ public class VenuesControllerRest {
 
 		Venue venue = venueService.findById(id);
 		model.addAttribute("venue", venue);
-		model.addAttribute("events", eventService.findAllByVenue(venue));	
+		model.addAttribute("events", eventService.findAllFutureEventsByVenue(venue));	
 
 		return "venues/_detail";
 	}

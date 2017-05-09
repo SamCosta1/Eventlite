@@ -239,7 +239,7 @@ public class EventServiceTest extends TestParent {
 		eventService.save(EventTestHelper.newEvent("A Test", venue, "01/2/2011", "01:00"));
 		eventService.save(EventTestHelper.newEvent("B Test", venue, "01/2/2011", "01:00"));
 
-		List<Event> events = (List<Event>)eventService.findAllByVenue(venue);
+		List<Event> events = (List<Event>)eventService.findAllFutureEventsByVenue(venue);
 
 		for (Event e : events) {
 			assertTrue("event has the venue", e.getVenue().equals(venue));
@@ -251,7 +251,7 @@ public class EventServiceTest extends TestParent {
 
 	@Test
 	public void testFindByNoVenue() {
-		List<Event> events = (List<Event>)eventService.findAllByVenue(null);
+		List<Event> events = (List<Event>)eventService.findAllFutureEventsByVenue(null);
 		assertTrue(events.isEmpty());
 	}
 
