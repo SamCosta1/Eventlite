@@ -62,8 +62,7 @@ public class VenuesControllerWeb {
 		return "venues/index";
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE,
-					MediaType.APPLICATION_JSON_VALUE })
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = { MediaType.TEXT_HTML_VALUE } )
 	public String venue(@PathVariable("id") long id, Model model) {
 
 		Venue venue = venueService.findById(id);

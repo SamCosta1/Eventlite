@@ -1,4 +1,4 @@
-package uk.ac.man.cs.eventlite.controllers.events;
+package uk.ac.man.cs.eventlite.controllers.venues;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.StringContains.containsString;
@@ -22,7 +22,7 @@ import org.springframework.http.ResponseEntity;
 import uk.ac.man.cs.eventlite.TestParent;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class EventsControllerRestIntegrationTest extends TestParent {
+public class VenuesControllerRestIntegrationTest extends TestParent {
 
 	@LocalServerPort
 	private int port;
@@ -40,18 +40,13 @@ public class EventsControllerRestIntegrationTest extends TestParent {
 	}
 
 	@Test
-	public void testGetAllEvents() {
-		get("/events", "\"events\": [");
+	public void testGetAllVenues() {
+		get("/venues", "\"venues\": [");
 	}
 
 	@Test
 	public void testGetFirstEvent() {
-		get("/events/7", "\"id\": \"7\"");
-	}
-
-	@Test
-	public void testGetAllUserEvents() {
-		get("/events/userevents", "\"events\": [");
+		get("/venues/1", "\"id\": \"1\"");
 	}
 
 	private void get(String url, String expectedBody) {

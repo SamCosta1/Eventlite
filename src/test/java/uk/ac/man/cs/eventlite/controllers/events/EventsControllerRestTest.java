@@ -25,14 +25,14 @@ public class EventsControllerRestTest extends TestParent {
 
 	@Autowired
 	private MockMvc mvc;
-	
+
 	private Event event;
-	
+
 	private Venue venue;
-	
+
 	@Autowired
 	private EventService eventService;
-	
+
 	@Autowired
 	private VenueService venueService;
 
@@ -44,15 +44,15 @@ public class EventsControllerRestTest extends TestParent {
  		.andExpect(jsonPath("$._self", equalTo("http://localhost/events")))
  		.andExpect(jsonPath("$.events", notNullValue()));
 	}
-	
+
 	@Test
 	public void testGetOneEvent() throws Exception {
 		venue = new Venue("Test Event Name", 10, null, null, null, null, null);
 		venueService.save(venue);
-		
+
 		event = EventTestHelper.newEvent("EventLite Event 1", venue, "25/3/2018", "12:00", "some description");
 		eventService.save(event);
-		
+
 		mvc.perform(get("/events/" + event.getId()).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 		.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 		.andExpect(jsonPath("$.title", equalTo("EventLite event view")))
@@ -62,7 +62,7 @@ public class EventsControllerRestTest extends TestParent {
 		.andExpect(jsonPath("$.name", equalTo(event.getName())))
 		.andExpect(jsonPath("$.venue", notNullValue()));
 	}
-		
+
 	@Test
 	public void testGetUserEventsJson() throws Exception {
 		mvc.perform(get("/events/userevents").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())

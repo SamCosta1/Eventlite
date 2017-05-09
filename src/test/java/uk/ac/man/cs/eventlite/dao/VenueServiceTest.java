@@ -21,10 +21,10 @@ public class VenueServiceTest extends TestParent{
 
 	@Autowired
 	private VenueService venueService;
-	
+
 	@Autowired
 	private EventService eventService;
-	
+
 	private int capacity = 100;
 	private String addressLine1 = "Kilburn Building";
 	private String addressLine2 = "University of Manchester";
@@ -33,37 +33,37 @@ public class VenueServiceTest extends TestParent{
 	private String postcode = "M13 9PL";
 
 	@Test
-	public void findAllTest() {		
-		venueService.save(new Venue("z", capacity, addressLine1, addressLine2, streetName, city, postcode));	
+	public void findAllTest() {
+		venueService.save(new Venue("z", capacity, addressLine1, addressLine2, streetName, city, postcode));
 		venueService.save(new Venue("x", capacity, addressLine1, addressLine2, streetName, city, postcode));
-		venueService.save(new Venue("a", capacity, addressLine1, addressLine2, streetName, city, postcode));	
+		venueService.save(new Venue("a", capacity, addressLine1, addressLine2, streetName, city, postcode));
 		venueService.save(new Venue("b", capacity, addressLine1, addressLine2, streetName, city, postcode));
-		
+
 		List<Venue> venues = (List<Venue>) venueService.findAll();
 		long count = venueService.count();
 
 		assertThat("findAll should get all venues.", count, equalTo((long) venues.size()));
 		testListInOrder(venues);
 	}
-	
+
 	@Test
 	public void findAllExceptOne() {
 		Venue ignoredEvent = new Venue("name1", capacity, addressLine1, addressLine2, streetName, city, postcode);
 		venueService.save(ignoredEvent);
-				
+
 		List<Venue> venues = (List<Venue>) venueService.findAllExceptOne(ignoredEvent);
-		for (Venue v : venues) 
+		for (Venue v : venues)
 			assertFalse(v.equals(ignoredEvent));
-		
+
 		List<Venue> allVenues = (List<Venue>) venueService.findAll();
 		allVenues.remove(ignoredEvent);
-		assertTrue("All other venues present", venues.containsAll(allVenues));		
+		assertTrue("All other venues present", venues.containsAll(allVenues));
 	}
-	
+
 	@Test
 	public void testCount() {
 		Venue newVenue = new Venue("name1", capacity, addressLine1, addressLine2, streetName, city, postcode);
-		
+
 		long initialCount = venueService.count();
 		venueService.save(newVenue);
 				
@@ -74,16 +74,16 @@ public class VenueServiceTest extends TestParent{
 	public void testSearchByName() {
 		venueService.save(new Venue("d Test Venue 1", capacity, addressLine1, addressLine2, streetName, city, postcode));
 		venueService.save(new Venue("b test venue 2", capacity, addressLine1, addressLine2, streetName, city, postcode));
-		venueService.save(new Venue("a test Venue", capacity, addressLine1, addressLine2, streetName, city, postcode));	
+		venueService.save(new Venue("a test Venue", capacity, addressLine1, addressLine2, streetName, city, postcode));
 		venueService.save(new Venue("f Another random string", capacity, addressLine1, addressLine2, streetName, city, postcode));
-		
-		String searchTerm = "test Venue";		
-		List<Venue> venues = (List<Venue>) venueService.searchByName(searchTerm);	
-		
-		for (Venue v : venues) 			
+
+		String searchTerm = "test Venue";
+		List<Venue> venues = (List<Venue>) venueService.searchByName(searchTerm);
+
+		for (Venue v : venues)
 			assertTrue("Names contain substring 'test venue' - case insensitive"
-						, v.getName().toLowerCase().contains(searchTerm.toLowerCase()));			
-	
+						, v.getName().toLowerCase().contains(searchTerm.toLowerCase()));
+
 		testListInOrder(venues);
 	}
 
@@ -103,11 +103,11 @@ public class VenueServiceTest extends TestParent{
 		List<Venue> venues = (List<Venue>) venueService.findAll();
 		for (Venue v: venues){
 			if (v.equals(newVenue))
-				found=true;
+				found = true;
 		}
 		
 		assertTrue(found);
-		assertThat("Count should have risen after save.", newCount, equalTo(previousCount+1));
+		assertThat("Count should have risen after save.", newCount, equalTo(previousCount + 1));
 	}
 	
 	@Test
@@ -134,7 +134,7 @@ public class VenueServiceTest extends TestParent{
 		Collections.reverse(sorted);
 		
 		if (sorted.size() > 3)
-			sorted = sorted.subList(0,3);		
+			sorted = sorted.subList(0, 3);		
 		for (Venue v : venues) {
 			int freq = ((List<Event>)eventService.findAllByVenue(v)).size();
 			assertTrue("This venue has one of the highest numbers of events", sorted.contains(freq));

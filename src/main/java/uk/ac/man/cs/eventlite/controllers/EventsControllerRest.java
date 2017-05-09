@@ -24,43 +24,42 @@ public class EventsControllerRest {
 
 	@RequestMapping(method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public String getAllEvents(Model model, UriComponentsBuilder b) {
-		
 		UriComponents link = b.path("/").build();
 		model.addAttribute("self_link", link.toUri());
 		model.addAttribute("events", eventService.findAll());
-		
+
 		return "events/index";
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
-	public String getOneEvent(@PathVariable("id") long id, Model model, UriComponentsBuilder b) { 
-		
+	public String getOneEvent(@PathVariable("id") long id, Model model, UriComponentsBuilder b) {
 		UriComponents link = b.path("/").build();
 		model.addAttribute("self_link", link.toUri());
-		
-		try{
+
+		try {
 			Event e = eventService.findById(id);
 			model.addAttribute("event", e);
 			model.addAttribute("venue", e.getVenue());
-		} catch (Exception e) {}
-		
-		
+		} catch (Exception e) {
+
+		}
+
 		return "events/_detail";
 	}
 
 	@RequestMapping(value = "/userevents", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
 	public String getUserEvents(Model model, UriComponentsBuilder b) {
-		
 		UriComponents link = b.path("/").build();
 		model.addAttribute("self_link", link.toUri());
 		model.addAttribute("events", eventService.findAllByUser(getCurrentUser(model)));
 
 		return "events/userevents";
 	}
-	
-	// Helper that returns the current user
+
+	// Helper that returns the current user.
 	private static User getCurrentUser(Model model) {
 		CurrentUser mapVal = ((CurrentUser)model.asMap().get("currentUser"));
 		return mapVal == null ? null : mapVal.getUser();
 	}
+
 }
