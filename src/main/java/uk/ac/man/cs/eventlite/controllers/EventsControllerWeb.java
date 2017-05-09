@@ -164,7 +164,9 @@ public class EventsControllerWeb {
 							   twitter.timelineOperations().getUserTimeline().get(0).getText());
 		}
 
-		model.addAttribute("event", eventService.findById(id));
+		Event e = eventService.findById(id);
+		model.addAttribute("event", e);
+		model.addAttribute("has-map", e.getVenue().hasCoordinates());
 		return "events/show";
 	}
 
