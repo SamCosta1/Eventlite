@@ -30,7 +30,7 @@ public class Event {
 	private long id;
 
 	@Future
-	@NotNull
+	@NotNull (message = "May not be empty")
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -41,7 +41,7 @@ public class Event {
 	@DateTimeFormat(pattern = "HH:mm")
 	private Date time;
 
-	@NotBlank
+	@NotBlank (message = "May not be empty")
 	@Size(max = 256, message = "Name too long, must be less than 256 characters")
 	private String name;
 
@@ -50,7 +50,7 @@ public class Event {
 	@Column(length = 100000)
 	private String description;
 
-	@NotNull
+	@NotNull (message = "May not be empty")
 	@ManyToOne
 	private Venue venue;
 

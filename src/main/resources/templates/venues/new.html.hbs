@@ -23,7 +23,7 @@
       {{#if errors.name}} <p class="text-danger">{{errors.name}}</p> {{/if}}
 
       <label for="capacity">Capacity</label>
-      <input class="form-control" type="number" name="capacity" id="capacity" placeholder="Capacity" value="{{capacity}}" />
+      <input class="form-control" type="number" name="capacity" id="capacity" required placeholder="Capacity" value="{{capacity}}" />
       {{#if errors.capacity}} <p class="text-danger">{{errors.capacity}}</p> {{/if}}
 
       <label for="address">Address</label>
