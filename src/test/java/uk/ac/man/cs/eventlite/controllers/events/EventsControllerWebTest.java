@@ -363,6 +363,9 @@ public class EventsControllerWebTest extends TestParent {
 		when(tweet.getText()).thenReturn(tweet_s); // Needed for the last line of this method.
 		when(twitter.timelineOperations()).thenReturn(timelineOperations);
 		when(timelineOperations.updateStatus(tweet_s)).thenReturn(tweet);
+		when(eventService.findById(1)).thenReturn(event);
+		when(event.getVenue()).thenReturn(venue);
+		when(venue.hasCoordinates()).thenReturn(true);
 
 		List<Tweet> tweetList = new ArrayList<Tweet>();
 		tweetList.add(0, tweet);
