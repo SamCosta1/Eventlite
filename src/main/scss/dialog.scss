@@ -1,0 +1,13 @@
+@import "colour-maps.scss";
+
+#successDialog {
+  .modal-header {
+    background-color: $success-background;
+  }
+}
+
+#alertDialog {
+  .modal-header {
+    background-color: $error-background;
+  }
+}
