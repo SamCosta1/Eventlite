@@ -10,15 +10,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import uk.ac.man.cs.eventlite.entities.Event;
 import uk.ac.man.cs.eventlite.entities.Venue;
 import uk.ac.man.cs.eventlite.TestParent;
-
 
 public class VenueServiceTest extends TestParent{
 
@@ -71,9 +68,8 @@ public class VenueServiceTest extends TestParent{
 		venueService.save(newVenue);
 				
 		assertThat("Count should increase by one on save", initialCount + 1, equalTo(venueService.count()));		
-		
 	}
-	
+
 	@Test
 	public void testSearchByName() {
 		venueService.save(new Venue("d Test Venue 1", capacity, addressLine1, addressLine2, streetName, city, postcode));
@@ -89,9 +85,8 @@ public class VenueServiceTest extends TestParent{
 						, v.getName().toLowerCase().contains(searchTerm.toLowerCase()));			
 	
 		testListInOrder(venues);
-		
 	}
-	
+
 	@Test
 	public void testSave() {
 
@@ -175,7 +170,6 @@ public class VenueServiceTest extends TestParent{
 			assertFalse("Deleted event doesn't appear", v.equals(venue));		
 		
 		assertThat("Count should decrease by one on delete", initialCount - 1, equalTo(venueService.count()));
-		
 	}
 
 }

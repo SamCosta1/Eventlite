@@ -2,7 +2,6 @@ package uk.ac.man.cs.eventlite.controllers.events;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.hamcrest.core.StringContains.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.hamcrest.Matchers.equalTo;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import uk.ac.man.cs.eventlite.TestParent;
 import uk.ac.man.cs.eventlite.dao.EventService;
@@ -24,7 +22,7 @@ import uk.ac.man.cs.eventlite.entities.Event;
 
 @AutoConfigureMockMvc
 public class EventsControllerRestTest extends TestParent {
-	
+
 	@Autowired
 	private MockMvc mvc;
 	
@@ -73,4 +71,5 @@ public class EventsControllerRestTest extends TestParent {
 		.andExpect(jsonPath("$._self", equalTo("http://localhost/events/userevents")))
 		.andExpect(jsonPath("$.events", notNullValue()));
 	}
+
 }
