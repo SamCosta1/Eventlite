@@ -17,9 +17,7 @@ var locations = [
 
 var labels = [
 	{{#events}}
-		{{#unless pastEvent}}
-			"{{name}}"{{#unless @last}},{{/unless}}
-		{{/unless}}
+		"{{name}}"{{#unless @last}},{{/unless}}
 	{{/events}}
 ];
 
@@ -30,21 +28,33 @@ function initMap() {
   };
     
   var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 14,
     center: initialCoords,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   });
 
+  var bounds = new google.maps.LatLngBounds();
   var markers = locations.map(function(location, i) {
+	if (location.lat == 0 && location.lng == 0)
+		return;
+	
+    bounds.extend(location);
     return new google.maps.Marker({
       position: location,
       label: labels[i]
     });
   });
+  
+  
+  // Extend around manchester city center
+  bounds.extend({lat: 53.4882892, lng: -2.244002 });
+  bounds.extend({lat: 53.4721997, lng: -2.2426287 });
+  bounds.extend({lat: 53.4811263, lng: -2.2339169});
+  bounds.extend({lat: 53.4771382, lng: -2.2271656 });
+  map.fitBounds(bounds);
 
   var markerCluster = new MarkerClusterer(map, markers,
       {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-  map.setCenter(new google.maps.LatLng(53.479411, -2.244006))
+  map.setCenter(initialCoords);
 }
 
 

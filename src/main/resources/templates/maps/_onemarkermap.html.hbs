@@ -8,7 +8,7 @@ function initMap() {
   };
   
   var mapOptions = {
-    zoom: 14,
+    zoom: 18,
     center: initialCoords,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
@@ -19,7 +19,22 @@ function initMap() {
     position: { lat: {{venue.latitude}}, lng: {{venue.longitude}} },
     map: map,
     title: '{{venue.name}}' 
-  });
+  });  
+  
+  var bounds = new google.maps.LatLngBounds();
+  bounds.extend(marker.getPosition());
+  
+  // Extend around manchester city center
+  bounds.extend({lat: 53.4882892, lng: -2.244002 });
+  bounds.extend({lat: 53.4721997, lng: -2.2426287 });
+  bounds.extend({lat: 53.4811263, lng: -2.2339169});
+  bounds.extend({lat: 53.4771382, lng: -2.2271656 });
+  
+  map.setCenter(initialCoords);
+
+	
+  map.fitBounds(bounds);
+
   
   }
 </script>
